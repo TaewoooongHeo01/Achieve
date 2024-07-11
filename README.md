@@ -1,79 +1,20 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Achieve
 
-# Getting Started
+## 프로젝트 소개
+사람들이 목표 달성이나 습관 만들기에 실패하는 주된 이유 중 하나는 잘못된 목표 설정에 있다. 목표는 측정 가능하고, 시간 제한이 있으며, 구체적이어야 한다. 그러나 많은 사람들은 목표 설정 단계를 귀찮아하거나, 정확히 어떻게 해야 할지 모른다.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Achieve는 사용자의 막연한 목표를 실제로 달성 가능한 구체적인 목표로 변환해준다. 몇 가지 질문과 자동 추천을 통해 좋은 목표를 만들 수 있는 프로세스를 제공하여, 사용자가 자연스럽게 올바른 목표를 설정할 수 있게 한다.
 
-## Step 1: Start the Metro Server
+또한 Achieve의 주요 특징 중 하나는 목표 섹션이 추가된 투두리스트이다. 모든 투두는 특정한 목표에 포함된다. 이는 뒤죽박죽인 투두리스트를 목표별로 정리하여, 어떤 작업이 어떤 목표를 위한 것인지 명확히 구분해준다. 이렇게 함으로써 사용자는 목표에 더욱 집중할 수 있고, 목표 달성의 동기 부여를 받을 수 있다.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 기술스택
+- React Native
+- TypeScript
+- Babel
+- Metro
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## 아키텍쳐
 
-```bash
-# using npm
-npm start
+## 주요기능
 
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## 결과 및 성과
