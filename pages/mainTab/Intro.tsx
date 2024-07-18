@@ -1,47 +1,48 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { ms } from "react-native-size-matters";
+import { font } from "../../const/styleConst";
 
-interface IntroProps {
-    username: string,
+import { UserData } from "../Home";
+
+type UserDataProps = {
+    userData: UserData | undefined;
 }
 
-const Intro = (props: IntroProps): React.JSX.Element => {
+const Intro = ({ userData }: UserDataProps): React.JSX.Element => {
 
-    // 현재 날짜 객체 생성
     const now = new Date();
 
-    // 날짜와 요일 표시 포맷 설정
-    const dateStr = now.toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        weekday: 'long'
-    });
-
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const date = String(now.getDate()).padStart(2, '0');
+    const day = now.getDay();
+    const dayNames = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+    
     return (
         <View style={styles.layout}>
-            <Text style={styles.title}>안녕하세요, {props.username}님</Text>
-            <Text style={styles.subTitle}>{dateStr}</Text>
+            <Text style={styles.title}>안녕하세요, {userData?.username ?? ''}님</Text>
+            <Text style={styles.subTitle}>{year}.{month}.{date}, {dayNames[day]}</Text>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     layout: {
-
+        borderColor: 'white',
+        borderWidth: 1,
     },
     title: {
         paddingTop: ms(5, 0.3),
-        color: 'white', 
-        fontSize: ms(20, 0.3),
-        fontWeight: 'bold', 
+        color: font.mainColor.color,
+        fontSize: font.mainSize.fontSize,
+        fontWeight: font.mainWeight.fontWeight,
     },
     subTitle: {
         paddingTop: ms(5, 0.3),
-        color: 'rgba(255, 255, 255, 0.7)', 
-        fontSize: ms(15, 0.3),
-        fontWeight: 'bold',
+        color: font.subText.color,
+        fontSize: font.subSize.fontSize,
+        fontWeight: font.subWeight.fontWeight,
     }
 });
 
