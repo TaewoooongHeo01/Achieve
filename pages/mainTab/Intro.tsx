@@ -29,8 +29,7 @@ const Intro = ({ userData }: UserDataProps): React.JSX.Element => {
 
 const styles = StyleSheet.create({
     layout: {
-        borderColor: 'white',
-        borderWidth: 1,
+        flex: 1,
     },
     title: {
         paddingTop: ms(5, 0.3),

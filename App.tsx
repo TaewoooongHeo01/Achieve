@@ -1,22 +1,31 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 //pages
 import Main from './pages/Main';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import GoalDetail from './pages/GoalDetail';
+
+export type RootStackParamList = {
+  Main: undefined;
+  GoalDetail: { goalId: string };
+};
+
+export type GoalDetailScreenProps = NativeStackScreenProps<RootStackParamList, 'GoalDetail'>;
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
-  const Stack = createNativeStackNavigator();
 
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView>
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{headerShown:false}}>
-            <Stack.Screen name="Main" component={Main} />
-            {/* <Stack.Screen name="Home" component={Main} /> */}
+          <Stack.Navigator>
+            <Stack.Screen options={{headerShown: false}} name="Main" component={Main} />
+            <Stack.Screen name="GoalDetail" component={GoalDetail} />
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>
