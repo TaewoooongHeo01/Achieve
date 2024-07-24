@@ -7,8 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from "../../App";
 
-import { GoalsType } from "../Home";
-import GoalDetail from "../GoalDetail";
+import { GoalsType } from "../mainTab/Home";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type GoalProps = {
@@ -87,8 +86,7 @@ const Goals = ({ goalProps }: GoalProps): React.ReactElement => {
 const styles = StyleSheet.create({
     layout: {
         flex: 1,
-        // backgroundColor: 'white', 
-        paddingTop: ms(20, 0.3),
+        marginTop: ms(20, 0.3),
     },
     title: {
         color: font.mainColor.color,

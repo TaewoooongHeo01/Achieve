@@ -1,9 +1,9 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Platform } from "react-native";
 import { ms } from "react-native-size-matters";
 import { font } from "../../const/styleConst";
 
-import { UserData } from "../Home";
+import { UserData } from "../mainTab/Home";
 
 type UserDataProps = {
     userData: UserData | undefined;
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        paddingTop: ms(5, 0.3),
+        marginTop: Platform.OS === 'ios' ? ms(5, 0.3) : ms(10, 0.3),  
         color: font.mainColor.color,
         fontSize: font.mainSize.fontSize,
         fontWeight: font.mainWeight.fontWeight,

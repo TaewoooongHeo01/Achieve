@@ -4,11 +4,12 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { ms } from "react-native-size-matters";
 
 //mainTab components
-import Intro from "./mainTab/Intro"; 
-import Goals from "./mainTab/Goals";
+import Intro from "../homeComponents/Intro"; 
+import Goals from "../homeComponents/Goals";
+import TodoDate from "../homeComponents/TodoDate";
 
 //styles
-import { gradientColorset } from "../const/styleConst";
+import { gradientColorset } from "../../const/styleConst";
 
 export type UserData = {
   _id: string,
@@ -104,7 +105,8 @@ const Home = (): React.ReactElement => {
     //서버로부터 데이터를 받아오거나, 변경 시 상태관리 필요. 따라서 useState 사용
     const [data, setData] = useState<React.ReactElement[]>([
       <Intro userData={curUser} />,
-      <Goals goalProps={curUser?.goals} />
+      <Goals goalProps={curUser?.goals} />,
+      <TodoDate />
     ]);
 
     //userDataMap 업데이트 시 data 업데이트
@@ -112,7 +114,8 @@ const Home = (): React.ReactElement => {
         if (curUser) {
             setData([
                 <Intro userData={curUser} />,
-                <Goals goalProps={curUser.goals} />
+                <Goals goalProps={curUser.goals} />,
+                <TodoDate />
             ]);
         }
     }, [curUser]); // curUser가 변경될 때마다 data를 업데이트
@@ -124,7 +127,7 @@ const Home = (): React.ReactElement => {
 
     const renderItem = ({ item }: { item: React.ReactElement } ) => {
         return (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
                 {item}
             </View>
         )
@@ -137,23 +140,23 @@ const Home = (): React.ReactElement => {
     };
 
     return (
-        <SafeAreaView edges={Platform.OS === 'ios' ? ['left', 'right'] : ['top', 'left', 'right']} style={{ flex: 1 }}>
-            {
-                Platform.OS === 'ios' ? 
-                (<View style={{backgroundColor: '#121212', height: top}}>
-                    <StatusBar barStyle="light-content"/>
-                </View>) :
-                (<StatusBar barStyle="light-content" backgroundColor="#121212"/>)
-            }
-            <View style={{ flex: 1, backgroundColor: '#121212', paddingHorizontal: ms(20, 0.3) }}>
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            </View>
-        </SafeAreaView>
+      <SafeAreaView edges={Platform.OS === 'ios' ? ['left', 'right'] : ['top', 'left', 'right']} style={{ flex: 1 }}>
+        {
+          Platform.OS === 'ios' ? 
+          (<View style={{backgroundColor: '#121212', height: top}}>
+              <StatusBar barStyle="light-content"/>
+          </View>) :
+          (<StatusBar barStyle="light-content" backgroundColor="#121212"/>)
+        }
+        <View style={{ flex: 1, backgroundColor: '#121212', paddingHorizontal: ms(20, 0.3) }}>
+          <FlatList
+              showsVerticalScrollIndicator={false}
+              data={data}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+      </SafeAreaView>
     )
 }
 
