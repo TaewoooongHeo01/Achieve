@@ -48,10 +48,10 @@ const TodoDate = (): React.ReactElement => {
           onChange={handleSheetChanges}
           backdropComponent={renderBackdrop}
           detached={true}
-          bottomInset={30}
-          handleStyle={{ backgroundColor: '#282828', borderTopRightRadius: 15, borderTopLeftRadius: 15, marginHorizontal: ms(10, 0.3) }}
+          bottomInset={50}
+          handleStyle={{ backgroundColor: '#282828', borderTopRightRadius: 15, borderTopLeftRadius: 15, marginHorizontal: ms(10, 0.3), height: 0 }}
           handleIndicatorStyle={{ backgroundColor: 'white' }}
-          backgroundStyle={{ backgroundColor: 'transparent', marginHorizontal: ms(10, 0.3) }}
+          backgroundStyle={{ backgroundColor: 'transparent', marginHorizontal: ms(10, 0.3), flex: 1 }}
         >
           <BottomSheetView style={styles.bottomSheetContainer}>
             <CalendarBottomSheet />
@@ -73,16 +73,11 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     flex: 1,
-    padding: 24,
-    justifyContent: 'center',
+    paddingHorizontal: ms(20, 0.3),
     backgroundColor: '#282828',
     marginHorizontal: ms(10, 0.3),
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
   },
 });
 
