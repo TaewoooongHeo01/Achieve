@@ -5,6 +5,16 @@ const TodoDetail = (): React.ReactElement => {
   return (
     <View>
       <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
+      <Text>TodoDetail</Text>
     </View>
   );
 };

@@ -5,7 +5,6 @@ import { ms } from 'react-native-size-matters';
 import MonthCalendar from './MonthCalendar';
 
 const CalendarBottomSheet = (): React.ReactElement => {
-  // renders
   return (
     <BottomSheetView style={styles.container}>
       <MonthCalendar></MonthCalendar>

@@ -24,7 +24,7 @@ export type UserData = {
 export type GoalsType = {
   goalId: string;
   title: string;
-  icon: string | any;
+  icon: string | undefined;
   d_day: number;
   checklist: checkboxType[];
   colorset: string[];
@@ -45,13 +45,10 @@ export type TodoType = {
 
 const Home = (): React.ReactElement => {
   const { top } = useSafeAreaInsets();
-
   const [userId, setUserId] = useState<string>('1');
-
   const [userDataMap, setUserDataMap] = useState<Map<string, UserData>>(
     new Map(),
   );
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

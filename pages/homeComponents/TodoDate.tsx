@@ -10,8 +10,11 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import CalendarBottomSheet from '../commonComponents/CalendarBottomSheet';
+import WeekCalender from '../commonComponents/WeekCalendar';
+import { useDateContext } from '../context/DateContext';
 
 const TodoDate = (): React.ReactElement => {
+  const dateContext = useDateContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['50%'], []);
 
@@ -36,20 +39,19 @@ const TodoDate = (): React.ReactElement => {
     [],
   );
 
-  // 임시로 만든 날짜. 추후 달력 시스템 만들어서 날짜 선택하도록 수정해야 함
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const date = String(now.getDate()).padStart(2, '0');
+  const year = dateContext.taskDate.year;
+  const month = String(dateContext.taskDate.month).padStart(2, '0');
+  const date = String(dateContext.taskDate.date).padStart(2, '0');
 
   return (
     <View style={styles.layout}>
       <TouchableOpacity onPress={handlePresentModal}>
         <Text style={styles.title}>
-          {year}.{month}.{date}
+          {year}.{month}.{date} -
         </Text>
       </TouchableOpacity>
-      <TodoDetail />
+      <WeekCalender></WeekCalender>
+      <TodoDetail></TodoDetail>
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={0}

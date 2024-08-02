@@ -7,22 +7,18 @@ import {
   TouchableHighlight,
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
-
-export interface TaskDate {
-  year?: number;
-  month?: number;
-  date: number;
-  day?: string;
-  isActive?: boolean;
-}
+import { TaskDate, useDateContext } from '../context/DateContext';
 
 const MonthCalendar = (): React.ReactElement => {
-  const date = new Date();
+  const dateContext = useDateContext();
   const days = ['일', '월', '화', '수', '목', '금', '토'];
   const { dismiss } = useBottomSheetModal();
-  const [curMonth, setCurMonth] = useState(date.getMonth() + 1);
-  const [curYear, setCurYear] = useState(date.getFullYear());
+  const [curYear, setCurYear] = useState(dateContext.taskDate.year);
+  const [curMonth, setCurMonth] = useState(dateContext.taskDate.month);
   const [monthDays, setMonthDays] = useState<TaskDate[]>([]);
+
+  //추가해야 하는 기능 = "오늘" 버튼 누르면 오늘로 초기화.
+  //현재 컴포넌트 내부에서 컨텍스트를 변경할 수 있어야 함.
 
   useEffect(() => {
     handleMoveMonth(0);
@@ -73,6 +69,7 @@ const MonthCalendar = (): React.ReactElement => {
         lastWeekCnt += 1;
       }
       printDays[idx] = {
+        year: curYear,
         month: curMonth,
         date: date,
         isActive: includeCurMonth,
@@ -108,22 +105,29 @@ const MonthCalendar = (): React.ReactElement => {
       return (
         <TouchableHighlight style={{ flex: 1 }}>
           <View style={styles.cell}>
-            <Text style={{ color: '#949494' }}>{item.date}</Text>
+            <Text style={{ color: '#949494', fontSize: ms(15, 0.3) }}>
+              {item.date}
+            </Text>
           </View>
         </TouchableHighlight>
       );
     }
-    console.log(item);
     return (
       <TouchableHighlight
         onPress={() => {
-          console.log(item);
+          dateContext.setTaskDate({
+            year: item.year,
+            month: item.month,
+            date: item.date,
+          });
           dismiss();
         }}
         style={{ flex: 1 }}
         underlayColor={'transparent'}>
         <View style={styles.cell}>
-          <Text style={{ color: 'white' }}>{item.date}</Text>
+          <Text style={{ color: 'white', fontSize: ms(15, 0.3) }}>
+            {item.date}
+          </Text>
         </View>
       </TouchableHighlight>
     );
@@ -184,7 +188,7 @@ const MonthCalendar = (): React.ReactElement => {
             data={monthDays}
             numColumns={7}
             renderItem={renderItem}
-            // keyExtractor={(item, index) => index + 1}
+            keyExtractor={(item, index) => index + 1}
           />
         </View>
       </View>
@@ -200,10 +204,10 @@ const styles = StyleSheet.create({
   ym: {
     fontWeight: '600',
     color: 'white',
-    fontSize: ms(15, 0.3),
+    fontSize: ms(18, 0.3),
   },
   cell: {
-    padding: ms(10, 0.3), //요일 박스 크기
+    padding: ms(12, 0.3), //요일 박스 크기
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
