@@ -91,19 +91,36 @@ const WeekCalender = (): React.ReactElement => {
     setWeek(printWeek);
   }, [dateContext]);
 
+  const selectedCheck = (taskDate: TaskDate) => {
+    const today = dateContext.taskDate;
+    return (
+      today.year == taskDate.year &&
+      today.month == taskDate.month &&
+      today.date == taskDate.date
+    );
+  };
+
   return (
     <View style={styles.layout}>
       {week.map((value, index) => {
+        const isToday: boolean = selectedCheck(value);
         return (
           <Pressable
             onPress={() => {
               dateContext.setTaskDate(value);
             }}
-            style={styles.btn}>
-            <Text style={[styles.days, { marginBottom: ms(3, 0.3) }]}>
+            style={[styles.btn, isToday ? styles.todayBtn : {}]}>
+            <Text
+              style={[
+                styles.days,
+                { marginBottom: ms(3, 0.3) },
+                isToday ? styles.todayText : {},
+              ]}>
               {days[index]}
             </Text>
-            <Text style={styles.days}>{value.date}</Text>
+            <Text style={[styles.days, isToday ? styles.todayText : {}]}>
+              {value.date}
+            </Text>
           </Pressable>
         );
       })}
@@ -115,14 +132,22 @@ const styles = StyleSheet.create({
   layout: {
     flex: 1,
     marginTop: ms(13, 0.3),
-    marginHorizontal: ms(15, 0.3),
+    marginHorizontal: ms(9, 0.3),
     flexDirection: 'row',
   },
   btn: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: ms(2, 0.3),
+    padding: ms(5, 0.3),
+    marginHorizontal: ms(2, 0.3),
+    borderRadius: ms(5, 0.3),
+  },
+  todayBtn: {
+    backgroundColor: 'white',
+  },
+  todayText: {
+    color: 'black',
   },
   days: {
     color: 'white',

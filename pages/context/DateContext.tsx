@@ -23,6 +23,7 @@ export const dayNames = [
 interface TaskDateContextType {
   taskDate: TaskDate;
   setTaskDate: React.Dispatch<React.SetStateAction<TaskDate>>;
+  today: TaskDate;
 }
 
 export const DateContext = createContext<TaskDateContextType | undefined>(
@@ -37,15 +38,16 @@ export const DateContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const month = now.getMonth() + 1;
   const date = now.getDate();
   const day = now.getDay();
-  const [taskDate, setTaskDate] = useState<TaskDate>({
+  const today: TaskDate = {
     year: year,
     month: month,
     date: date,
     day: day,
-  });
+  };
+  const [taskDate, setTaskDate] = useState<TaskDate>(today);
 
   return (
-    <DateContext.Provider value={{ taskDate, setTaskDate }}>
+    <DateContext.Provider value={{ taskDate, setTaskDate, today }}>
       {children}
     </DateContext.Provider>
   );

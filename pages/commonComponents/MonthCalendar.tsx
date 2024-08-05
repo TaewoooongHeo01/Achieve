@@ -100,35 +100,77 @@ const MonthCalendar = (): React.ReactElement => {
     setCurMonth(rm);
   };
 
-  const renderItem: ListRenderItem<TaskDate> = ({ item, index }) => {
-    if (!item.isActive) {
-      return (
-        <Pressable style={{ flex: 1 }}>
-          <View style={styles.cell}>
-            <Text style={{ color: '#949494', fontSize: ms(15, 0.3) }}>
-              {item.date}
-            </Text>
-          </View>
-        </Pressable>
-      );
+  const pressHandler = (item: TaskDate, index: number) => {
+    if (item.isActive) {
+      index = index % 7;
+      dateContext.setTaskDate({
+        year: item.year,
+        month: item.month,
+        date: item.date,
+        day: index,
+      });
+      dismiss();
+      return;
     }
+  };
+
+  const todayCheck = (taskDate: TaskDate) => {
+    const today: TaskDate = dateContext.today;
+    return (
+      today.year == taskDate.year &&
+      today.month == taskDate.month &&
+      today.date == taskDate.date
+    );
+  };
+
+  const selectedCheck = (taskDate: TaskDate) => {
+    const today = dateContext.taskDate;
+    return (
+      today.year == taskDate.year &&
+      today.month == taskDate.month &&
+      today.date == taskDate.date
+    );
+  };
+
+  const renderItem: ListRenderItem<TaskDate> = ({ item, index }) => {
+    const isToday = todayCheck(item);
+    const isSelectedDate = selectedCheck(item);
     return (
       <Pressable
         onPress={() => {
-          index = index % 7;
-          dateContext.setTaskDate({
-            year: item.year,
-            month: item.month,
-            date: item.date,
-            day: index,
-          });
-          dismiss();
+          pressHandler(item, index);
         }}
-        style={{ flex: 1 }}>
-        <View style={styles.cell}>
-          <Text style={{ color: 'white', fontSize: ms(15, 0.3) }}>
-            {item.date}
-          </Text>
+        style={[
+          {
+            flex: 1,
+            borderRadius: ms(5, 0.3),
+          },
+          isSelectedDate ? styles.todayBtn : {},
+        ]}>
+        <View
+          style={[
+            styles.cell,
+            isToday ? styles.todayBtn : {},
+            isSelectedDate ? styles.selectedDate : {},
+          ]}>
+          {isSelectedDate ? (
+            <Text
+              style={{
+                fontSize: ms(15, 0.3),
+              }}>
+              {item.date}
+            </Text>
+          ) : (
+            <Text
+              style={[
+                {
+                  color: item.isActive ? 'white' : '#949494',
+                  fontSize: ms(15, 0.3),
+                },
+              ]}>
+              {item.date}
+            </Text>
+          )}
         </View>
       </Pressable>
     );
@@ -157,9 +199,16 @@ const MonthCalendar = (): React.ReactElement => {
             <Text style={{ color: 'white' }}>icl</Text>
           </View>
         </TouchableOpacity>
-        <Text style={styles.ym}>
-          {curYear}년 {curMonth}월
-        </Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.ym}>
+            {curYear}년 {curMonth}월
+          </Text>
+        </View>
         <TouchableOpacity
           style={styles.btn}
           onPress={() => {
@@ -216,12 +265,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: ms(5, 0.3),
   },
   daysfont: {
     fontSize: ms(15, 0.3),
     color: 'white',
     fontWeight: '200',
     opacity: 0.87,
+  },
+  todayBtn: {
+    borderWidth: 1,
+    borderColor: 'white',
+  },
+  todayText: {
+    fontWeight: 'bold',
+  },
+  pressedBtn: {
+    backgroundColor: 'white',
+  },
+  selectedDate: {
+    backgroundColor: 'white',
   },
 });
 

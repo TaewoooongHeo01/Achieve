@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import TodoDetail from './TodoDetail';
 import { font } from '../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
@@ -11,7 +11,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import CalendarBottomSheet from '../commonComponents/CalendarBottomSheet';
 import WeekCalender from '../commonComponents/WeekCalendar';
-import { useDateContext } from '../context/DateContext';
+import { dayNames, useDateContext } from '../context/DateContext';
 
 const TodoDate = (): React.ReactElement => {
   const dateContext = useDateContext();
@@ -42,17 +42,33 @@ const TodoDate = (): React.ReactElement => {
   const year = dateContext.taskDate.year;
   const month = String(dateContext.taskDate.month).padStart(2, '0');
   const date = String(dateContext.taskDate.date).padStart(2, '0');
+  const day = dateContext.taskDate.day;
 
   return (
     <View style={styles.layout}>
-      <TouchableOpacity onPress={handlePresentModal}>
-        <Text style={[styles.title, { paddingBottom: ms(3, 0.3) }]}>
-          해야 할 일
-        </Text>
-        <Text style={styles.subTitle}>
-          {year}.{month}.{date}.{}
-        </Text>
-      </TouchableOpacity>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <Pressable onPress={handlePresentModal}>
+          <Text style={[styles.title, { paddingBottom: ms(3, 0.3) }]}>
+            해야 할 일
+          </Text>
+          <Text style={styles.subTitle}>
+            {year}.{month}.{date}.{dayNames[day !== undefined ? day : 0]}
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            dateContext.setTaskDate(dateContext.today);
+          }}
+          style={styles.setTodayBtn}>
+          <Text style={styles.setTodayBtnText}>오늘</Text>
+        </Pressable>
+      </View>
       <WeekCalender></WeekCalender>
       <TodoDetail></TodoDetail>
       <BottomSheetModal
@@ -107,6 +123,15 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(10, 0.3),
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
+  },
+  setTodayBtn: {
+    backgroundColor: 'white',
+    padding: ms(7, 0.3),
+    borderRadius: ms(5, 0.3),
+  },
+  setTodayBtnText: {
+    color: 'black',
+    fontWeight: 'bold',
   },
 });
 
