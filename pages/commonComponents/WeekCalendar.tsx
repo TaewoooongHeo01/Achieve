@@ -131,7 +131,7 @@ const WeekCalender = (): React.ReactElement => {
 const styles = StyleSheet.create({
   layout: {
     flex: 1,
-    marginTop: ms(13, 0.3),
+    marginVertical: ms(13, 0.3),
     marginHorizontal: ms(9, 0.3),
     flexDirection: 'row',
   },

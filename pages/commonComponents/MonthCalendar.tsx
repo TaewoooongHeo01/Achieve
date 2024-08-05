@@ -125,6 +125,11 @@ const MonthCalendar = (): React.ReactElement => {
 
   const selectedCheck = (taskDate: TaskDate) => {
     const today = dateContext.taskDate;
+    if (!taskDate.isActive) {
+      //이전 달 혹은 다음 달이 포함된 경우, 요일이 같으면 동시에 체크되는 버그.
+      //TaskDate 의 day 변수를 만들 때 useEffect 가 아닌, flatlist 에서 만들어 리턴하기 때문임.
+      return false;
+    }
     return (
       today.year == taskDate.year &&
       today.month == taskDate.month &&
