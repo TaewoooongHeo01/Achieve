@@ -12,7 +12,7 @@ import Goals from '../homeComponents/Goals';
 import TodoDate from '../homeComponents/TodoDate';
 
 //styles
-import { gradientColorset } from '../../const/styleConst';
+import { gradientColorset } from '../../utils/styleConst';
 
 export type UserData = {
   _id: string;

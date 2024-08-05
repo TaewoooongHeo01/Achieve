@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import TodoDetail from './TodoDetail';
-import { font } from '../../const/styleConst';
+import { font } from '../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import {
   BottomSheetBackdrop,
@@ -46,8 +46,11 @@ const TodoDate = (): React.ReactElement => {
   return (
     <View style={styles.layout}>
       <TouchableOpacity onPress={handlePresentModal}>
-        <Text style={styles.title}>
-          {year}.{month}.{date} -
+        <Text style={[styles.title, { paddingBottom: ms(3, 0.3) }]}>
+          해야 할 일
+        </Text>
+        <Text style={styles.subTitle}>
+          {year}.{month}.{date}.{}
         </Text>
       </TouchableOpacity>
       <WeekCalender></WeekCalender>
@@ -89,7 +92,13 @@ const styles = StyleSheet.create({
   title: {
     color: font.mainColor.color,
     fontSize: font.mainSize.fontSize,
-    fontWeight: font.mainWeight.fontWeight,
+    fontWeight: 'bold', //font.mainWeight.fontWeight,
+  },
+  subTitle: {
+    paddingTop: ms(2, 0.3), //왜 Intro, Goals 의 subText 와 padding 값이 달라지지?
+    color: font.subText.color,
+    fontSize: font.subSize.fontSize,
+    fontWeight: 'bold',
   },
   bottomSheetContainer: {
     flex: 1,

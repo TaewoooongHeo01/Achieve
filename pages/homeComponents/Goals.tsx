@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { font } from '../../const/styleConst';
+import { font } from '../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';

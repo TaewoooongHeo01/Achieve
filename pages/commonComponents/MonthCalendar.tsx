@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ListRenderItem,
+  Pressable,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ms } from 'react-native-size-matters';
-import {
-  BottomSheetFlatList,
-  TouchableHighlight,
-  useBottomSheetModal,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetFlatList, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { TaskDate, useDateContext } from '../context/DateContext';
+import { calculateStartAndEndDayOfMonth } from '../../utils/calStartEndWeek';
+import { days } from '../context/DateContext';
 
 const MonthCalendar = (): React.ReactElement => {
   const dateContext = useDateContext();
-  const days = ['일', '월', '화', '수', '목', '금', '토'];
+
   const { dismiss } = useBottomSheetModal();
   const [curYear, setCurYear] = useState(dateContext.taskDate.year);
   const [curMonth, setCurMonth] = useState(dateContext.taskDate.month);
@@ -25,16 +29,12 @@ const MonthCalendar = (): React.ReactElement => {
   }, []);
 
   useEffect(() => {
-    const startDayOfMonth = new Date(curYear, curMonth - 1, 1).getDay();
-    const startDayOfNextMonth = new Date(curYear, curMonth, 1).getDay();
-    const lastDayOfMonth = new Date(curYear, curMonth, 0).getDate();
-    const lastDayOfPrevMonth = new Date(curYear, curMonth - 1, 0).getDate();
-
-    let startWeekDateOfMonth = lastDayOfPrevMonth - startDayOfMonth + 1;
-    let lastWeekDateOfMonth = lastDayOfMonth - startDayOfNextMonth + 1;
-    startWeekDateOfMonth = startDayOfMonth == 0 ? 1 : startWeekDateOfMonth;
-    lastWeekDateOfMonth =
-      startDayOfNextMonth == 0 ? lastDayOfMonth - 6 : lastWeekDateOfMonth;
+    const [
+      startWeekDateOfMonth,
+      lastWeekDateOfMonth,
+      lastDayOfMonth,
+      lastDayOfPrevMonth,
+    ] = calculateStartAndEndDayOfMonth(curYear, curMonth);
 
     const printDays: TaskDate[] = [];
     let date = startWeekDateOfMonth;
@@ -100,36 +100,37 @@ const MonthCalendar = (): React.ReactElement => {
     setCurMonth(rm);
   };
 
-  const renderItem = ({ item }: { item: TaskDate }) => {
+  const renderItem: ListRenderItem<TaskDate> = ({ item, index }) => {
     if (!item.isActive) {
       return (
-        <TouchableHighlight style={{ flex: 1 }}>
+        <Pressable style={{ flex: 1 }}>
           <View style={styles.cell}>
             <Text style={{ color: '#949494', fontSize: ms(15, 0.3) }}>
               {item.date}
             </Text>
           </View>
-        </TouchableHighlight>
+        </Pressable>
       );
     }
     return (
-      <TouchableHighlight
+      <Pressable
         onPress={() => {
+          index = index % 7;
           dateContext.setTaskDate({
             year: item.year,
             month: item.month,
             date: item.date,
+            day: index,
           });
           dismiss();
         }}
-        style={{ flex: 1 }}
-        underlayColor={'transparent'}>
+        style={{ flex: 1 }}>
         <View style={styles.cell}>
           <Text style={{ color: 'white', fontSize: ms(15, 0.3) }}>
             {item.date}
           </Text>
         </View>
-      </TouchableHighlight>
+      </Pressable>
     );
   };
 
@@ -183,12 +184,16 @@ const MonthCalendar = (): React.ReactElement => {
             );
           })}
         </View>
-        <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+          }}>
           <BottomSheetFlatList
+            style={{ flex: 1 }}
             data={monthDays}
             numColumns={7}
             renderItem={renderItem}
-            keyExtractor={(item, index) => index + 1}
           />
         </View>
       </View>

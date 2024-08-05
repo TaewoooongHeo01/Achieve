@@ -4,9 +4,20 @@ export interface TaskDate {
   year: number;
   month: number;
   date: number;
-  day?: string;
+  day?: number;
   isActive?: boolean;
 }
+
+export const days = ['일', '월', '화', '수', '목', '금', '토'];
+export const dayNames = [
+  '일요일',
+  '월요일',
+  '화요일',
+  '수요일',
+  '목요일',
+  '금요일',
+  '토요일',
+];
 
 //context value 타입
 interface TaskDateContextType {
@@ -25,10 +36,12 @@ export const DateContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
   const date = now.getDate();
+  const day = now.getDay();
   const [taskDate, setTaskDate] = useState<TaskDate>({
     year: year,
     month: month,
     date: date,
+    day: day,
   });
 
   return (

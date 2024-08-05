@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet, Platform } from 'react-native';
 import { ms } from 'react-native-size-matters';
-import { font } from '../../const/styleConst';
-
+import { font } from '../../utils/styleConst';
+import { dayNames } from '../context/DateContext';
 import { UserData } from '../mainTab/Home';
 
 type UserDataProps = {
@@ -15,15 +15,6 @@ const Intro = ({ userData }: UserDataProps): React.JSX.Element => {
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const date = String(now.getDate()).padStart(2, '0');
   const day = now.getDay();
-  const dayNames = [
-    '일요일',
-    '월요일',
-    '화요일',
-    '수요일',
-    '목요일',
-    '금요일',
-    '토요일',
-  ];
 
   return (
     <View style={styles.layout}>
