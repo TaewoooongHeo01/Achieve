@@ -11,7 +11,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import CalendarBottomSheet from '../commonComponents/CalendarBottomSheet';
 import WeekCalender from '../commonComponents/WeekCalendar';
-import { dayNames, useDateContext } from '../context/DateContext';
+import { dayNames, useDateContext } from '../../context/DateContext';
 
 const TodoDate = (): React.ReactElement => {
   const dateContext = useDateContext();

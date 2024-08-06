@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TaskDate, useDateContext } from '../context/DateContext';
+import { TaskDate, useDateContext } from '../../context/DateContext';
 import { FlatList } from 'react-native-gesture-handler';
 
 type Todo = {

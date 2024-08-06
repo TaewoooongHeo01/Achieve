@@ -7,7 +7,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Home from './mainTab/Home';
 import History from './mainTab/History';
 import Profile from './mainTab/Profile';
-import { DateContextProvider } from './context/DateContext';
+import { DateContextProvider } from '../context/DateContext';
 
 const Main = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();

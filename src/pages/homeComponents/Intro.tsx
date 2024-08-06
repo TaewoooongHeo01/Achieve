@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, Platform } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { font } from '../../utils/styleConst';
-import { dayNames } from '../context/DateContext';
+import { dayNames } from '../../context/DateContext';
 import { UserData } from '../mainTab/Home';
 
 type UserDataProps = {

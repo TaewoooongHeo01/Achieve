@@ -9,9 +9,9 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ms } from 'react-native-size-matters';
 import { BottomSheetFlatList, useBottomSheetModal } from '@gorhom/bottom-sheet';
-import { TaskDate, useDateContext } from '../context/DateContext';
+import { TaskDate, useDateContext } from '../../context/DateContext';
 import { calculateStartAndEndDayOfMonth } from '../../utils/calStartEndWeek';
-import { days } from '../context/DateContext';
+import { days } from '../../context/DateContext';
 
 const MonthCalendar = (): React.ReactElement => {
   const dateContext = useDateContext();

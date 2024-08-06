@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { ms } from 'react-native-size-matters';
-import { TaskDate, useDateContext } from '../context/DateContext';
+import { TaskDate, useDateContext } from '../../context/DateContext';
 import { calculateStartAndEndDayOfMonth } from '../../utils/calStartEndWeek';
-import { days } from '../context/DateContext';
+import { days } from '../../context/DateContext';
 
 const WeekCalender = (): React.ReactElement => {
   const dateContext = useDateContext();

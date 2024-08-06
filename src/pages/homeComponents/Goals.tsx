@@ -5,7 +5,7 @@ import { font } from '../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../../App';
 
 import { GoalsType } from '../mainTab/Home';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';

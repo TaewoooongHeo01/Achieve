@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { GoalDetailScreenProps } from '../../App';
+import { GoalDetailScreenProps } from '../../../App';
 
 const GoalDetail = ({ route }: GoalDetailScreenProps): React.ReactElement => {
   const { goalId } = route.params;
