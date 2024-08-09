@@ -6,6 +6,7 @@ export interface TaskDate {
   date: number;
   day?: number;
   isActive?: boolean;
+  isInclude?: boolean;
 }
 
 export const days = ['일', '월', '화', '수', '목', '금', '토'];

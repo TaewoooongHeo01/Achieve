@@ -8,9 +8,11 @@ import Home from './mainTab/Home';
 import History from './mainTab/History';
 import Profile from './mainTab/Profile';
 import { DateContextProvider } from '../context/DateContext';
+import { initialize } from '../context/test';
 
 const Main = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();
+  initialize();
 
   return (
     <DateContextProvider>

@@ -22,7 +22,6 @@ export const font = {
 };
 
 export const gradientColorset: string[][] = [
-  ['#a18cd1', '#fbc2eb'], //night fade, //밝게
   ['#fbc2eb', '#a6c1ee'], //Rainy Ashville //밝게
   ['#a1c4fd', '#c2e9fb'], //Winter Neva
   ['#84fab0', '#8fd3f4'], //Tempting AzureGet”,

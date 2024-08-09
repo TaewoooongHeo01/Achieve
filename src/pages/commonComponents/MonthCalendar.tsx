@@ -145,6 +145,7 @@ const MonthCalendar = (): React.ReactElement => {
         onPress={() => {
           pressHandler(item, index);
         }}
+        key={index}
         style={[
           {
             flex: 1,

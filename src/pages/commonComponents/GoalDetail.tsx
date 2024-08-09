@@ -3,11 +3,11 @@ import { View, Text } from 'react-native';
 import { GoalDetailScreenProps } from '../../../App';
 
 const GoalDetail = ({ route }: GoalDetailScreenProps): React.ReactElement => {
-  const { goalId } = route.params;
+  const id = route.params._id; //Realm.BSON.ObjectId type
 
   return (
     <View>
-      <Text>goal id: {goalId}</Text>
+      <Text>goal id: </Text>
     </View>
   );
 };

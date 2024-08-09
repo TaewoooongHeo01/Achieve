@@ -4,11 +4,16 @@ import { ms } from 'react-native-size-matters';
 import { TaskDate, useDateContext } from '../../context/DateContext';
 import { calculateStartAndEndDayOfMonth } from '../../utils/calStartEndWeek';
 import { days } from '../../context/DateContext';
+import { useQuery } from '@realm/react';
+import { Todo } from '../../../realm/models';
+import { makeDateFormat } from '../../utils/makeDateFormat';
 
 const WeekCalender = (): React.ReactElement => {
   const dateContext = useDateContext();
 
   const [week, setWeek] = useState<TaskDate[]>([]);
+  const todos = useQuery(Todo);
+  //todo 가 변경될 때마다 todo 정보를 가져와서 각 dateformat 을 만들고, 리스트에서 일치하는게 하나라도 있으면 true,
 
   useEffect(() => {
     const printWeek = [];
@@ -31,6 +36,9 @@ const WeekCalender = (): React.ReactElement => {
     leftDayCntOfPrevMonth =
       leftDayCntOfPrevMonth == lastDayOfPrevMonth ? 0 : leftDayCntOfPrevMonth;
 
+    let dateFormat: string;
+    let isInclude: boolean = false;
+
     if (7 - leftDayCntOfPrevMonth >= curDate) {
       //선택된 날짜가 첫번째 주에 포함
       dateOfWeek = startWeekDateOfMonth;
@@ -46,12 +54,20 @@ const WeekCalender = (): React.ReactElement => {
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
+        dateFormat = makeDateFormat(yearOfWeek, monthOfWeek, dateOfWeek);
+        for (let j = 0; j < todos.length; j++) {
+          if (todos[j].date == dateFormat) {
+            isInclude = true;
+            break;
+          }
+        }
         const dateData: TaskDate = {
           year: yearOfWeek,
           month: monthOfWeek,
           date: dateOfWeek,
           day: i,
         };
+
         printWeek[i] = dateData;
         dateOfWeek += 1;
       }
@@ -63,6 +79,13 @@ const WeekCalender = (): React.ReactElement => {
           dateOfWeek = 1;
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
+        }
+        dateFormat = makeDateFormat(yearOfWeek, monthOfWeek, dateOfWeek);
+        for (let j = 0; j < todos.length; j++) {
+          if (todos[j].date == dateFormat) {
+            isInclude = true;
+            break;
+          }
         }
         const dateData: TaskDate = {
           year: yearOfWeek,
@@ -77,11 +100,19 @@ const WeekCalender = (): React.ReactElement => {
       if (curDay !== undefined) {
         dateOfWeek = curDate - curDay;
         for (let i = 0; i < 7; i++) {
+          dateFormat = makeDateFormat(yearOfWeek, monthOfWeek, dateOfWeek);
+          for (let j = 0; j < todos.length; j++) {
+            if (todos[j].date == dateFormat) {
+              isInclude = true;
+              break;
+            }
+          }
           const dateData: TaskDate = {
             year: yearOfWeek,
             month: monthOfWeek,
             date: dateOfWeek,
             day: i,
+            isInclude: isInclude,
           };
           printWeek[i] = dateData;
           dateOfWeek += 1;
@@ -89,7 +120,7 @@ const WeekCalender = (): React.ReactElement => {
       }
     }
     setWeek(printWeek);
-  }, [dateContext]);
+  }, [dateContext, todos]);
 
   const selectedCheck = (taskDate: TaskDate) => {
     const today = dateContext.taskDate;
@@ -106,6 +137,7 @@ const WeekCalender = (): React.ReactElement => {
         const isToday: boolean = selectedCheck(value);
         return (
           <Pressable
+            key={index}
             onPress={() => {
               dateContext.setTaskDate(value);
             }}
@@ -121,6 +153,17 @@ const WeekCalender = (): React.ReactElement => {
             <Text style={[styles.days, isToday ? styles.todayText : {}]}>
               {value.date}
             </Text>
+            {value.isInclude ? (
+              <Text
+                style={[
+                  styles.days,
+                  isToday ? { color: 'black' } : { color: 'white' },
+                ]}>
+                i
+              </Text>
+            ) : (
+              <></>
+            )}
           </Pressable>
         );
       })}
@@ -134,6 +177,7 @@ const styles = StyleSheet.create({
     marginVertical: ms(13, 0.3),
     marginHorizontal: ms(9, 0.3),
     flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   btn: {
     flex: 1,

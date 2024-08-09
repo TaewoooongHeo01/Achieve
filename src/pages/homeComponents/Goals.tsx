@@ -1,51 +1,52 @@
 import React, { useMemo } from 'react';
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { font } from '../../utils/styleConst';
+import { font, gradientColorset } from '../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
-
-import { GoalsType } from '../mainTab/Home';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useQuery } from '@realm/react';
+import { Goal } from '../../../realm/models';
 
-type GoalProps = {
-  goalProps: GoalsType[] | undefined;
-};
-
-const Goals = ({ goalProps }: GoalProps): React.ReactElement => {
+const Goals = (): React.ReactElement => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  //캐시를 활용한 메모제이션. 성능 최적화를 위해 사용
-  const progressMap: Map<String, number> = useMemo(() => {
+  const goals = useQuery(Goal);
+
+  const progressMap: Map<Realm.BSON.ObjectId, number> = useMemo(() => {
     const map = new Map();
-    goalProps?.map(goal => {
+    goals?.map(goal => {
       const total = goal.checklist.length;
       const checked = goal.checklist.filter(
         check => check.isChecked === true,
       ).length;
       const progress = total != 0 ? Math.floor((checked / total) * 100) : 0;
-      map.set(goal.goalId, progress);
+      map.set(goal._id, progress);
     });
     return map;
-  }, [goalProps]);
+  }, [goals]);
 
-  const renderItem = ({ item }: { item: GoalsType }) => {
+  const renderItem = ({ item }: { item: Goal }) => {
     return (
       <TouchableHighlight
         onPress={() => {
-          navigation.navigate('GoalDetail', { goalId: item.goalId });
+          navigation.navigate('GoalDetail', { _id: item._id });
         }}>
-        <LinearGradient colors={item.colorset} style={goalStyle.layout}>
+        <LinearGradient
+          colors={gradientColorset[item.color]}
+          style={goalStyle.layout}>
           <View style={{ flex: 1 }}>
             <View style={goalStyle.iconD_day}>
               <Text style={goalStyle.icon}>{item.icon}</Text>
               <Text style={goalStyle.d_day}>D-{item.d_day}</Text>
             </View>
             <View style={goalStyle.todo}>
-              <Text style={goalStyle.todoText}>3개의 해야 할 일</Text>
+              <Text style={goalStyle.todoText}>
+                {item.checklist.length}개의 해야 할 일
+              </Text>
               {/* 추후 데이터 전역관리 라이브러리를 이용해 현재 goalId 로 전역적으로 관리되는 컨텍스트에서 해야 할 일 개수를 갖고 오는 방식으로 구현 */}
             </View>
             <View style={goalStyle.title}>
@@ -57,7 +58,7 @@ const Goals = ({ goalProps }: GoalProps): React.ReactElement => {
               <View
                 style={[
                   goalStyle.curProgress,
-                  { width: `${progressMap.get(item.goalId) ?? 0}%` },
+                  { width: `${progressMap.get(item._id) ?? 0}%` },
                 ]}></View>
             </View>
           </View>
@@ -66,7 +67,7 @@ const Goals = ({ goalProps }: GoalProps): React.ReactElement => {
     );
   };
 
-  if (goalProps === undefined) {
+  if (goals === undefined) {
     return (
       <View>
         <Text>목표를 생성해보세요</Text>
@@ -77,12 +78,12 @@ const Goals = ({ goalProps }: GoalProps): React.ReactElement => {
   return (
     <View style={styles.layout}>
       <Text style={styles.title}>진행중인 목표</Text>
-      <Text style={styles.subTitle}>{goalProps.length}개의 목표 진행중</Text>
+      <Text style={styles.subTitle}>{goals.length}개의 목표 진행중</Text>
       <FlatList
         showsHorizontalScrollIndicator={false}
         style={{ marginTop: ms(8, 0.3) }}
         horizontal={true}
-        data={goalProps}
+        data={goals}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -93,7 +94,7 @@ const Goals = ({ goalProps }: GoalProps): React.ReactElement => {
 const styles = StyleSheet.create({
   layout: {
     flex: 1,
-    marginTop: ms(20, 0.3),
+    marginTop: ms(15, 0.3),
   },
   title: {
     color: font.mainColor.color,

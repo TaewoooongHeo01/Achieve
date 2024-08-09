@@ -3,13 +3,8 @@ import { Text, View, StyleSheet, Platform } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { font } from '../../utils/styleConst';
 import { dayNames } from '../../context/DateContext';
-import { UserData } from '../mainTab/Home';
 
-type UserDataProps = {
-  userData: UserData | undefined;
-};
-
-const Intro = ({ userData }: UserDataProps): React.JSX.Element => {
+const Intro = ({ username }: { username: string }): React.JSX.Element => {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -18,7 +13,7 @@ const Intro = ({ userData }: UserDataProps): React.JSX.Element => {
 
   return (
     <View style={styles.layout}>
-      <Text style={styles.title}>안녕하세요, {userData?.username ?? ''}님</Text>
+      <Text style={styles.title}>안녕하세요, {username}님</Text>
       <Text style={styles.subTitle}>
         {year}.{month}.{date}. {dayNames[day]}
       </Text>

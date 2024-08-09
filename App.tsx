@@ -10,10 +10,12 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 //pages
 import Main from './src/pages/Main';
 import GoalDetail from './src/pages/commonComponents/GoalDetail';
+import { RealmProvider } from '@realm/react';
+import { Checklist, Goal, Todo } from './realm/models';
 
 export type RootStackParamList = {
   Main: undefined;
-  GoalDetail: { goalId: string };
+  GoalDetail: { _id: Realm.BSON.ObjectId };
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<
@@ -25,20 +27,24 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name='Main'
-              component={Main}
-            />
-            <Stack.Screen name='GoalDetail' component={GoalDetail} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+    <RealmProvider
+      schema={[Goal, Todo, Checklist]}
+      deleteRealmIfMigrationNeeded={true}>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                options={{ headerShown: false }}
+                name='Main'
+                component={Main}
+              />
+              <Stack.Screen name='GoalDetail' component={GoalDetail} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    </RealmProvider>
   );
 }
 
