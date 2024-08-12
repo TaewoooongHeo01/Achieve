@@ -9,7 +9,7 @@ import { ms } from 'react-native-size-matters';
 //mainTab components
 import Intro from '../homeComponents/Intro';
 import Goals from '../homeComponents/Goals';
-import TodoDate from '../homeComponents/TodoDate';
+import TodoDate from '../homeComponents/Todos/TodoDate';
 
 export type GoalsType = {
   goalId: string;

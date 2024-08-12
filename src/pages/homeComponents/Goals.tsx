@@ -37,7 +37,9 @@ const Goals = (): React.ReactElement => {
         }}>
         <LinearGradient
           colors={gradientColorset[item.color]}
-          style={goalStyle.layout}>
+          style={goalStyle.layout}
+          useAngle={true}
+          angle={35}>
           <View style={{ flex: 1 }}>
             <View style={goalStyle.iconD_day}>
               <Text style={goalStyle.icon}>{item.icon}</Text>

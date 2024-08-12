@@ -49,6 +49,7 @@ const WeekCalender = (): React.ReactElement => {
         yearOfWeek -= 1;
       }
       for (let i = 0; i < 7; i++) {
+        isInclude = false;
         if (dateOfWeek > lastDayOfPrevMonth) {
           dateOfWeek = 1;
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
@@ -75,6 +76,7 @@ const WeekCalender = (): React.ReactElement => {
       //선택된 날짜가 마지막 주에 포함
       dateOfWeek = lastWeekDateOfMonth;
       for (let i = 0; i < 7; i++) {
+        isInclude = false;
         if (dateOfWeek > lastDayOfMonth) {
           dateOfWeek = 1;
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
@@ -100,6 +102,7 @@ const WeekCalender = (): React.ReactElement => {
       if (curDay !== undefined) {
         dateOfWeek = curDate - curDay;
         for (let i = 0; i < 7; i++) {
+          isInclude = false;
           dateFormat = makeDateFormat(yearOfWeek, monthOfWeek, dateOfWeek);
           for (let j = 0; j < todos.length; j++) {
             if (todos[j].date == dateFormat) {

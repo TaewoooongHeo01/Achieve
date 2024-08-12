@@ -21,9 +21,6 @@ const MonthCalendar = (): React.ReactElement => {
   const [curMonth, setCurMonth] = useState(dateContext.taskDate.month);
   const [monthDays, setMonthDays] = useState<TaskDate[]>([]);
 
-  //추가해야 하는 기능 = "오늘" 버튼 누르면 오늘로 초기화.
-  //현재 컴포넌트 내부에서 컨텍스트를 변경할 수 있어야 함.
-
   useEffect(() => {
     handleMoveMonth(0);
   }, []);

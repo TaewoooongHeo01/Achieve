@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import TodoDetail from './TodoDetail';
-import { font } from '../../utils/styleConst';
+import { font } from '../../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import {
   BottomSheetBackdrop,
@@ -9,9 +9,9 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import CalendarBottomSheet from '../commonComponents/CalendarBottomSheet';
-import WeekCalender from '../commonComponents/WeekCalendar';
-import { dayNames, useDateContext } from '../../context/DateContext';
+import CalendarBottomSheet from '../../commonComponents/CalendarBottomSheet';
+import WeekCalender from '../../commonComponents/WeekCalendar';
+import { dayNames, useDateContext } from '../../../context/DateContext';
 
 const TodoDate = (): React.ReactElement => {
   const dateContext = useDateContext();
