@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import TodoDetail from './TodoDetail';
+import TodoDetail from './Todolist';
 import { font } from '../../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import {
