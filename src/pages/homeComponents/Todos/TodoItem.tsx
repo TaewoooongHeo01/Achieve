@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
@@ -11,11 +11,14 @@ import Animated, {
 
 const TodoItem = ({ item }: { item: Todo }) => {
   let screenWidth = useWindowDimensions().width;
+
   const translateX = useSharedValue(0);
   const startX = useSharedValue(0);
 
   const scaleX = useSharedValue(ms(55, 0.3));
   const marginXY = useSharedValue(ms(10, 0.3));
+
+  const backFontOpacity = useSharedValue(1);
 
   const threshold = 30;
   const animatiomIsRunning = useRef<boolean>(false);
@@ -38,13 +41,12 @@ const TodoItem = ({ item }: { item: Todo }) => {
       if (animatiomIsRunning) {
         screenWidth = translateX.value > 0 ? screenWidth : -screenWidth;
         const state = translateX.value;
-        console.log(state);
         translateX.value = withTiming(screenWidth, {}, () => {
           marginXY.value = withTiming(0);
           scaleX.value = withTiming(0);
+          backFontOpacity.value = withTiming(0);
         });
         animatiomIsRunning.current = false;
-
         state > 0 ? console.log('미루기') : console.log('완료');
       } else {
         translateX.value = withTiming(0, {
@@ -63,19 +65,43 @@ const TodoItem = ({ item }: { item: Todo }) => {
     };
   });
 
-  const size = useAnimatedStyle(() => {
+  const scrollableListSize = useAnimatedStyle(() => {
     return {
       height: scaleX.value,
       marginBottom: marginXY.value,
     };
   });
 
+  const fontFadeOut = useAnimatedStyle(() => {
+    return {
+      opacity: backFontOpacity.value,
+    };
+  });
+
   return (
     <GestureDetector gesture={pan}>
-      <Animated.View
-        style={[{ flex: 1, backgroundColor: 'white' }, size, animatedStyle]}>
-        <View style={[styles.layout, styles.todoContainer]}>
-          <Text style={{ color: 'white' }}>{item.title}</Text>
+      <Animated.View style={{ flex: 1 }}>
+        <Animated.View
+          style={[
+            {
+              flex: 1,
+              position: 'relative',
+              zIndex: 2,
+            },
+            scrollableListSize,
+            animatedStyle,
+          ]}>
+          <View style={[styles.layout, styles.todoContainer]}>
+            <Text style={{ color: 'white' }}>{item.title}</Text>
+          </View>
+        </Animated.View>
+        <View style={[{ flex: 1, position: 'absolute', zIndex: 1 }]}>
+          <Animated.Text style={[fontFadeOut, { color: 'white' }]}>
+            미루기
+          </Animated.Text>
+          <Animated.Text style={[fontFadeOut, { color: 'white' }]}>
+            완료
+          </Animated.Text>
         </View>
       </Animated.View>
     </GestureDetector>

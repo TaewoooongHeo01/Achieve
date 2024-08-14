@@ -20,7 +20,7 @@ const Todolist = (): React.ReactElement => {
   const todos = useQuery(Todo).filtered('date == $0', dateFormat);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'red' }}>
+    <View style={{ flex: 1 }}>
       <FlatList
         data={todos}
         renderItem={({ item }) => {
