@@ -127,6 +127,9 @@ const WeekCalender = (): React.ReactElement => {
 
   const selectedCheck = (taskDate: TaskDate) => {
     const today = dateContext.taskDate;
+    console.log(today);
+    console.log(taskDate);
+    console.log('-=============-');
     return (
       today.year == taskDate.year &&
       today.month == taskDate.month &&

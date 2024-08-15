@@ -1,36 +1,53 @@
 import React, { useRef } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import TodoItemDetail from './TodoItemDetail';
 
-const TodoItem = ({ item }: { item: Todo }) => {
+const TodoItem = ({
+  item,
+  delayTodo,
+  completeTodo,
+}: {
+  item: Todo;
+  delayTodo(itemId: string): void;
+  completeTodo(itemId: string): void;
+}) => {
   let screenWidth = useWindowDimensions().width;
 
   const translateX = useSharedValue(0);
   const startX = useSharedValue(0);
 
-  const scaleX = useSharedValue(ms(55, 0.3));
+  const scaleX = useSharedValue(ms(60, 0.3));
   const marginXY = useSharedValue(ms(10, 0.3));
 
-  const backFontOpacity = useSharedValue(1);
+  const backFontOpacityLeft = useSharedValue(0);
+  const backFontOpacityRight = useSharedValue(0);
 
-  const threshold = 30;
+  const threshold = screenWidth / 4;
   const animatiomIsRunning = useRef<boolean>(false);
+
+  const itemId = item._id.toString();
 
   const pan = Gesture.Pan()
     .activeOffsetX([-20, 20])
-    // .activeOffsetY([-1000, 1000])
     .onStart(() => {
       startX.value = translateX.value;
     })
     .onUpdate(e => {
       translateX.value = startX.value + e.translationX;
+      if (translateX.value > 0) {
+        backFontOpacityLeft.value = withTiming(1);
+      } else {
+        backFontOpacityRight.value = withTiming(1);
+      }
     })
     .onEnd(() => {
       if (translateX.value > threshold) {
@@ -38,16 +55,27 @@ const TodoItem = ({ item }: { item: Todo }) => {
       } else if (translateX.value < -threshold) {
         animatiomIsRunning.current = true;
       }
-      if (animatiomIsRunning) {
+      if (animatiomIsRunning.current) {
         screenWidth = translateX.value > 0 ? screenWidth : -screenWidth;
         const state = translateX.value;
-        translateX.value = withTiming(screenWidth, {}, () => {
-          marginXY.value = withTiming(0);
-          scaleX.value = withTiming(0);
-          backFontOpacity.value = withTiming(0);
-        });
+        if (state > 0) {
+          backFontOpacityLeft.value = withTiming(0);
+          translateX.value = withTiming(screenWidth, {}, () => {
+            marginXY.value = withTiming(0);
+            scaleX.value = withTiming(0, {}, () => {
+              runOnJS(delayTodo)(itemId);
+            });
+          });
+        } else {
+          backFontOpacityRight.value = withTiming(0);
+          translateX.value = withTiming(screenWidth, {}, () => {
+            marginXY.value = withTiming(0);
+            scaleX.value = withTiming(0, {}, () => {
+              runOnJS(completeTodo)(itemId);
+            });
+          });
+        }
         animatiomIsRunning.current = false;
-        state > 0 ? console.log('미루기') : console.log('완료');
       } else {
         translateX.value = withTiming(0, {
           duration: 300,
@@ -56,6 +84,7 @@ const TodoItem = ({ item }: { item: Todo }) => {
     });
 
   const animatedStyle = useAnimatedStyle(() => {
+    'worklet';
     return {
       transform: [
         {
@@ -66,15 +95,24 @@ const TodoItem = ({ item }: { item: Todo }) => {
   });
 
   const scrollableListSize = useAnimatedStyle(() => {
+    'worklet';
     return {
       height: scaleX.value,
       marginBottom: marginXY.value,
     };
   });
 
-  const fontFadeOut = useAnimatedStyle(() => {
+  const fontFadeOutLeft = useAnimatedStyle(() => {
+    'worklet';
     return {
-      opacity: backFontOpacity.value,
+      opacity: backFontOpacityLeft.value,
+    };
+  });
+
+  const fontFadeOutRight = useAnimatedStyle(() => {
+    'worklet';
+    return {
+      opacity: backFontOpacityRight.value,
     };
   });
 
@@ -91,15 +129,15 @@ const TodoItem = ({ item }: { item: Todo }) => {
             scrollableListSize,
             animatedStyle,
           ]}>
-          <View style={[styles.layout, styles.todoContainer]}>
-            <Text style={{ color: 'white' }}>{item.title}</Text>
+          <View style={{ flex: 1 }}>
+            <TodoItemDetail item={item} pageType={'HOME'} />
           </View>
         </Animated.View>
-        <View style={[{ flex: 1, position: 'absolute', zIndex: 1 }]}>
-          <Animated.Text style={[fontFadeOut, { color: 'white' }]}>
+        <View style={styles.hiddenContainer}>
+          <Animated.Text style={[fontFadeOutLeft, { color: 'white' }]}>
             미루기
           </Animated.Text>
-          <Animated.Text style={[fontFadeOut, { color: 'white' }]}>
+          <Animated.Text style={[fontFadeOutRight, { color: 'white' }]}>
             완료
           </Animated.Text>
         </View>
@@ -121,9 +159,14 @@ const styles = StyleSheet.create({
   },
   hiddenContainer: {
     flex: 1,
-    justifyContent: 'space-between',
     flexDirection: 'row',
+    position: 'absolute',
+    zIndex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: ms(20, 0.3),
   },
 });
 

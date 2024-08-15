@@ -230,7 +230,7 @@ const MonthCalendar = (): React.ReactElement => {
           }}>
           {days.map(value => {
             return (
-              <View style={[styles.cell]}>
+              <View key={value.toString()} style={[styles.cell]}>
                 <Text style={styles.daysfont}>{value}</Text>
               </View>
             );
