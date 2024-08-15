@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
@@ -10,6 +10,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import TodoItemDetail from './TodoItemDetail';
+
+const MemorizedItemDetail = memo(TodoItemDetail);
 
 const TodoItem = ({
   item,
@@ -130,7 +132,7 @@ const TodoItem = ({
             animatedStyle,
           ]}>
           <View style={{ flex: 1 }}>
-            <TodoItemDetail item={item} pageType={'HOME'} />
+            <MemorizedItemDetail item={item} pageType={'HOME'} />
           </View>
         </Animated.View>
         <View style={styles.hiddenContainer}>
@@ -147,16 +149,6 @@ const TodoItem = ({
 };
 
 const styles = StyleSheet.create({
-  layout: {
-    borderRadius: ms(3, 0.3),
-  },
-  todoContainer: {
-    flex: 1,
-    backgroundColor: '#282828',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   hiddenContainer: {
     flex: 1,
     flexDirection: 'row',
