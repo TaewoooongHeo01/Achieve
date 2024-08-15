@@ -67,6 +67,7 @@ const WeekCalender = (): React.ReactElement => {
           month: monthOfWeek,
           date: dateOfWeek,
           day: i,
+          isInclude: isInclude,
         };
 
         printWeek[i] = dateData;
@@ -94,6 +95,7 @@ const WeekCalender = (): React.ReactElement => {
           month: monthOfWeek,
           date: dateOfWeek,
           day: i,
+          isInclude: isInclude,
         };
         printWeek[i] = dateData;
         dateOfWeek += 1;
