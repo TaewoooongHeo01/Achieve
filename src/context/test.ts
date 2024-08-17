@@ -9,7 +9,6 @@ export const initialize = () => {
   });
   for (let i = 0; i < GoalsData.length; i++) {
     const g = GoalsData[i];
-    const c = checklist[i];
     const t = todos[i];
     realm.write(() => {
       const goal = realm.create('Goal', {
@@ -19,17 +18,8 @@ export const initialize = () => {
         icon: g.icon,
         color: g.color,
         todos: [],
-        checklist: [],
         description: g.description,
       });
-      for (let i = 0; i < c.length; i++) {
-        const cl = c[i];
-        const checklistItem = realm.create('Checklist', {
-          title: cl.title,
-          isChecked: cl.isChecked,
-        });
-        goal.checklist.push(checklistItem);
-      }
       for (let i = 0; i < t.length; i++) {
         const td = t[i];
         const todoItem = realm.create('Todo', {
@@ -51,9 +41,8 @@ const GoalsData = [
     title: '10kg 감량하기',
     isComplete: false,
     d_day: 90,
-    icon: 0,
+    icon: 'a',
     color: 0,
-    checklist: [],
     todo: [],
     description: '세달 동안 10kg 감량하기 목표',
   },
@@ -61,9 +50,8 @@ const GoalsData = [
     title: '일일 독서 30분 하기',
     isComplete: false,
     d_day: 30,
-    icon: 3,
+    icon: 'a',
     color: 3,
-    checklist: [],
     todo: [],
     description: '매일 30분씩 독서하기',
   },
@@ -71,9 +59,8 @@ const GoalsData = [
     title: '새로운 프로그래밍 언어 배우기',
     isComplete: false,
     d_day: 60,
-    icon: 11,
+    icon: 'a',
     color: 11,
-    checklist: [],
     todo: [],
     description: '2달 동안 새로운 프로그래밍 언어 마스터하기',
   },
@@ -81,9 +68,8 @@ const GoalsData = [
     title: '매일 10,000보 걷기',
     isComplete: true,
     d_day: 15,
-    icon: 3,
+    icon: 'a',
     color: 3,
-    checklist: [],
     todo: [],
     description: '건강을 위해 매일 걷기',
   },
@@ -91,61 +77,11 @@ const GoalsData = [
     title: '자기 전 명상 15분 하기',
     isComplete: false,
     d_day: 45,
-    icon: 8,
+    icon: 'a',
     color: 8,
-    checklist: [],
     todo: [],
     description: '매일 자기 전 명상으로 하루를 마무리',
   },
-];
-
-const checklist = [
-  [
-    {
-      title: '헬스장 등록하기',
-      isChecked: false,
-    },
-    {
-      title: '식단 짜기',
-      isChecked: true,
-    },
-    {
-      title: '운동 루틴 정하기',
-      isChecked: true,
-    },
-  ],
-  [
-    {
-      title: '독서할 책 목록 만들기',
-      isChecked: false,
-    },
-    {
-      title: '독서 공간 정리하기',
-      isChecked: true,
-    },
-  ],
-  [
-    {
-      title: '학습 자료 수집하기',
-      isChecked: false,
-    },
-    {
-      title: '프로젝트 계획서 작성하기',
-      isChecked: true,
-    },
-  ],
-  [
-    {
-      title: '걷기 좋은 신발 구매하기',
-      isChecked: true,
-    },
-  ],
-  [
-    {
-      title: '명상 앱 설치하기',
-      isChecked: false,
-    },
-  ],
 ];
 
 const now = new Date();

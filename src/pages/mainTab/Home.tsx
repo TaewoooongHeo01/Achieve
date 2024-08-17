@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar, FlatList, Platform } from 'react-native';
+import { View, StatusBar, FlatList, Platform, Text } from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,

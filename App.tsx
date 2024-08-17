@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Main from './src/pages/Main';
 import GoalDetail from './src/pages/commonComponents/GoalDetail';
 import { RealmProvider } from '@realm/react';
-import { Checklist, Goal, Todo } from './realm/models';
+import { Goal, Todo } from './realm/models';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -27,9 +27,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
   return (
-    <RealmProvider
-      schema={[Goal, Todo, Checklist]}
-      deleteRealmIfMigrationNeeded={true}>
+    <RealmProvider schema={[Goal, Todo]} deleteRealmIfMigrationNeeded={true}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <NavigationContainer>

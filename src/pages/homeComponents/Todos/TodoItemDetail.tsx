@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Goal, Todo } from '../../../../realm/models';
-import { PAGE_TYPE } from '../../../utils/pageType';
 import { StyleSheet, Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 

@@ -13,7 +13,6 @@ const WeekCalender = (): React.ReactElement => {
 
   const [week, setWeek] = useState<TaskDate[]>([]);
   const todos = useQuery(Todo);
-  //todo 가 변경될 때마다 todo 정보를 가져와서 각 dateformat 을 만들고, 리스트에서 일치하는게 하나라도 있으면 true,
 
   useEffect(() => {
     const printWeek = [];

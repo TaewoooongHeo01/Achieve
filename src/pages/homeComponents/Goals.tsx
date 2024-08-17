@@ -19,12 +19,12 @@ const Goals = (): React.ReactElement => {
   const progressMap: Map<Realm.BSON.ObjectId, number> = useMemo(() => {
     const map = new Map();
     goals?.map(goal => {
-      const total = goal.checklist.length;
-      const checked = goal.checklist.filter(
-        check => check.isChecked === true,
-      ).length;
-      const progress = total != 0 ? Math.floor((checked / total) * 100) : 0;
-      map.set(goal._id, progress);
+      // const total = goal.checklist.length;
+      // const checked = goal.checklist.filter(
+      //   check => check.isChecked === true,
+      // ).length;
+      // const progress = total != 0 ? Math.floor((checked / total) * 100) : 0;
+      // map.set(goal._id, progress);
     });
     return map;
   }, [goals]);
@@ -47,7 +47,7 @@ const Goals = (): React.ReactElement => {
             </View>
             <View style={goalStyle.todo}>
               <Text style={goalStyle.todoText}>
-                {item.checklist.length}개의 해야 할 일
+                {item.todos.length}개의 해야 할 일
               </Text>
               {/* 추후 데이터 전역관리 라이브러리를 이용해 현재 goalId 로 전역적으로 관리되는 컨텍스트에서 해야 할 일 개수를 갖고 오는 방식으로 구현 */}
             </View>

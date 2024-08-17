@@ -2,30 +2,13 @@ import Realm from 'realm';
 
 //Data Object Models
 
-// export class User extends Realm.Object {
-//   _id!: Realm.BSON.ObjectId;
-//   username!: string;
-//     Goals?: Realm.List<Goal>;
-
-//   static schema: Realm.ObjectSchema = {
-//     name: 'user',
-//     properties: {
-//       _id: 'objectId',
-//       username: 'string',
-//         Goals: 'Goal[]',
-//     },
-//     primaryKey: '_id',
-//   };
-// }
-
 export class Goal extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
   isComplete!: boolean;
   d_day!: number;
-  icon!: number;
+  icon!: string;
   color!: number;
-  checklist!: Realm.List<Checklist>;
   todos!: Realm.List<Todo>;
   description?: string;
 
@@ -40,35 +23,10 @@ export class Goal extends Realm.Object {
       title: 'string',
       isComplete: 'bool',
       d_day: 'int',
-      icon: 'int',
+      icon: 'string',
       color: 'int',
       todos: 'Todo[]',
-      checklist: 'Checklist[]',
       description: 'string?',
-    },
-  };
-}
-
-export class Checklist extends Realm.Object {
-  _id!: Realm.BSON.ObjectId;
-  title!: string;
-  isChecked!: boolean;
-
-  static schema: Realm.ObjectSchema = {
-    name: 'Checklist',
-    primaryKey: '_id',
-    properties: {
-      _id: {
-        type: 'objectId',
-        default: () => new Realm.BSON.ObjectId(),
-      },
-      title: 'string',
-      isChecked: 'bool',
-      goal: {
-        type: 'linkingObjects',
-        objectType: 'Goal',
-        property: 'checklist',
-      },
     },
   };
 }
