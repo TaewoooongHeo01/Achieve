@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar, FlatList, Platform, Text } from 'react-native';
+import { View, StatusBar, FlatList, Platform } from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -10,6 +10,7 @@ import { ms } from 'react-native-size-matters';
 import Intro from '../homeComponents/Intro';
 import Goals from '../homeComponents/Goals';
 import TodoDate from '../homeComponents/Todos/TodoDate';
+import { useColors } from '../../context/ThemeContext';
 
 export type GoalsType = {
   goalId: string;
@@ -35,6 +36,7 @@ export type TodoType = {
 
 const Home = (): React.ReactElement => {
   const { top } = useSafeAreaInsets();
+  const color = useColors();
   const username = 'username';
 
   const data = [<Intro username={username} />, <Goals />, <TodoDate />];
@@ -50,16 +52,33 @@ const Home = (): React.ReactElement => {
       }
       style={{ flex: 1 }}>
       {Platform.OS === 'ios' ? (
-        <View style={{ backgroundColor: '#121212', height: top }}>
-          <StatusBar barStyle='light-content' />
+        <View
+          style={{
+            backgroundColor: color.theme.appBackgroundColor,
+            height: top,
+          }}>
+          <StatusBar
+            barStyle={
+              color.theme.appBackgroundColor === '#121212'
+                ? 'light-content'
+                : 'dark-content'
+            }
+          />
         </View>
       ) : (
-        <StatusBar barStyle='light-content' backgroundColor='#121212' />
+        <StatusBar
+          barStyle={
+            color.theme.appBackgroundColor === '#121212'
+              ? 'light-content'
+              : 'dark-content'
+          }
+          backgroundColor={color.theme.appBackgroundColor}
+        />
       )}
       <View
         style={{
           flex: 1,
-          backgroundColor: '#121212',
+          backgroundColor: color.theme.appBackgroundColor,
           paddingHorizontal: ms(20, 0.3),
         }}>
         <FlatList

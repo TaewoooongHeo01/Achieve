@@ -4,6 +4,7 @@ import { GoalDetailScreenProps } from '../../../App';
 
 const GoalDetail = ({ route }: GoalDetailScreenProps): React.ReactElement => {
   const id = route.params._id; //Realm.BSON.ObjectId type
+  console.log(id);
 
   return (
     <View>

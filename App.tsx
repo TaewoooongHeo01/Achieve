@@ -12,6 +12,7 @@ import Main from './src/pages/Main';
 import GoalDetail from './src/pages/commonComponents/GoalDetail';
 import { RealmProvider } from '@realm/react';
 import { Goal, Todo } from './realm/models';
+import { ThemeContextProvider } from './src/context/ThemeContext';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -31,14 +32,16 @@ function App(): React.JSX.Element {
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen
-                options={{ headerShown: false }}
-                name='Main'
-                component={Main}
-              />
-              <Stack.Screen name='GoalDetail' component={GoalDetail} />
-            </Stack.Navigator>
+            <ThemeContextProvider>
+              <Stack.Navigator>
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name='Main'
+                  component={Main}
+                />
+                <Stack.Screen name='GoalDetail' component={GoalDetail} />
+              </Stack.Navigator>
+            </ThemeContextProvider>
           </NavigationContainer>
         </GestureHandlerRootView>
       </SafeAreaProvider>

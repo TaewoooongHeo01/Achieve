@@ -3,10 +3,16 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import MonthCalendar from './MonthCalendar';
+import { useColors } from '../../context/ThemeContext';
 
 const CalendarBottomSheet = (): React.ReactElement => {
+  const color = useColors();
   return (
-    <BottomSheetView style={styles.container}>
+    <BottomSheetView
+      style={[
+        styles.container,
+        { backgroundColor: color.theme.backgroundColor },
+      ]}>
       <MonthCalendar></MonthCalendar>
     </BottomSheetView>
   );
@@ -17,7 +23,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: ms(10, 0.3),
     alignContent: 'center',
-    backgroundColor: '#282828',
   },
   contentContainer: {
     flex: 1,

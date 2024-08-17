@@ -1,26 +1,3 @@
-import { ms } from 'react-native-size-matters';
-
-export const font = {
-  mainColor: {
-    color: 'white',
-  },
-  mainSize: {
-    fontSize: ms(18, 0.3),
-  },
-  mainWeight: {
-    fontWeight: 'bold',
-  },
-  subText: {
-    color: 'rgba(255, 255, 255, 0.7)',
-  },
-  subSize: {
-    fontSize: ms(13, 0.3),
-  },
-  subWeight: {
-    fontWeight: 'bold',
-  },
-};
-
 export const gradientColorset: string[][] = [
   ['#fbc2eb', '#a6c1ee'], //Rainy Ashville //밝게
   ['#a1c4fd', '#c2e9fb'], //Winter Neva
@@ -41,3 +18,32 @@ export const gradientColorset: string[][] = [
   ['#dad4ec', '#f3e7e9'], //Confident Cloud
   ['#E3FDF5', '#FFE6FA'], //Perfect White
 ];
+
+export type ColorTheme = {
+  textColor: string;
+  backgroundColor: string;
+  appBackgroundColor: string;
+  goalGradientColor: string[][];
+};
+
+type ColorPalettes = {
+  light: ColorTheme;
+  dark: ColorTheme;
+};
+
+const Colors: ColorPalettes = {
+  light: {
+    textColor: '#282828',
+    backgroundColor: '#FFFFFF',
+    appBackgroundColor: '#FFFFFF',
+    goalGradientColor: gradientColorset,
+  },
+  dark: {
+    textColor: '#FFFFFF',
+    backgroundColor: '#282828',
+    appBackgroundColor: '#121212',
+    goalGradientColor: gradientColorset,
+  },
+};
+
+export default Colors;

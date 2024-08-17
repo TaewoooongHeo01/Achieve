@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import TodoDetail from './Todolist';
-import { font } from '../../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import {
   BottomSheetBackdrop,
@@ -12,8 +11,11 @@ import {
 import CalendarBottomSheet from '../../commonComponents/CalendarBottomSheet';
 import WeekCalender from '../../commonComponents/WeekCalendar';
 import { dayNames, useDateContext } from '../../../context/DateContext';
+import { useColors } from '../../../context/ThemeContext';
+import { fontStyle } from '../../../style/fontStyle';
 
 const TodoDate = (): React.ReactElement => {
+  const colors = useColors();
   const dateContext = useDateContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['50%'], []);
@@ -54,10 +56,15 @@ const TodoDate = (): React.ReactElement => {
           justifyContent: 'space-between',
         }}>
         <Pressable onPress={handlePresentModal}>
-          <Text style={[styles.title, { paddingBottom: ms(3, 0.3) }]}>
+          <Text
+            style={[
+              fontStyle.fontSizeMain,
+              { paddingBottom: ms(3, 0.3) },
+              { color: colors.theme.textColor },
+            ]}>
             해야 할 일
           </Text>
-          <Text style={styles.subTitle}>
+          <Text style={[styles.subTitle, { color: colors.theme.textColor }]}>
             {year}.{month}.{date}.{dayNames[day !== undefined ? day : 0]}
           </Text>
         </Pressable>
@@ -65,8 +72,17 @@ const TodoDate = (): React.ReactElement => {
           onPress={() => {
             dateContext.setTaskDate(dateContext.today);
           }}
-          style={styles.setTodayBtn}>
-          <Text style={styles.setTodayBtnText}>오늘</Text>
+          style={[
+            styles.setTodayBtn,
+            { backgroundColor: colors.theme.textColor },
+          ]}>
+          <Text
+            style={[
+              styles.setTodayBtnText,
+              { color: colors.theme.backgroundColor },
+            ]}>
+            오늘
+          </Text>
         </Pressable>
       </View>
       <WeekCalender></WeekCalender>
@@ -80,19 +96,23 @@ const TodoDate = (): React.ReactElement => {
         detached={true}
         bottomInset={50}
         handleStyle={{
-          backgroundColor: '#282828',
+          backgroundColor: colors.theme.backgroundColor,
           borderTopRightRadius: 15,
           borderTopLeftRadius: 15,
           marginHorizontal: ms(10, 0.3),
           height: 0,
         }}
-        handleIndicatorStyle={{ backgroundColor: 'white' }}
+        handleIndicatorStyle={{ backgroundColor: colors.theme.textColor }}
         backgroundStyle={{
           backgroundColor: 'transparent',
           marginHorizontal: ms(10, 0.3),
           flex: 1,
         }}>
-        <BottomSheetView style={styles.bottomSheetContainer}>
+        <BottomSheetView
+          style={[
+            styles.bottomSheetContainer,
+            { backgroundColor: colors.theme.backgroundColor },
+          ]}>
           <CalendarBottomSheet />
         </BottomSheetView>
       </BottomSheetModal>
@@ -105,32 +125,21 @@ const styles = StyleSheet.create({
     marginTop: ms(20, 0.3),
     flex: 1,
   },
-  title: {
-    color: font.mainColor.color,
-    fontSize: font.mainSize.fontSize,
-    fontWeight: 'bold', //font.mainWeight.fontWeight,
-  },
   subTitle: {
     paddingTop: ms(2, 0.3), //왜 Intro, Goals 의 subText 와 padding 값이 달라지지?
-    color: font.subText.color,
-    fontSize: font.subSize.fontSize,
-    fontWeight: 'bold',
   },
   bottomSheetContainer: {
     flex: 1,
     paddingHorizontal: ms(20, 0.3),
-    backgroundColor: '#282828',
     marginHorizontal: ms(10, 0.3),
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
   },
   setTodayBtn: {
-    backgroundColor: 'white',
     padding: ms(7, 0.3),
     borderRadius: ms(5, 0.3),
   },
   setTodayBtnText: {
-    color: 'black',
     fontWeight: 'bold',
   },
 });

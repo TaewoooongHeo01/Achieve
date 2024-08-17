@@ -9,9 +9,11 @@ import History from './mainTab/History';
 import Profile from './mainTab/Profile';
 import { DateContextProvider } from '../context/DateContext';
 import { initialize } from '../context/test';
+import { useColors } from '../context/ThemeContext';
 
 const Main = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();
+  const color = useColors();
   initialize();
 
   return (
@@ -22,7 +24,10 @@ const Main = (): React.JSX.Element => {
             initialRouteName='Home'
             screenOptions={{
               headerShown: false,
-              tabBarStyle: { backgroundColor: '#212121', borderTopWidth: 0 },
+              tabBarStyle: {
+                backgroundColor: color.theme.appBackgroundColor,
+                borderTopWidth: 0,
+              },
               tabBarShowLabel: false,
             }}>
             <Tab.Screen name='History' component={History} />

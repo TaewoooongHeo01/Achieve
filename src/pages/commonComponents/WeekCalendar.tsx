@@ -7,9 +7,11 @@ import { days } from '../../context/DateContext';
 import { useQuery } from '@realm/react';
 import { Todo } from '../../../realm/models';
 import { makeDateFormat } from '../../utils/makeDateFormat';
+import { useColors } from '../../context/ThemeContext';
 
 const WeekCalender = (): React.ReactElement => {
   const dateContext = useDateContext();
+  const colors = useColors();
 
   const [week, setWeek] = useState<TaskDate[]>([]);
   const todos = useQuery(Todo);
@@ -145,23 +147,33 @@ const WeekCalender = (): React.ReactElement => {
             onPress={() => {
               dateContext.setTaskDate(value);
             }}
-            style={[styles.btn, isToday ? styles.todayBtn : {}]}>
+            style={[
+              styles.btn,
+              isToday ? { backgroundColor: colors.theme.textColor } : {},
+            ]}>
             <Text
               style={[
                 styles.days,
+                { color: colors.theme.textColor },
                 { marginBottom: ms(3, 0.3) },
-                isToday ? styles.todayText : {},
+                isToday ? { color: colors.theme.backgroundColor } : {},
               ]}>
               {days[index]}
             </Text>
-            <Text style={[styles.days, isToday ? styles.todayText : {}]}>
+            <Text
+              style={[
+                styles.days,
+                { color: colors.theme.textColor },
+                isToday ? { color: colors.theme.backgroundColor } : {},
+              ]}>
               {value.date}
             </Text>
             {value.isInclude ? (
               <Text
                 style={[
                   styles.days,
-                  isToday ? { color: 'black' } : { color: 'white' },
+                  { color: colors.theme.textColor },
+                  isToday ? { color: colors.theme.backgroundColor } : {},
                 ]}>
                 i
               </Text>
@@ -191,14 +203,7 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(2, 0.3),
     borderRadius: ms(5, 0.3),
   },
-  todayBtn: {
-    backgroundColor: 'white',
-  },
-  todayText: {
-    color: 'black',
-  },
   days: {
-    color: 'white',
     fontWeight: '500',
   },
 });

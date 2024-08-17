@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { font, gradientColorset } from '../../utils/styleConst';
 import { ms } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -9,8 +8,11 @@ import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useQuery } from '@realm/react';
 import { Goal } from '../../../realm/models';
+import { fontStyle } from '../../style/fontStyle';
+import { useColors } from '../../context/ThemeContext';
 
 const Goals = (): React.ReactElement => {
+  const colors = useColors();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -36,7 +38,7 @@ const Goals = (): React.ReactElement => {
           navigation.navigate('GoalDetail', { _id: item._id });
         }}>
         <LinearGradient
-          colors={gradientColorset[item.color]}
+          colors={colors.theme.goalGradientColor[item.color]}
           style={goalStyle.layout}
           useAngle={true}
           angle={35}>
@@ -79,8 +81,17 @@ const Goals = (): React.ReactElement => {
 
   return (
     <View style={styles.layout}>
-      <Text style={styles.title}>진행중인 목표</Text>
-      <Text style={styles.subTitle}>{goals.length}개의 목표 진행중</Text>
+      <Text style={[fontStyle.fontSizeMain, { color: colors.theme.textColor }]}>
+        진행중인 목표
+      </Text>
+      <Text
+        style={[
+          styles.subTitle,
+          fontStyle.fontSizeSub,
+          { color: colors.theme.textColor },
+        ]}>
+        {goals.length}개의 목표 진행중
+      </Text>
       <FlatList
         showsHorizontalScrollIndicator={false}
         style={{ marginTop: ms(8, 0.3) }}
@@ -98,16 +109,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: ms(15, 0.3),
   },
-  title: {
-    color: font.mainColor.color,
-    fontSize: font.mainSize.fontSize,
-    fontWeight: font.mainWeight.fontWeight,
-  },
   subTitle: {
     paddingTop: ms(5, 0.3),
-    color: font.subText.color,
-    fontSize: font.subSize.fontSize,
-    fontWeight: font.subWeight.fontWeight,
   },
 });
 
@@ -127,8 +130,8 @@ const goalStyle = StyleSheet.create({
   },
   icon: {},
   d_day: {
-    fontSize: font.subSize.fontSize,
-    fontWeight: font.subWeight.fontWeight,
+    fontSize: ms(13, 0.3),
+    fontWeight: 'bold',
   },
   todo: {
     flex: 0.7,
@@ -136,7 +139,7 @@ const goalStyle = StyleSheet.create({
   },
   todoText: {
     fontSize: ms(10, 0.3),
-    fontWeight: font.subWeight.fontWeight,
+    fontWeight: 'bold',
     color: '#9B9B9B',
   },
   title: {
@@ -144,8 +147,8 @@ const goalStyle = StyleSheet.create({
     flexBasis: 'auto',
   },
   titleText: {
-    fontSize: font.subSize.fontSize,
-    fontWeight: font.subWeight.fontWeight,
+    fontSize: ms(13, 0.3),
+    fontWeight: 'bold',
   },
   pb: {
     flex: 0.12, //높이 조절 + paddingTop

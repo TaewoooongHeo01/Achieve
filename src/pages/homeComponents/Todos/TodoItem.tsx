@@ -10,6 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import TodoItemDetail from './TodoItemDetail';
+import { useColors } from '../../../context/ThemeContext';
 
 const MemorizedItemDetail = memo(TodoItemDetail);
 
@@ -22,6 +23,7 @@ const TodoItem = ({
   delayTodo(itemId: string): void;
   completeTodo(itemId: string): void;
 }) => {
+  const color = useColors();
   let screenWidth = useWindowDimensions().width;
 
   const translateX = useSharedValue(0);
@@ -136,10 +138,12 @@ const TodoItem = ({
           </View>
         </Animated.View>
         <View style={styles.hiddenContainer}>
-          <Animated.Text style={[fontFadeOutLeft, { color: 'white' }]}>
+          <Animated.Text
+            style={[fontFadeOutLeft, { color: color.theme.textColor }]}>
             미루기
           </Animated.Text>
-          <Animated.Text style={[fontFadeOutRight, { color: 'white' }]}>
+          <Animated.Text
+            style={[fontFadeOutRight, { color: color.theme.textColor }]}>
             완료
           </Animated.Text>
         </View>

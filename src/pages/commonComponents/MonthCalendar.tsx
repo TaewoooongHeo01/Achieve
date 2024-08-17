@@ -12,8 +12,11 @@ import { BottomSheetFlatList, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { TaskDate, useDateContext } from '../../context/DateContext';
 import { calculateStartAndEndDayOfMonth } from '../../utils/calStartEndWeek';
 import { days } from '../../context/DateContext';
+import { useColors } from '../../context/ThemeContext';
 
 const MonthCalendar = (): React.ReactElement => {
+  const color = useColors();
+
   const dateContext = useDateContext();
 
   const { dismiss } = useBottomSheetModal();
@@ -148,13 +151,17 @@ const MonthCalendar = (): React.ReactElement => {
             flex: 1,
             borderRadius: ms(5, 0.3),
           },
-          isSelectedDate ? styles.todayBtn : {},
+          isSelectedDate
+            ? [styles.todayBtn, { borderColor: color.theme.backgroundColor }]
+            : {},
         ]}>
         <View
           style={[
             styles.cell,
-            isToday ? styles.todayBtn : {},
-            isSelectedDate ? styles.selectedDate : {},
+            isToday
+              ? [styles.todayBtn, { borderColor: color.theme.textColor }]
+              : {},
+            isSelectedDate ? { backgroundColor: color.theme.textColor } : {},
           ]}>
           {isSelectedDate ? (
             <Text
@@ -194,7 +201,7 @@ const MonthCalendar = (): React.ReactElement => {
           paddingHorizontal: ms(5, 0.3),
         }}>
         <TouchableOpacity
-          style={styles.btn}
+          style={[styles.btn, { backgroundColor: color.theme.backgroundColor }]}
           onPress={() => {
             handleMoveMonth(-1);
           }}>
@@ -208,12 +215,12 @@ const MonthCalendar = (): React.ReactElement => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={styles.ym}>
+          <Text style={[styles.ym, { color: color.theme.textColor }]}>
             {curYear}년 {curMonth}월
           </Text>
         </View>
         <TouchableOpacity
-          style={styles.btn}
+          style={[styles.btn, { backgroundColor: color.theme.backgroundColor }]}
           onPress={() => {
             handleMoveMonth(1);
           }}>
@@ -231,7 +238,10 @@ const MonthCalendar = (): React.ReactElement => {
           {days.map(value => {
             return (
               <View key={value.toString()} style={[styles.cell]}>
-                <Text style={styles.daysfont}>{value}</Text>
+                <Text
+                  style={[styles.daysfont, { color: color.theme.textColor }]}>
+                  {value}
+                </Text>
               </View>
             );
           })}
@@ -256,11 +266,9 @@ const MonthCalendar = (): React.ReactElement => {
 const styles = StyleSheet.create({
   btn: {
     padding: ms(10, 0.3), //좌우 버튼크기
-    color: 'white',
   },
   ym: {
     fontWeight: '600',
-    color: 'white',
     fontSize: ms(18, 0.3),
   },
   cell: {
@@ -272,21 +280,16 @@ const styles = StyleSheet.create({
   },
   daysfont: {
     fontSize: ms(15, 0.3),
-    color: 'white',
     fontWeight: '200',
     opacity: 0.87,
   },
   todayBtn: {
     borderWidth: 1,
-    borderColor: 'white',
   },
   todayText: {
     fontWeight: 'bold',
   },
   pressedBtn: {
-    backgroundColor: 'white',
-  },
-  selectedDate: {
     backgroundColor: 'white',
   },
 });
