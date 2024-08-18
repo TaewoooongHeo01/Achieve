@@ -7,6 +7,7 @@ export class Goal extends Realm.Object {
   title!: string;
   isComplete!: boolean;
   d_day!: number;
+  startDayCnt!: number;
   icon!: string;
   color!: number;
   todos!: Realm.List<Todo>;
@@ -23,6 +24,7 @@ export class Goal extends Realm.Object {
       title: 'string',
       isComplete: 'bool',
       d_day: 'int',
+      startDayCnt: 'int',
       icon: 'string',
       color: 'int',
       todos: 'Todo[]',

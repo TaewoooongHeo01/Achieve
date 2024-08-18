@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ms } from 'react-native-size-matters';
@@ -10,23 +10,23 @@ import { useQuery } from '@realm/react';
 import { Goal } from '../../../realm/models';
 import { fontStyle } from '../../style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Goals = (): React.ReactElement => {
   const colors = useColors();
+  const [iconSize, setIconSize] = useState<number>(0);
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const goals = useQuery(Goal);
 
-  const progressMap: Map<Realm.BSON.ObjectId, number> = useMemo(() => {
+  const progressMap: Map<string, number> = useMemo(() => {
     const map = new Map();
     goals?.map(goal => {
-      // const total = goal.checklist.length;
-      // const checked = goal.checklist.filter(
-      //   check => check.isChecked === true,
-      // ).length;
-      // const progress = total != 0 ? Math.floor((checked / total) * 100) : 0;
-      // map.set(goal._id, progress);
+      const total = goal.d_day + goal.startDayCnt;
+      const progress = Math.floor((goal.startDayCnt / total) * 100);
+      map.set(goal._id.toString(), progress);
     });
     return map;
   }, [goals]);
@@ -43,26 +43,30 @@ const Goals = (): React.ReactElement => {
           useAngle={true}
           angle={35}>
           <View style={{ flex: 1 }}>
-            <View style={goalStyle.iconD_day}>
-              <Text style={goalStyle.icon}>{item.icon}</Text>
-              <Text style={goalStyle.d_day}>D-{item.d_day}</Text>
+            <View
+              style={goalStyle.iconD_day}
+              onLayout={e => {
+                setIconSize(e.nativeEvent.layout.height);
+              }}>
+              <Icon name={item.icon} size={iconSize}></Icon>
+              <Text style={[goalStyle.d_day]}>D-{item.d_day}</Text>
             </View>
             <View style={goalStyle.todo}>
               <Text style={goalStyle.todoText}>
                 {item.todos.length}개의 해야 할 일
               </Text>
-              {/* 추후 데이터 전역관리 라이브러리를 이용해 현재 goalId 로 전역적으로 관리되는 컨텍스트에서 해야 할 일 개수를 갖고 오는 방식으로 구현 */}
             </View>
             <View style={goalStyle.title}>
               <Text style={goalStyle.titleText}>{item.title}</Text>
             </View>
             <View style={goalStyle.pb}>
-              {/* progress bar 는 애니메이션이 필요하지 않으므로, 두 개의 바를 겹쳐서 정적으로 표시하는 방식으로 구현. 라이브러리 x */}
               <View style={goalStyle.pbbg}></View>
               <View
                 style={[
                   goalStyle.curProgress,
-                  { width: `${progressMap.get(item._id) ?? 0}%` },
+                  {
+                    width: `${progressMap.get(item._id.toString()) ?? 0}%`,
+                  },
                 ]}></View>
             </View>
           </View>
@@ -70,14 +74,6 @@ const Goals = (): React.ReactElement => {
       </TouchableHighlight>
     );
   };
-
-  if (goals === undefined) {
-    return (
-      <View>
-        <Text>목표를 생성해보세요</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.layout}>
@@ -117,10 +113,10 @@ const styles = StyleSheet.create({
 const goalStyle = StyleSheet.create({
   layout: {
     flex: 1,
-    width: ms(130, 0.3),
-    height: ms(130, 0.3),
+    width: ms(150, 0.3),
+    height: ms(150, 0.3),
     marginRight: ms(10, 0.3),
-    borderRadius: ms(3, 0.3),
+    borderRadius: ms(5, 0.3),
     padding: ms(7, 0.3),
   },
   iconD_day: {
@@ -130,7 +126,7 @@ const goalStyle = StyleSheet.create({
   },
   icon: {},
   d_day: {
-    fontSize: ms(13, 0.3),
+    fontSize: ms(12, 0.3),
     fontWeight: 'bold',
   },
   todo: {
@@ -140,7 +136,7 @@ const goalStyle = StyleSheet.create({
   todoText: {
     fontSize: ms(10, 0.3),
     fontWeight: 'bold',
-    color: '#9B9B9B',
+    color: '#747474',
   },
   title: {
     paddingTop: ms(2, 0.3),
@@ -165,6 +161,7 @@ const goalStyle = StyleSheet.create({
     height: ms(5, 0.3),
     backgroundColor: 'black',
     borderRadius: ms(1.5, 0.3),
+    zIndex: 10,
   },
 });
 

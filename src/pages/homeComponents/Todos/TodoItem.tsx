@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import TodoItemDetail from './TodoItemDetail';
 import { useColors } from '../../../context/ThemeContext';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const MemorizedItemDetail = memo(TodoItemDetail);
 
@@ -49,7 +50,7 @@ const TodoItem = ({
       translateX.value = startX.value + e.translationX;
       if (translateX.value > 0) {
         backFontOpacityLeft.value = withTiming(1);
-      } else {
+      } else if (translateX.value < 0) {
         backFontOpacityRight.value = withTiming(1);
       }
     })
@@ -63,19 +64,21 @@ const TodoItem = ({
         screenWidth = translateX.value > 0 ? screenWidth : -screenWidth;
         const state = translateX.value;
         if (state > 0) {
-          backFontOpacityLeft.value = withTiming(0);
-          translateX.value = withTiming(screenWidth, {}, () => {
-            marginXY.value = withTiming(0);
-            scaleX.value = withTiming(0, {}, () => {
-              runOnJS(delayTodo)(itemId);
+          backFontOpacityLeft.value = withTiming(0, {}, () => {
+            translateX.value = withTiming(screenWidth, {}, () => {
+              marginXY.value = withTiming(0);
+              scaleX.value = withTiming(0, {}, () => {
+                runOnJS(delayTodo)(itemId);
+              });
             });
           });
         } else {
-          backFontOpacityRight.value = withTiming(0);
-          translateX.value = withTiming(screenWidth, {}, () => {
-            marginXY.value = withTiming(0);
-            scaleX.value = withTiming(0, {}, () => {
-              runOnJS(completeTodo)(itemId);
+          backFontOpacityRight.value = withTiming(0, {}, () => {
+            translateX.value = withTiming(screenWidth, {}, () => {
+              marginXY.value = withTiming(0);
+              scaleX.value = withTiming(0, {}, () => {
+                runOnJS(completeTodo)(itemId);
+              });
             });
           });
         }
@@ -138,14 +141,12 @@ const TodoItem = ({
           </View>
         </Animated.View>
         <View style={styles.hiddenContainer}>
-          <Animated.Text
-            style={[fontFadeOutLeft, { color: color.theme.textColor }]}>
-            미루기
-          </Animated.Text>
-          <Animated.Text
-            style={[fontFadeOutRight, { color: color.theme.textColor }]}>
-            완료
-          </Animated.Text>
+          <Animated.View style={[fontFadeOutLeft]}>
+            <Icon name='doubleright' color={color.theme.textColor} size={20} />
+          </Animated.View>
+          <Animated.View style={[fontFadeOutRight]}>
+            <Icon name='check' color={color.theme.textColor} size={20} />
+          </Animated.View>
         </View>
       </Animated.View>
     </GestureDetector>

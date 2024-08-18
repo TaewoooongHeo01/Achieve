@@ -1,4 +1,4 @@
-export const gradientColorset: string[][] = [
+const gradientColorset: string[][] = [
   ['#fbc2eb', '#a6c1ee'], //Rainy Ashville //밝게
   ['#a1c4fd', '#c2e9fb'], //Winter Neva
   ['#84fab0', '#8fd3f4'], //Tempting AzureGet”,

@@ -8,6 +8,7 @@ import { useQuery } from '@realm/react';
 import { Todo } from '../../../realm/models';
 import { makeDateFormat } from '../../utils/makeDateFormat';
 import { useColors } from '../../context/ThemeContext';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const WeekCalender = (): React.ReactElement => {
   const dateContext = useDateContext();
@@ -169,14 +170,13 @@ const WeekCalender = (): React.ReactElement => {
               {value.date}
             </Text>
             {value.isInclude ? (
-              <Text
+              <Icon
+                name='circle-medium'
                 style={[
                   styles.days,
                   { color: colors.theme.textColor },
                   isToday ? { color: colors.theme.backgroundColor } : {},
-                ]}>
-                i
-              </Text>
+                ]}></Icon>
             ) : (
               <></>
             )}

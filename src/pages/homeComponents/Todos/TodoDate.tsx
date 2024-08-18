@@ -13,12 +13,14 @@ import WeekCalender from '../../commonComponents/WeekCalendar';
 import { dayNames, useDateContext } from '../../../context/DateContext';
 import { useColors } from '../../../context/ThemeContext';
 import { fontStyle } from '../../../style/fontStyle';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const TodoDate = (): React.ReactElement => {
   const colors = useColors();
   const dateContext = useDateContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['50%'], []);
+  const todoString = '해야 할 일 ';
 
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
@@ -62,7 +64,8 @@ const TodoDate = (): React.ReactElement => {
               { paddingBottom: ms(3, 0.3) },
               { color: colors.theme.textColor },
             ]}>
-            해야 할 일
+            {todoString}
+            <Icon name='chevron-down' color={colors.theme.textColor}></Icon>
           </Text>
           <Text style={[styles.subTitle, { color: colors.theme.textColor }]}>
             {year}.{month}.{date}.{dayNames[day !== undefined ? day : 0]}
