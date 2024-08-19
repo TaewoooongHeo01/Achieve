@@ -36,10 +36,9 @@ export type TodoType = {
 
 const Home = (): React.ReactElement => {
   const { top } = useSafeAreaInsets();
-  const color = useColors();
-  const username = 'username';
+  const { theme } = useColors();
 
-  const data = [<Intro username={username} />, <Goals />, <TodoDate />];
+  const data = [<Intro />, <Goals />, <TodoDate />];
 
   const renderItem = ({ item }: { item: React.ReactElement }) => {
     return <View style={{ flex: 1 }}>{item}</View>;
@@ -54,12 +53,12 @@ const Home = (): React.ReactElement => {
       {Platform.OS === 'ios' ? (
         <View
           style={{
-            backgroundColor: color.theme.appBackgroundColor,
+            backgroundColor: theme.appBackgroundColor,
             height: top,
           }}>
           <StatusBar
             barStyle={
-              color.theme.appBackgroundColor === '#121212'
+              theme.appBackgroundColor === '#121212'
                 ? 'light-content'
                 : 'dark-content'
             }
@@ -68,17 +67,17 @@ const Home = (): React.ReactElement => {
       ) : (
         <StatusBar
           barStyle={
-            color.theme.appBackgroundColor === '#121212'
+            theme.appBackgroundColor === '#121212'
               ? 'light-content'
               : 'dark-content'
           }
-          backgroundColor={color.theme.appBackgroundColor}
+          backgroundColor={theme.appBackgroundColor}
         />
       )}
       <View
         style={{
           flex: 1,
-          backgroundColor: color.theme.appBackgroundColor,
+          backgroundColor: theme.appBackgroundColor,
           paddingHorizontal: ms(20, 0.3),
         }}>
         <FlatList

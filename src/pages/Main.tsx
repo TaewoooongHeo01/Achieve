@@ -15,7 +15,7 @@ import { ms } from 'react-native-size-matters';
 
 const Main = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();
-  const color = useColors();
+  const { theme } = useColors();
   initialize();
 
   return (
@@ -27,7 +27,7 @@ const Main = (): React.JSX.Element => {
             screenOptions={{
               headerShown: false,
               tabBarStyle: {
-                backgroundColor: color.theme.appBackgroundColor,
+                backgroundColor: theme.appBackgroundColor,
                 borderTopWidth: 0,
               },
               tabBarShowLabel: false,
@@ -40,11 +40,11 @@ const Main = (): React.JSX.Element => {
                   focused ? (
                     <Icon
                       name='trophy'
-                      color={color.theme.textColor}
+                      color={theme.textColor}
                       size={ms(15, 0.3)}
                     />
                   ) : (
-                    <Icon name='trophy' color={'grey'} size={ms(15, 0.3)} />
+                    <Icon name='trophy' color={'grey'} size={ms(17, 0.3)} />
                   ),
               }}
             />
@@ -56,11 +56,11 @@ const Main = (): React.JSX.Element => {
                   focused ? (
                     <Icon
                       name='home'
-                      color={color.theme.textColor}
+                      color={theme.textColor}
                       size={ms(15, 0.3)}
                     />
                   ) : (
-                    <Icon name='home' color={'grey'} size={ms(15, 0.3)} />
+                    <Icon name='home' color={'grey'} size={ms(17, 0.3)} />
                   ),
               }}
             />
@@ -72,11 +72,11 @@ const Main = (): React.JSX.Element => {
                   focused ? (
                     <Icon
                       name='user-alt'
-                      color={color.theme.textColor}
+                      color={theme.textColor}
                       size={ms(15, 0.3)}
                     />
                   ) : (
-                    <Icon name='user-alt' color={'grey'} size={ms(15, 0.3)} />
+                    <Icon name='user-alt' color={'grey'} size={ms(17, 0.3)} />
                   ),
               }}
             />

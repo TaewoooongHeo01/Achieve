@@ -6,13 +6,10 @@ import MonthCalendar from './MonthCalendar';
 import { useColors } from '../../context/ThemeContext';
 
 const CalendarBottomSheet = (): React.ReactElement => {
-  const color = useColors();
+  const { theme } = useColors();
   return (
     <BottomSheetView
-      style={[
-        styles.container,
-        { backgroundColor: color.theme.backgroundColor },
-      ]}>
+      style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       <MonthCalendar></MonthCalendar>
     </BottomSheetView>
   );

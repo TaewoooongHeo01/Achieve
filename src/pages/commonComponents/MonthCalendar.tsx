@@ -13,9 +13,10 @@ import { TaskDate, useDateContext } from '../../context/DateContext';
 import { calculateStartAndEndDayOfMonth } from '../../utils/calStartEndWeek';
 import { days } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const MonthCalendar = (): React.ReactElement => {
-  const color = useColors();
+  const { theme } = useColors();
 
   const dateContext = useDateContext();
 
@@ -152,21 +153,20 @@ const MonthCalendar = (): React.ReactElement => {
             borderRadius: ms(5, 0.3),
           },
           isSelectedDate
-            ? [styles.todayBtn, { borderColor: color.theme.backgroundColor }]
+            ? [styles.todayBtn, { borderColor: theme.backgroundColor }]
             : {},
         ]}>
         <View
           style={[
             styles.cell,
-            isToday
-              ? [styles.todayBtn, { borderColor: color.theme.textColor }]
-              : {},
-            isSelectedDate ? { backgroundColor: color.theme.textColor } : {},
+            isToday ? [styles.todayBtn, { borderColor: theme.textColor }] : {},
+            isSelectedDate ? { backgroundColor: theme.textColor } : {},
           ]}>
           {isSelectedDate ? (
             <Text
               style={{
                 fontSize: ms(15, 0.3),
+                color: theme.backgroundColor,
               }}>
               {item.date}
             </Text>
@@ -174,7 +174,7 @@ const MonthCalendar = (): React.ReactElement => {
             <Text
               style={[
                 {
-                  color: item.isActive ? 'white' : '#949494',
+                  color: item.isActive ? theme.textColor : '#949494',
                   fontSize: ms(15, 0.3),
                 },
               ]}>
@@ -189,7 +189,7 @@ const MonthCalendar = (): React.ReactElement => {
   return (
     <View
       style={{
-        backgroundColor: '#282828',
+        backgroundColor: theme.backgroundColor,
         flex: 1,
         padding: ms(8, 0.3),
       }}>
@@ -201,13 +201,11 @@ const MonthCalendar = (): React.ReactElement => {
           paddingHorizontal: ms(5, 0.3),
         }}>
         <TouchableOpacity
-          style={[styles.btn, { backgroundColor: color.theme.backgroundColor }]}
+          style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
           onPress={() => {
             handleMoveMonth(-1);
           }}>
-          <View>
-            <Text style={{ color: 'white' }}>icl</Text>
-          </View>
+          <Icon name='left' color={theme.textColor}></Icon>
         </TouchableOpacity>
         <View
           style={{
@@ -215,18 +213,16 @@ const MonthCalendar = (): React.ReactElement => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={[styles.ym, { color: color.theme.textColor }]}>
+          <Text style={[styles.ym, { color: theme.textColor }]}>
             {curYear}년 {curMonth}월
           </Text>
         </View>
         <TouchableOpacity
-          style={[styles.btn, { backgroundColor: color.theme.backgroundColor }]}
+          style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
           onPress={() => {
             handleMoveMonth(1);
           }}>
-          <View>
-            <Text style={{ color: 'white' }}>icr</Text>
-          </View>
+          <Icon name='right' color={theme.textColor}></Icon>
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>
@@ -238,8 +234,7 @@ const MonthCalendar = (): React.ReactElement => {
           {days.map(value => {
             return (
               <View key={value.toString()} style={[styles.cell]}>
-                <Text
-                  style={[styles.daysfont, { color: color.theme.textColor }]}>
+                <Text style={[styles.daysfont, { color: theme.textColor }]}>
                   {value}
                 </Text>
               </View>
@@ -268,7 +263,7 @@ const styles = StyleSheet.create({
     padding: ms(10, 0.3), //좌우 버튼크기
   },
   ym: {
-    fontWeight: '600',
+    fontFamily: 'Pretendard-Medium',
     fontSize: ms(18, 0.3),
   },
   cell: {
@@ -280,14 +275,14 @@ const styles = StyleSheet.create({
   },
   daysfont: {
     fontSize: ms(15, 0.3),
-    fontWeight: '200',
+    fontFamily: 'Pretendard-Regular',
     opacity: 0.87,
   },
   todayBtn: {
     borderWidth: 1,
   },
   todayText: {
-    fontWeight: 'bold',
+    fontFamily: 'Pretendard-Regular',
   },
   pressedBtn: {
     backgroundColor: 'white',

@@ -12,11 +12,11 @@ import CalendarBottomSheet from '../../commonComponents/CalendarBottomSheet';
 import WeekCalender from '../../commonComponents/WeekCalendar';
 import { dayNames, useDateContext } from '../../../context/DateContext';
 import { useColors } from '../../../context/ThemeContext';
-import { fontStyle } from '../../../style/fontStyle';
+import { fontStyle } from '../../../assets/style/fontStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const TodoDate = (): React.ReactElement => {
-  const colors = useColors();
+  const { theme } = useColors();
   const dateContext = useDateContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['50%'], []);
@@ -62,12 +62,12 @@ const TodoDate = (): React.ReactElement => {
             style={[
               fontStyle.fontSizeMain,
               { paddingBottom: ms(3, 0.3) },
-              { color: colors.theme.textColor },
+              { color: theme.textColor },
             ]}>
             {todoString}
-            <Icon name='chevron-down' color={colors.theme.textColor}></Icon>
+            <Icon name='chevron-down' color={theme.textColor}></Icon>
           </Text>
-          <Text style={[styles.subTitle, { color: colors.theme.textColor }]}>
+          <Text style={[styles.subTitle, { color: theme.textColor }]}>
             {year}.{month}.{date}.{dayNames[day !== undefined ? day : 0]}
           </Text>
         </Pressable>
@@ -75,15 +75,9 @@ const TodoDate = (): React.ReactElement => {
           onPress={() => {
             dateContext.setTaskDate(dateContext.today);
           }}
-          style={[
-            styles.setTodayBtn,
-            { backgroundColor: colors.theme.textColor },
-          ]}>
+          style={[styles.setTodayBtn, { backgroundColor: theme.textColor }]}>
           <Text
-            style={[
-              styles.setTodayBtnText,
-              { color: colors.theme.backgroundColor },
-            ]}>
+            style={[styles.setTodayBtnText, { color: theme.backgroundColor }]}>
             오늘
           </Text>
         </Pressable>
@@ -99,13 +93,13 @@ const TodoDate = (): React.ReactElement => {
         detached={true}
         bottomInset={50}
         handleStyle={{
-          backgroundColor: colors.theme.backgroundColor,
+          backgroundColor: theme.backgroundColor,
           borderTopRightRadius: 15,
           borderTopLeftRadius: 15,
           marginHorizontal: ms(10, 0.3),
           height: 0,
         }}
-        handleIndicatorStyle={{ backgroundColor: colors.theme.textColor }}
+        handleIndicatorStyle={{ backgroundColor: theme.textColor }}
         backgroundStyle={{
           backgroundColor: 'transparent',
           marginHorizontal: ms(10, 0.3),
@@ -114,7 +108,7 @@ const TodoDate = (): React.ReactElement => {
         <BottomSheetView
           style={[
             styles.bottomSheetContainer,
-            { backgroundColor: colors.theme.backgroundColor },
+            { backgroundColor: theme.backgroundColor },
           ]}>
           <CalendarBottomSheet />
         </BottomSheetView>
@@ -143,7 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(5, 0.3),
   },
   setTodayBtnText: {
-    fontWeight: 'bold',
+    fontFamily: 'Pretendard-SemiBold',
   },
 });
 

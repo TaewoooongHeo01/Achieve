@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { Text, View, StyleSheet } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ms } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -8,12 +8,12 @@ import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useQuery } from '@realm/react';
 import { Goal } from '../../../realm/models';
-import { fontStyle } from '../../style/fontStyle';
+import { fontStyle } from '../../assets/style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Goals = (): React.ReactElement => {
-  const colors = useColors();
+  const { theme } = useColors();
   const [iconSize, setIconSize] = useState<number>(0);
 
   const navigation =
@@ -33,13 +33,13 @@ const Goals = (): React.ReactElement => {
 
   const renderItem = ({ item }: { item: Goal }) => {
     return (
-      <TouchableHighlight
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate('GoalDetail', { _id: item._id });
         }}>
         <LinearGradient
-          colors={colors.theme.goalGradientColor[item.color]}
-          style={goalStyle.layout}
+          colors={theme.goalGradientColor[item.color]}
+          style={[goalStyle.layout]}
           useAngle={true}
           angle={35}>
           <View style={{ flex: 1 }}>
@@ -49,6 +49,8 @@ const Goals = (): React.ReactElement => {
                 setIconSize(e.nativeEvent.layout.height);
               }}>
               <Icon name={item.icon} size={iconSize}></Icon>
+            </View>
+            <View>
               <Text style={[goalStyle.d_day]}>D-{item.d_day}</Text>
             </View>
             <View style={goalStyle.todo}>
@@ -71,26 +73,26 @@ const Goals = (): React.ReactElement => {
             </View>
           </View>
         </LinearGradient>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   };
 
   return (
     <View style={styles.layout}>
-      <Text style={[fontStyle.fontSizeMain, { color: colors.theme.textColor }]}>
+      <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
         진행중인 목표
       </Text>
       <Text
         style={[
           styles.subTitle,
           fontStyle.fontSizeSub,
-          { color: colors.theme.textColor },
+          { color: theme.textColor, opacity: 0.7 },
         ]}>
         {goals.length}개의 목표 진행중
       </Text>
       <FlatList
         showsHorizontalScrollIndicator={false}
-        style={{ marginTop: ms(8, 0.3) }}
+        style={{ marginTop: ms(10, 0.3) }}
         horizontal={true}
         data={goals}
         renderItem={renderItem}
@@ -103,7 +105,7 @@ const Goals = (): React.ReactElement => {
 const styles = StyleSheet.create({
   layout: {
     flex: 1,
-    marginTop: ms(15, 0.3),
+    marginTop: ms(20, 0.3),
   },
   subTitle: {
     paddingTop: ms(5, 0.3),
@@ -113,21 +115,21 @@ const styles = StyleSheet.create({
 const goalStyle = StyleSheet.create({
   layout: {
     flex: 1,
-    width: ms(150, 0.3),
-    height: ms(150, 0.3),
+    width: ms(140, 0.3),
+    height: ms(140, 0.3),
     marginRight: ms(10, 0.3),
     borderRadius: ms(5, 0.3),
-    padding: ms(7, 0.3),
+    padding: ms(9, 0.3),
   },
   iconD_day: {
-    flex: 0.2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 0.4,
+    justifyContent: 'center',
+    // backgroundColor: 'red',
   },
-  icon: {},
   d_day: {
-    fontSize: ms(12, 0.3),
-    fontWeight: 'bold',
+    fontSize: ms(15, 0.3),
+    marginTop: ms(4, 0.3),
+    fontFamily: 'Pretendard-SemiBold',
   },
   todo: {
     flex: 0.7,
@@ -135,16 +137,16 @@ const goalStyle = StyleSheet.create({
   },
   todoText: {
     fontSize: ms(10, 0.3),
-    fontWeight: 'bold',
     color: '#747474',
+    fontFamily: 'Pretendard-SemiBold',
   },
   title: {
     paddingTop: ms(2, 0.3),
     flexBasis: 'auto',
   },
   titleText: {
-    fontSize: ms(13, 0.3),
-    fontWeight: 'bold',
+    fontSize: ms(16, 0.3),
+    fontFamily: 'Pretendard-SemiBold',
   },
   pb: {
     flex: 0.12, //높이 조절 + paddingTop

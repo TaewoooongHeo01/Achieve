@@ -5,6 +5,7 @@ import { ms } from 'react-native-size-matters';
 import { useColors } from '../../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import { shadow } from '../../../assets/style/shadow';
 
 const TodoItemDetail = ({
   item,
@@ -13,7 +14,7 @@ const TodoItemDetail = ({
   item: Todo;
   pageType: string;
 }) => {
-  const color = useColors();
+  const { theme, currentTheme } = useColors();
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
   const [iconSize, setIconSize] = useState<number>(0);
@@ -23,8 +24,9 @@ const TodoItemDetail = ({
         styles.todoContainer,
         {
           borderRadius: ms(6, 0.3),
-          backgroundColor: color.theme.backgroundColor,
+          backgroundColor: theme.backgroundColor,
         },
+        currentTheme === 'light' ? shadow.boxShadow : {},
       ]}
       onLayout={e => {
         seticonContainerSize(e.nativeEvent.layout.width);
@@ -41,10 +43,10 @@ const TodoItemDetail = ({
           }}>
           <LinearGradient
             style={{ flex: 1, borderRadius: ms(10, 0.3) }}
-            colors={color.theme.goalGradientColor[goal.color]}>
+            colors={theme.goalGradientColor[goal.color]}>
             <View
               style={{
-                marginVertical: ms(12, 0.3),
+                marginVertical: ms(10.3, 0.3),
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -61,34 +63,40 @@ const TodoItemDetail = ({
         </View>
       </View>
       <View style={[styles.infoContainer]}>
-        <Text style={[{ color: color.theme.textColor }, fontStyle.itemTitle]}>
-          {item.title}
-        </Text>
-        <Text
-          style={[{ color: color.theme.textColor }, fontStyle.itemSubTitle]}>
-          <Icon name='alarm-outline' />
-          {item.weekCycle.length == 7 ? ' 매일 ' : ' 오늘 '}
-          {item.alertTime}시
-        </Text>
+        <View style={{ flex: 0.6 }}>
+          <Text style={[{ color: theme.textColor }, fontStyle.itemTitle]}>
+            {item.title}
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 0.4,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Icon name='alarm-outline' color={theme.textColor} />
+          <Text
+            style={[
+              { color: theme.textColor, flex: 1 },
+              fontStyle.itemSubTitle,
+            ]}>
+            {item.weekCycle.length == 7 ? ' 매일 ' : ' 오늘 '}
+            {item.alertTime}시
+          </Text>
+        </View>
       </View>
       <View style={styles.dateContainer}>
         {(() => {
           switch (pageType) {
             case 'HOME':
               return (
-                <Text
-                  style={[
-                    { color: color.theme.textColor },
-                    fontStyle.d_dayFont,
-                  ]}>
+                <Text style={[{ color: theme.textColor }, fontStyle.d_dayFont]}>
                   D-{goal.d_day}
                 </Text>
               );
             case 'DETAIL':
               return (
-                <Text style={[{ color: color.theme.textColor }]}>
-                  {item.date}
-                </Text>
+                <Text style={[{ color: theme.textColor }]}>{item.date}</Text>
               );
             default:
               return null;
@@ -119,8 +127,10 @@ const styles = StyleSheet.create({
     flex: 0.2,
   },
   infoContainer: {
+    paddingVertical: ms(10, 0.3),
     flex: 0.6,
     justifyContent: 'center',
+    flexDirection: 'column',
   },
   dateContainer: {
     flex: 0.2,
@@ -130,18 +140,18 @@ const styles = StyleSheet.create({
 
 const fontStyle = StyleSheet.create({
   itemTitle: {
-    fontWeight: 'bold',
-    fontSize: ms(15, 0.3),
-    paddingBottom: ms(3, 0.3),
+    fontFamily: 'Pretendard-SemiBold',
+    fontSize: ms(16, 0.3),
+    // paddingBottom: ms(3, 0.3),
   },
   itemSubTitle: {
     opacity: 0.7,
-    fontWeight: 'light',
+    fontFamily: 'Pretendard-M',
     // fontSize: -ms(5, 0.3),
   },
   d_dayFont: {
     fontSize: ms(15, 0.3),
-    fontWeight: 'bold',
+    fontFamily: 'Pretendard-SemiBold',
   },
 });
 

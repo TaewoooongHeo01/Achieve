@@ -2,6 +2,25 @@ import Realm from 'realm';
 
 //Data Object Models
 
+export class User extends Realm.Object {
+  _id!: Realm.BSON.ObjectId;
+  username!: string;
+  phrase!: string[];
+
+  static schema: Realm.ObjectSchema = {
+    name: 'User',
+    primaryKey: '_id',
+    properties: {
+      _id: {
+        type: 'objectId',
+        default: () => new Realm.BSON.ObjectId(),
+      },
+      username: 'string',
+      phrase: 'string[]',
+    },
+  };
+}
+
 export class Goal extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;

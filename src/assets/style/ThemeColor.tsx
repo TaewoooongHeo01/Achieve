@@ -19,23 +19,23 @@ const gradientColorset: string[][] = [
   ['#E3FDF5', '#FFE6FA'], //Perfect White
 ];
 
-export type ColorTheme = {
+export type ColorSet = {
   textColor: string;
   backgroundColor: string;
   appBackgroundColor: string;
   goalGradientColor: string[][];
 };
 
-type ColorPalettes = {
-  light: ColorTheme;
-  dark: ColorTheme;
+type ColorTheme = {
+  light: ColorSet;
+  dark: ColorSet;
 };
 
-const Colors: ColorPalettes = {
+const Colors: ColorTheme = {
   light: {
     textColor: '#282828',
     backgroundColor: '#FFFFFF',
-    appBackgroundColor: '#FFFFFF',
+    appBackgroundColor: '#FDFDFD',
     goalGradientColor: gradientColorset,
   },
   dark: {

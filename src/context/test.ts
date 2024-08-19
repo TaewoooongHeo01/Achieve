@@ -7,6 +7,14 @@ export const initialize = () => {
   realm.write(() => {
     realm.deleteAll();
   });
+
+  realm.write(() => {
+    realm.create('User', {
+      username: UserData.username,
+      phrase: UserData.phrase,
+    });
+  });
+
   for (let i = 0; i < GoalsData.length; i++) {
     const g = GoalsData[i];
     const t = todos[i];
@@ -37,6 +45,16 @@ export const initialize = () => {
   }
 };
 
+const UserData = {
+  username: 'username',
+  phrase: [
+    '여전할 것인가, 역전할 것인가',
+    '길을 걷다가 돌을 보면 약자는 그것을 걸림돌이라고 하고 강자는 그것을 디딤돌이라고 한다.',
+    '먹는 칼로리보다 에너지 소모가 적으면 살이 찌듯이, 걱정만 하고 행동하지 않으면 걱정이 찐다.',
+    '이미 끝나버린 일을 후회하기 보다는 하고 싶었던 일을 하지 못한 것을 후회하라.',
+  ],
+};
+
 const GoalsData = [
   {
     title: '10kg 감량하기',
@@ -49,7 +67,7 @@ const GoalsData = [
     description: '세달 동안 10kg 감량하기 목표',
   },
   {
-    title: '일일 독서 30분 하기',
+    title: '독서 30분 하기',
     isComplete: false,
     d_day: 30,
     startDayCnt: 60,

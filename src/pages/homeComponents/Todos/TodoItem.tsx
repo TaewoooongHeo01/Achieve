@@ -24,7 +24,7 @@ const TodoItem = ({
   delayTodo(itemId: string): void;
   completeTodo(itemId: string): void;
 }) => {
-  const color = useColors();
+  const { theme } = useColors();
   let screenWidth = useWindowDimensions().width;
 
   const translateX = useSharedValue(0);
@@ -133,19 +133,18 @@ const TodoItem = ({
               position: 'relative',
               zIndex: 2,
             },
+            // colorTheme === 'light' ? shadow.boxShadow : {},
             scrollableListSize,
             animatedStyle,
           ]}>
-          <View style={{ flex: 1 }}>
-            <MemorizedItemDetail item={item} pageType={'HOME'} />
-          </View>
+          <MemorizedItemDetail item={item} pageType={'HOME'} />
         </Animated.View>
         <View style={styles.hiddenContainer}>
           <Animated.View style={[fontFadeOutLeft]}>
-            <Icon name='doubleright' color={color.theme.textColor} size={20} />
+            <Icon name='doubleright' color={theme.textColor} size={20} />
           </Animated.View>
           <Animated.View style={[fontFadeOutRight]}>
-            <Icon name='check' color={color.theme.textColor} size={20} />
+            <Icon name='check' color={theme.textColor} size={20} />
           </Animated.View>
         </View>
       </Animated.View>

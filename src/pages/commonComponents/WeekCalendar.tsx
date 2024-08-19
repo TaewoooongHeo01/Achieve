@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const WeekCalender = (): React.ReactElement => {
   const dateContext = useDateContext();
-  const colors = useColors();
+  const { theme } = useColors();
 
   const [week, setWeek] = useState<TaskDate[]>([]);
   const todos = useQuery(Todo);
@@ -150,22 +150,22 @@ const WeekCalender = (): React.ReactElement => {
             }}
             style={[
               styles.btn,
-              isToday ? { backgroundColor: colors.theme.textColor } : {},
+              isToday ? { backgroundColor: theme.textColor } : {},
             ]}>
             <Text
               style={[
                 styles.days,
-                { color: colors.theme.textColor },
+                { color: theme.textColor },
                 { marginBottom: ms(3, 0.3) },
-                isToday ? { color: colors.theme.backgroundColor } : {},
+                isToday ? { color: theme.backgroundColor } : {},
               ]}>
               {days[index]}
             </Text>
             <Text
               style={[
                 styles.days,
-                { color: colors.theme.textColor },
-                isToday ? { color: colors.theme.backgroundColor } : {},
+                { color: theme.textColor },
+                isToday ? { color: theme.backgroundColor } : {},
               ]}>
               {value.date}
             </Text>
@@ -174,8 +174,8 @@ const WeekCalender = (): React.ReactElement => {
                 name='circle-medium'
                 style={[
                   styles.days,
-                  { color: colors.theme.textColor },
-                  isToday ? { color: colors.theme.backgroundColor } : {},
+                  { color: theme.textColor },
+                  isToday ? { color: theme.backgroundColor } : {},
                 ]}></Icon>
             ) : (
               <></>
@@ -190,7 +190,7 @@ const WeekCalender = (): React.ReactElement => {
 const styles = StyleSheet.create({
   layout: {
     flex: 1,
-    marginVertical: ms(13, 0.3),
+    marginVertical: ms(10, 0.3),
     marginHorizontal: ms(9, 0.3),
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(5, 0.3),
   },
   days: {
-    fontWeight: '500',
+    fontFamily: 'Pretendard-Regular',
   },
 });
 
