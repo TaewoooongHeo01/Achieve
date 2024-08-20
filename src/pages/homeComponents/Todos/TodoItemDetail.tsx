@@ -18,6 +18,7 @@ const TodoItemDetail = ({
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
   const [iconSize, setIconSize] = useState<number>(0);
+  console.log(goal);
   return (
     <View
       style={[
@@ -114,14 +115,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: ms(13, 0.3),
-    // shadowColor: '#000', // 그림자 색상
-    // shadowOffset: {
-    //   width: 4, // 수평 오프셋 (CSS의 offset-x)
-    //   height: 1, // 수직 오프셋 (CSS의 offset-y)
-    // },
-    // shadowOpacity: 0.1, // 그림자의 불투명도 (CSS의 rgba의 알파값)
-    // shadowRadius: 2, // 그림자의 흐림 정도 (CSS의 blur-radius)
-    // elevation: 4, // 안드로이드에서의 그림자 (높이 효과)
   },
   iconContainer: {
     flex: 0.2,

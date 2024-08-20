@@ -11,6 +11,7 @@ import { Goal } from '../../../realm/models';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
+import PlusIcon from 'react-native-vector-icons/AntDesign';
 
 const Goals = (): React.ReactElement => {
   const { theme } = useColors();
@@ -44,24 +45,23 @@ const Goals = (): React.ReactElement => {
           angle={35}>
           <View style={{ flex: 1 }}>
             <View
-              style={goalStyle.iconD_day}
-              onLayout={e => {
-                setIconSize(e.nativeEvent.layout.height);
-              }}>
-              <Icon name={item.icon} size={iconSize}></Icon>
+              style={[{ flex: ms(0.2, 0.3) }, goalStyle.iconD_dayContainer]}>
+              <View
+                style={goalStyle.iconD_day}
+                onLayout={e => {
+                  setIconSize(e.nativeEvent.layout.height);
+                }}>
+                <Icon name={item.icon} size={iconSize}></Icon>
+                <Text style={[fontStyle.fontSizeSub]}>D-{item.d_day}</Text>
+              </View>
             </View>
-            <View>
-              <Text style={[goalStyle.d_day]}>D-{item.d_day}</Text>
-            </View>
-            <View style={goalStyle.todo}>
+            <View style={[{ flex: ms(0.9, 0.3) }, goalStyle.titleContainer]}>
               <Text style={goalStyle.todoText}>
                 {item.todos.length}개의 해야 할 일
               </Text>
-            </View>
-            <View style={goalStyle.title}>
               <Text style={goalStyle.titleText}>{item.title}</Text>
             </View>
-            <View style={goalStyle.pb}>
+            <View style={[{ flex: ms(0, 0.3) }]}>
               <View style={goalStyle.pbbg}></View>
               <View
                 style={[
@@ -79,25 +79,60 @@ const Goals = (): React.ReactElement => {
 
   return (
     <View style={styles.layout}>
-      <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-        진행중인 목표
-      </Text>
-      <Text
-        style={[
-          styles.subTitle,
-          fontStyle.fontSizeSub,
-          { color: theme.textColor, opacity: 0.7 },
-        ]}>
-        {goals.length}개의 목표 진행중
-      </Text>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        style={{ marginTop: ms(10, 0.3) }}
-        horizontal={true}
-        data={goals}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <View>
+          <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+            진행중인 목표
+          </Text>
+          <Text
+            style={[
+              styles.subTitle,
+              fontStyle.fontSizeSub,
+              { color: theme.textColor, opacity: 0.7 },
+            ]}>
+            {goals.length}개의 목표 진행중
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('GoalAdd');
+          }}>
+          <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
+        </TouchableOpacity>
+      </View>
+      {goals.length != 0 ? (
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: ms(10, 0.3) }}
+          horizontal={true}
+          data={goals}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <TouchableOpacity
+          style={[
+            goalStyle.layout,
+            {
+              marginTop: ms(10, 0.3),
+              backgroundColor: theme.backgroundColor,
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+          ]}
+          onPress={() => {
+            navigation.navigate('GoalAdd');
+          }}
+          activeOpacity={1}>
+          <PlusIcon name='plus' color={theme.textColor} size={30}></PlusIcon>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -115,42 +150,40 @@ const styles = StyleSheet.create({
 const goalStyle = StyleSheet.create({
   layout: {
     flex: 1,
-    width: ms(140, 0.3),
-    height: ms(140, 0.3),
+    width: ms(147, 0.3),
+    height: ms(147, 0.3),
     marginRight: ms(10, 0.3),
     borderRadius: ms(5, 0.3),
     padding: ms(9, 0.3),
   },
-  iconD_day: {
-    flex: 0.4,
+  iconD_dayContainer: {
     justifyContent: 'center',
     // backgroundColor: 'red',
   },
-  d_day: {
-    fontSize: ms(15, 0.3),
-    marginTop: ms(4, 0.3),
-    fontFamily: 'Pretendard-SemiBold',
+  titleContainer: {
+    justifyContent: 'flex-end',
+  },
+  iconD_day: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  d_dayContianer: {
+    flex: ms(0.7, 0.3),
   },
   todo: {
-    flex: 0.7,
+    flex: ms(0.3, 0.3),
     justifyContent: 'flex-end',
   },
   todoText: {
-    fontSize: ms(10, 0.3),
-    color: '#747474',
-    fontFamily: 'Pretendard-SemiBold',
-  },
-  title: {
-    paddingTop: ms(2, 0.3),
-    flexBasis: 'auto',
+    fontSize: ms(13, 0.3),
+    color: '#282828',
+    fontFamily: 'Pretendard-Medium',
   },
   titleText: {
     fontSize: ms(16, 0.3),
     fontFamily: 'Pretendard-SemiBold',
-  },
-  pb: {
-    flex: 0.12, //높이 조절 + paddingTop
-    justifyContent: 'flex-end',
+    paddingBottom: ms(5, 0.3),
   },
   pbbg: {
     width: '100%',

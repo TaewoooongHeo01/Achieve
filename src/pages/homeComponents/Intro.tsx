@@ -1,20 +1,15 @@
 import React from 'react';
 import { Text, View, StyleSheet, Platform } from 'react-native';
 import { ms } from 'react-native-size-matters';
-import { dayNames } from '../../context/DateContext';
+// import { dayNames, useDateContext } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
-import { fontStyle } from '../../assets/style/fontStyle';
 import { useQuery } from '@realm/react';
 import { User } from '../../../realm/models';
 import { shadow } from '../../assets/style/shadow';
 
 const Intro = (): React.JSX.Element => {
   const { theme, currentTheme } = useColors();
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const date = String(now.getDate()).padStart(2, '0');
-  const day = now.getDay();
+  // const { today } = useDateContext();
 
   const user = useQuery(User)[0];
   let phrase = '';
@@ -26,7 +21,7 @@ const Intro = (): React.JSX.Element => {
 
   return (
     <View style={styles.layout}>
-      <Text
+      {/* <Text
         style={[
           styles.title,
           fontStyle.fontSizeMain,
@@ -40,8 +35,9 @@ const Intro = (): React.JSX.Element => {
           fontStyle.fontSizeSub,
           { color: theme.textColor, opacity: 0.7 },
         ]}>
-        {year}.{month}.{date}. {dayNames[day]}
-      </Text>
+        {today.year}.{today.month}.{today.date}.{' '}
+        {dayNames[today.day ? today.day : 0]}
+      </Text> */}
       <View
         style={[
           styles.pharseLayout,
@@ -52,8 +48,8 @@ const Intro = (): React.JSX.Element => {
         ]}>
         <Text
           style={[
-            { color: theme.textColor, lineHeight: ms(22, 0.3) },
-            fontStyle.fontSizeSub,
+            { color: theme.textColor, lineHeight: ms(23, 0.3) },
+            styles.font,
           ]}>
           {phrase}
         </Text>
@@ -76,6 +72,10 @@ const styles = StyleSheet.create({
     marginTop: ms(20, 0.3),
     padding: ms(15, 0.3),
     borderRadius: ms(5, 0.3),
+  },
+  font: {
+    fontFamily: 'Pretendard-Medium',
+    fontSize: ms(16, 0.3),
   },
 });
 

@@ -13,15 +13,18 @@ import GoalDetail from './src/pages/commonComponents/GoalDetail';
 import { RealmProvider } from '@realm/react';
 import { Goal, Todo, User } from './realm/models';
 import { ThemeContextProvider } from './src/context/ThemeContext';
+import GoalAdd from './src/pages/commonComponents/GoalAdd';
 
 export type RootStackParamList = {
   Main: undefined;
   GoalDetail: { _id: Realm.BSON.ObjectId };
+  GoalAdd: undefined;
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
-  'GoalDetail'
+  'GoalDetail',
+  'GoalAdd'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -42,6 +45,7 @@ function App(): React.JSX.Element {
                   component={Main}
                 />
                 <Stack.Screen name='GoalDetail' component={GoalDetail} />
+                <Stack.Screen name='GoalAdd' component={GoalAdd} />
               </Stack.Navigator>
             </ThemeContextProvider>
           </NavigationContainer>
