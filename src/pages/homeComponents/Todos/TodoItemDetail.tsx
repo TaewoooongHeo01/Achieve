@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Goal, Todo } from '../../../../realm/models';
+import { Distance, Todo } from '../../../../realm/models';
 import { StyleSheet, Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useColors } from '../../../context/ThemeContext';
@@ -15,7 +15,7 @@ const TodoItemDetail = ({
   pageType: string;
 }) => {
   const { theme, currentTheme } = useColors();
-  const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
+  const distance = item.linkingObjects<Distance>('Distance', 'todos')[0];
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
   const [iconSize, setIconSize] = useState<number>(0);
   return (
@@ -43,7 +43,7 @@ const TodoItemDetail = ({
           }}>
           <LinearGradient
             style={{ flex: 1, borderRadius: ms(10, 0.3) }}
-            colors={theme.goalGradientColor[goal.color]}>
+            colors={theme.gradientColor[distance.color]}>
             <View
               style={{
                 marginVertical: ms(10.3, 0.3),
@@ -55,7 +55,7 @@ const TodoItemDetail = ({
                 setIconSize(e.nativeEvent.layout.height);
               }}>
               <Icon
-                name={goal.icon}
+                name={distance.icon}
                 style={{ textAlign: 'center' }}
                 size={iconSize}></Icon>
             </View>
@@ -90,9 +90,11 @@ const TodoItemDetail = ({
           switch (pageType) {
             case 'HOME':
               return (
-                <Text style={[{ color: theme.textColor }, fontStyle.d_dayFont]}>
-                  D-{goal.d_day}
-                </Text>
+                <Text
+                  style={[
+                    { color: theme.textColor },
+                    fontStyle.d_dayFont,
+                  ]}></Text>
               );
             case 'DETAIL':
               return (

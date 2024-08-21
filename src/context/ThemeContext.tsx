@@ -12,8 +12,8 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setColorTheme] = useState(Colors.light);
-  const [currentTheme, setCurrentTheme] = useState('light');
+  const [theme, setColorTheme] = useState(Colors.dark);
+  const [currentTheme, setCurrentTheme] = useState('dark');
   const applyColor = (colorSet: ColorSet, colorTheme: string) => {
     setColorTheme(colorSet);
     setCurrentTheme(colorTheme);

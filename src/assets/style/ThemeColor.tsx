@@ -23,7 +23,7 @@ export type ColorSet = {
   textColor: string;
   backgroundColor: string;
   appBackgroundColor: string;
-  goalGradientColor: string[][];
+  gradientColor: string[][];
 };
 
 type ColorTheme = {
@@ -36,13 +36,13 @@ const Colors: ColorTheme = {
     textColor: '#282828',
     backgroundColor: '#FFFFFF',
     appBackgroundColor: '#FDFDFD',
-    goalGradientColor: gradientColorset,
+    gradientColor: gradientColorset,
   },
   dark: {
     textColor: '#FFFFFF',
     backgroundColor: '#282828',
     appBackgroundColor: '#121212',
-    goalGradientColor: gradientColorset,
+    gradientColor: gradientColorset,
   },
 };
 

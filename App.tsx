@@ -9,21 +9,21 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 //pages
 import Main from './src/pages/Main';
-import GoalDetail from './src/pages/commonComponents/GoalDetail';
+import DistanceDetail from './src/pages/commonComponents/DistanceDetail';
 import { RealmProvider } from '@realm/react';
-import { Goal, Todo, User } from './realm/models';
+import { Distance, Todo, User } from './realm/models';
 import { ThemeContextProvider } from './src/context/ThemeContext';
-import GoalAdd from './src/pages/commonComponents/GoalAdd';
+import DistanceAdd from './src/pages/commonComponents/DistanceAdd';
 
 export type RootStackParamList = {
   Main: undefined;
-  GoalDetail: { _id: string };
-  GoalAdd: undefined;
+  DistanceDetail: { _id: string };
+  DistanceAdd: undefined;
 };
 
-export type GoalDetailScreenProps = NativeStackScreenProps<
+export type DistanceDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
-  'GoalDetail'
+  'DistanceDetail'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,7 +31,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function App(): React.JSX.Element {
   return (
     <RealmProvider
-      schema={[Goal, Todo, User]}
+      schema={[Distance, Todo, User]}
       deleteRealmIfMigrationNeeded={true}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -43,8 +43,11 @@ function App(): React.JSX.Element {
                   name='Main'
                   component={Main}
                 />
-                <Stack.Screen name='GoalDetail' component={GoalDetail} />
-                <Stack.Screen name='GoalAdd' component={GoalAdd} />
+                <Stack.Screen
+                  name='DistanceDetail'
+                  component={DistanceDetail}
+                />
+                <Stack.Screen name='DistanceAdd' component={DistanceAdd} />
               </Stack.Navigator>
             </ThemeContextProvider>
           </NavigationContainer>

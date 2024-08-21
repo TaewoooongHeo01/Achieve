@@ -1,8 +1,7 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, Touchable, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { dayNames, useDateContext } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
-// import Colors from '../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useQuery } from '@realm/react';
@@ -26,6 +25,13 @@ const Profile = (): React.JSX.Element => {
   //   applyColor(themeState === 'light' ? Colors.light : Colors.dark, themeState);
   // }, [themeState]);
 
+  /* <Button
+    title='color change'
+    onPress={() => {
+      setThemeState(currentTheme === 'light' ? 'dark' : 'light');
+    }}
+  /> */
+
   const profileComponents = [
     <HowToUse />,
     <LateTodo />,
@@ -33,18 +39,12 @@ const Profile = (): React.JSX.Element => {
     <Options />,
   ];
 
-  const renderItem = ({ item }: React.ReactElement) => {
+  const renderItem = ({ item }: { item: React.ReactElement }) => {
     return <View style={{ flex: 1 }}>{item}</View>;
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.appBackgroundColor }}>
-      {/* <Button
-          title='color change'
-          onPress={() => {
-            setThemeState(currentTheme === 'light' ? 'dark' : 'light');
-          }}
-        /> */}
       <View>
         <Text
           style={[
@@ -75,8 +75,15 @@ const Profile = (): React.JSX.Element => {
             { backgroundColor: theme.backgroundColor },
             styles.goalContainer,
           ]}>
-          <Text style={({ color: theme.textColor }, fontStyle.fontSizeMain)}>
-            목표 생성하기
+          <Text
+            style={[
+              { color: theme.textColor, marginBottom: ms(5, 0.3) },
+              fontStyle.fontSizeMain,
+            ]}>
+            방향 설정하기
+          </Text>
+          <Text style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
+            해야 할 일들의 대략적인 방향을 설정해보세요
           </Text>
         </View>
         <FlatList
@@ -96,9 +103,9 @@ const styles = StyleSheet.create({
     paddingTop: ms(5, 1),
   },
   goalContainer: {
-    width: '100%',
     height: ms(100, 0.3),
     borderRadius: ms(5, 0.3),
+    padding: ms(13, 0.3),
   },
 });
 
