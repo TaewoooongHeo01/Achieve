@@ -18,7 +18,6 @@ const TodoItemDetail = ({
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
   const [iconSize, setIconSize] = useState<number>(0);
-  console.log(goal);
   return (
     <View
       style={[

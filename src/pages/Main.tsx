@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Platform, StatusBar, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { DateContextProvider } from '../context/DateContext';
@@ -12,8 +12,13 @@ import Home from './mainTab/Home';
 import Achieve from './mainTab/Achieve';
 import Profile from './mainTab/Profile';
 import { ms } from 'react-native-size-matters';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 const Main = (): React.JSX.Element => {
+  const { top } = useSafeAreaInsets();
   const Tab = createBottomTabNavigator();
   const { theme } = useColors();
   initialize();
@@ -21,67 +26,97 @@ const Main = (): React.JSX.Element => {
   return (
     <DateContextProvider>
       <BottomSheetModalProvider>
-        <View style={{ flex: 1 }}>
-          <Tab.Navigator
-            initialRouteName='Home'
-            screenOptions={{
-              headerShown: false,
-              tabBarStyle: {
+        <SafeAreaView
+          edges={
+            Platform.OS === 'ios' ? ['left', 'right'] : ['top', 'left', 'right']
+          }
+          style={{ flex: 1, backgroundColor: theme.appBackgroundColor }}>
+          {Platform.OS === 'ios' ? (
+            <View
+              style={{
                 backgroundColor: theme.appBackgroundColor,
-                borderTopWidth: 0,
-              },
-              tabBarShowLabel: false,
-            }}>
-            <Tab.Screen
-              name='Achieve'
-              component={Achieve}
-              options={{
-                tabBarIcon: ({ focused }) =>
-                  focused ? (
-                    <Icon
-                      name='trophy'
-                      color={theme.textColor}
-                      size={ms(15, 0.3)}
-                    />
-                  ) : (
-                    <Icon name='trophy' color={'grey'} size={ms(17, 0.3)} />
-                  ),
-              }}
+                height: top,
+              }}>
+              <StatusBar
+                barStyle={
+                  theme.appBackgroundColor === '#121212'
+                    ? 'light-content'
+                    : 'dark-content'
+                }
+              />
+            </View>
+          ) : (
+            <StatusBar
+              barStyle={
+                theme.appBackgroundColor === '#121212'
+                  ? 'light-content'
+                  : 'dark-content'
+              }
+              backgroundColor={theme.appBackgroundColor}
             />
-            <Tab.Screen
-              name='Home'
-              component={Home}
-              options={{
-                tabBarIcon: ({ focused }) =>
-                  focused ? (
-                    <Icon
-                      name='home'
-                      color={theme.textColor}
-                      size={ms(15, 0.3)}
-                    />
-                  ) : (
-                    <Icon name='home' color={'grey'} size={ms(17, 0.3)} />
-                  ),
-              }}
-            />
-            <Tab.Screen
-              name='Profile'
-              component={Profile}
-              options={{
-                tabBarIcon: ({ focused }) =>
-                  focused ? (
-                    <Icon
-                      name='user-alt'
-                      color={theme.textColor}
-                      size={ms(15, 0.3)}
-                    />
-                  ) : (
-                    <Icon name='user-alt' color={'grey'} size={ms(17, 0.3)} />
-                  ),
-              }}
-            />
-          </Tab.Navigator>
-        </View>
+          )}
+          <View style={{ flex: 1, paddingHorizontal: ms(20, 0.3) }}>
+            <Tab.Navigator
+              initialRouteName='Home'
+              screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                  backgroundColor: theme.appBackgroundColor,
+                  borderTopWidth: 0,
+                },
+                tabBarShowLabel: false,
+              }}>
+              <Tab.Screen
+                name='Achieve'
+                component={Achieve}
+                options={{
+                  tabBarIcon: ({ focused }) =>
+                    focused ? (
+                      <Icon
+                        name='trophy'
+                        color={theme.textColor}
+                        size={ms(15, 0.3)}
+                      />
+                    ) : (
+                      <Icon name='trophy' color={'grey'} size={ms(17, 0.3)} />
+                    ),
+                }}
+              />
+              <Tab.Screen
+                name='Home'
+                component={Home}
+                options={{
+                  tabBarIcon: ({ focused }) =>
+                    focused ? (
+                      <Icon
+                        name='home'
+                        color={theme.textColor}
+                        size={ms(15, 0.3)}
+                      />
+                    ) : (
+                      <Icon name='home' color={'grey'} size={ms(17, 0.3)} />
+                    ),
+                }}
+              />
+              <Tab.Screen
+                name='Profile'
+                component={Profile}
+                options={{
+                  tabBarIcon: ({ focused }) =>
+                    focused ? (
+                      <Icon
+                        name='user-alt'
+                        color={theme.textColor}
+                        size={ms(15, 0.3)}
+                      />
+                    ) : (
+                      <Icon name='user-alt' color={'grey'} size={ms(17, 0.3)} />
+                    ),
+                }}
+              />
+            </Tab.Navigator>
+          </View>
+        </SafeAreaView>
       </BottomSheetModalProvider>
     </DateContextProvider>
   );

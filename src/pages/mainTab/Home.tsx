@@ -1,10 +1,5 @@
 import React from 'react';
-import { View, StatusBar, FlatList, Platform } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import { ms } from 'react-native-size-matters';
+import { View, FlatList } from 'react-native';
 
 //mainTab components
 import Intro from '../homeComponents/Intro';
@@ -35,7 +30,6 @@ export type TodoType = {
 };
 
 const Home = (): React.ReactElement => {
-  const { top } = useSafeAreaInsets();
   const { theme } = useColors();
 
   const data = [<Intro />, <Goals />, <TodoDate />];
@@ -45,49 +39,18 @@ const Home = (): React.ReactElement => {
   };
 
   return (
-    <SafeAreaView
-      edges={
-        Platform.OS === 'ios' ? ['left', 'right'] : ['top', 'left', 'right']
-      }
-      style={{ flex: 1 }}>
-      {Platform.OS === 'ios' ? (
-        <View
-          style={{
-            backgroundColor: theme.appBackgroundColor,
-            height: top,
-          }}>
-          <StatusBar
-            barStyle={
-              theme.appBackgroundColor === '#121212'
-                ? 'light-content'
-                : 'dark-content'
-            }
-          />
-        </View>
-      ) : (
-        <StatusBar
-          barStyle={
-            theme.appBackgroundColor === '#121212'
-              ? 'light-content'
-              : 'dark-content'
-          }
-          backgroundColor={theme.appBackgroundColor}
-        />
-      )}
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: theme.appBackgroundColor,
-          paddingHorizontal: ms(20, 0.3),
-        }}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </View>
-    </SafeAreaView>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.appBackgroundColor,
+      }}>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
   );
 };
 

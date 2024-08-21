@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, Platform } from 'react-native';
 import { ms } from 'react-native-size-matters';
-// import { dayNames, useDateContext } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
 import { useQuery } from '@realm/react';
 import { User } from '../../../realm/models';
@@ -9,7 +8,6 @@ import { shadow } from '../../assets/style/shadow';
 
 const Intro = (): React.JSX.Element => {
   const { theme, currentTheme } = useColors();
-  // const { today } = useDateContext();
 
   const user = useQuery(User)[0];
   let phrase = '';
@@ -21,23 +19,6 @@ const Intro = (): React.JSX.Element => {
 
   return (
     <View style={styles.layout}>
-      {/* <Text
-        style={[
-          styles.title,
-          fontStyle.fontSizeMain,
-          { color: theme.textColor },
-        ]}>
-        안녕하세요, {user.username}님
-      </Text>
-      <Text
-        style={[
-          styles.subTitle,
-          fontStyle.fontSizeSub,
-          { color: theme.textColor, opacity: 0.7 },
-        ]}>
-        {today.year}.{today.month}.{today.date}.{' '}
-        {dayNames[today.day ? today.day : 0]}
-      </Text> */}
       <View
         style={[
           styles.pharseLayout,
