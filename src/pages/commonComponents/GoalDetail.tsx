@@ -1,19 +1,23 @@
 import React from 'react';
+import Realm from 'realm';
 import { View, Text, Button } from 'react-native';
 import { GoalDetailScreenProps } from '../../../App';
 import { useObject, useRealm } from '@realm/react';
 import { Goal } from '../../../realm/models';
-import { useNavigation } from '@react-navigation/native';
 
-const GoalDetail = ({ route }: GoalDetailScreenProps): React.ReactElement => {
-  const id = route.params._id;
+const GoalDetail = ({
+  route,
+  navigation,
+}: GoalDetailScreenProps): React.ReactElement => {
+  const id = new Realm.BSON.ObjectId(route.params._id);
   const realm = useRealm();
-  const navigation = useNavigation();
   const goal = useObject<Goal>('Goal', id);
+  const todos = goal?.todos;
 
   const deleteGoal = () => {
     navigation.goBack();
     realm.write(() => {
+      realm.delete(todos);
       realm.delete(goal);
     });
   };

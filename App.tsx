@@ -17,14 +17,13 @@ import GoalAdd from './src/pages/commonComponents/GoalAdd';
 
 export type RootStackParamList = {
   Main: undefined;
-  GoalDetail: { _id: Realm.BSON.ObjectId };
+  GoalDetail: { _id: string };
   GoalAdd: undefined;
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
-  'GoalDetail',
-  'GoalAdd'
+  'GoalDetail'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

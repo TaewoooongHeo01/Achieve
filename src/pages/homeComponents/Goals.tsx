@@ -36,7 +36,7 @@ const Goals = (): React.ReactElement => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('GoalDetail', { _id: item._id });
+          navigation.navigate('GoalDetail', { _id: item._id.toString() });
         }}>
         <LinearGradient
           colors={theme.goalGradientColor[item.color]}
