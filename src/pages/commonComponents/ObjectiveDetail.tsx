@@ -1,37 +1,37 @@
 import React from 'react';
 import Realm from 'realm';
 import { View, Text, Button } from 'react-native';
-import { DistanceDetailScreenProps } from '../../../App';
+import { ObjectiveDetailScreenProps } from '../../../App';
 import { useObject, useRealm } from '@realm/react';
-import { Distance } from '../../../realm/models';
+import { Objective } from '../../../realm/models';
 
-const DistanceDetail = ({
+const ObjectiveDetail = ({
   route,
   navigation,
-}: DistanceDetailScreenProps): React.ReactElement => {
+}: ObjectiveDetailScreenProps): React.ReactElement => {
   const id = new Realm.BSON.ObjectId(route.params._id);
   const realm = useRealm();
-  const Distance = useObject<Distance>('Distance', id);
-  const todos = Distance?.todos;
+  const objective = useObject<Objective>('Objective', id);
+  const todos = objective?.todos;
 
-  const deleteDistance = () => {
+  const deleteObjective = () => {
     navigation.goBack();
     realm.write(() => {
       realm.delete(todos);
-      realm.delete(Distance);
+      realm.delete(Objective);
     });
   };
 
   return (
     <View>
-      <Text>Distance id: </Text>
+      <Text>Objective id: </Text>
       <Button
         title='delete'
         onPress={() => {
-          deleteDistance();
+          deleteObjective();
         }}></Button>
     </View>
   );
 };
 
-export default DistanceDetail;
+export default ObjectiveDetail;

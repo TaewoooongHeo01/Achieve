@@ -21,17 +21,17 @@ export class User extends Realm.Object {
   };
 }
 
-export class Distance extends Realm.Object {
+export class Objective extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
   isComplete!: boolean;
   icon!: string;
   color!: number;
   todos!: Realm.List<Todo>;
-  intrinsicMotivation?: string;
+  why?: string;
 
   static schema: Realm.ObjectSchema = {
-    name: 'Distance',
+    name: 'Objective',
     primaryKey: '_id',
     properties: {
       _id: {
@@ -43,7 +43,7 @@ export class Distance extends Realm.Object {
       icon: 'string',
       color: 'int',
       todos: 'Todo[]',
-      intrinsicMotivation: 'string?',
+      why: 'string?',
     },
   };
 }
@@ -52,7 +52,7 @@ export class Todo extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
   date!: string;
-  distance!: Distance;
+  objective!: Objective;
   alertOn!: boolean;
   alertTime?: number; //0~24
   weekCycle!: number[];
@@ -67,9 +67,9 @@ export class Todo extends Realm.Object {
       },
       title: 'string',
       date: 'string',
-      distance: {
+      Objective: {
         type: 'linkingObjects',
-        objectType: 'Distance',
+        objectType: 'Objective',
         property: 'todos',
       },
       alertOn: 'bool',

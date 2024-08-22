@@ -15,29 +15,29 @@ export const initialize = () => {
     });
   });
 
-  for (let i = 0; i < distancesData.length; i++) {
-    const g = distancesData[i];
+  for (let i = 0; i < ObjectivesData.length; i++) {
+    const g = ObjectivesData[i];
     const t = todos[i];
     realm.write(() => {
-      const distance = realm.create('Distance', {
+      const objective = realm.create('Objective', {
         title: g.title,
         isComplete: g.isComplete,
         icon: g.icon,
         color: g.color,
         todos: [],
-        intrinsicMotivation: g.intrinsicMotivation,
+        why: g.why,
       });
       for (let i = 0; i < t.length; i++) {
         const td = t[i];
         const todoItem = realm.create('Todo', {
           title: td.title,
           date: td.date,
-          distance: distance,
+          objective: objective,
           alertOn: td.alertOn,
           alertTime: td.alertTime,
           weekCycle: td.weekCycle,
         });
-        distance.todos.push(todoItem);
+        objective.todos.push(todoItem);
       }
     });
   }
@@ -53,54 +53,46 @@ const UserData = {
   ],
 };
 
-const distancesData = [
+const ObjectivesData = [
   {
     title: '10kg 감량하기',
     isComplete: false,
     icon: 'barbell',
     color: 0,
     todo: [],
-    intrinsicMotivation: '세달 동안 10kg 감량하기 목표',
+    why: '세달 동안 10kg 감량하기 목표',
   },
   {
     title: '독서 30분 하기',
     isComplete: false,
-    d_day: 30,
-    startDayCnt: 60,
     icon: 'book',
     color: 3,
     todo: [],
-    intrinsicMotivation: '매일 30분씩 독서하기',
+    why: '매일 30분씩 독서하기',
   },
   {
     title: '새로운 프로그래밍 언어 배우기',
     isComplete: false,
-    d_day: 30,
-    startDayCnt: 8,
     icon: 'code',
     color: 11,
     todo: [],
-    intrinsicMotivation: '2달 동안 새로운 프로그래밍 언어 마스터하기',
+    why: '2달 동안 새로운 프로그래밍 언어 마스터하기',
   },
   {
     title: '매일 10,000보 걷기',
     isComplete: true,
-    d_day: 15,
-    startDayCnt: 15,
     icon: 'accessibility',
     color: 3,
     todo: [],
-    intrinsicMotivation: '건강을 위해 매일 걷기',
+    why: '건강을 위해 매일 걷기',
   },
   {
     title: '자기 전 명상 15분 하기',
     isComplete: false,
-    d_day: 45,
-    startDayCnt: 90,
     icon: 'leaf',
     color: 8,
     todo: [],
-    intrinsicMotivation: '매일 자기 전 명상으로 하루를 마무리',
+    why: '매일 자기 전 명상으로 하루를 마무리',
   },
 ];
 

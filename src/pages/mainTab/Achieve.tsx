@@ -1,10 +1,20 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { useColors } from '../../context/ThemeContext';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function Achieve() {
+  const { theme } = useColors();
+
   return (
-    <View>
-      <Text>achieve</Text>
+    <View style={{ flex: 1 }}>
+      {theme.gradientColor.map(value => {
+        return (
+          <LinearGradient
+            style={{ width: 80, height: 80 }}
+            colors={value}></LinearGradient>
+        );
+      })}
     </View>
   );
 }

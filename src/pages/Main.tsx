@@ -55,7 +55,7 @@ const Main = (): React.JSX.Element => {
               backgroundColor={theme.appBackgroundColor}
             />
           )}
-          <View style={{ flex: 1, paddingHorizontal: ms(20, 0.3) }}>
+          <View style={{ flex: 1 }}>
             <Tab.Navigator
               initialRouteName='Home'
               screenOptions={{

@@ -3,36 +3,37 @@ import { View, FlatList } from 'react-native';
 
 //mainTab components
 import Intro from '../homeComponents/Intro';
-import Distances from '../homeComponents/Distances';
+import Objectives from '../homeComponents/Objectives';
 import TodoDate from '../homeComponents/Todos/TodoDate';
 import { useColors } from '../../context/ThemeContext';
+import { ms } from 'react-native-size-matters';
 
-export type GoalsType = {
-  goalId: string;
-  title: string;
-  icon: string | undefined;
-  d_day: number;
-  checklist: checkboxType[];
-  colorset: string[];
-};
+// export type GoalsType = {
+//   goalId: string;
+//   title: string;
+//   icon: string | undefined;
+//   d_day: number;
+//   checklist: checkboxType[];
+//   colorset: string[];
+// };
 
-type checkboxType = {
-  title: string;
-  isChecked: boolean;
-};
+// type checkboxType = {
+//   title: string;
+//   isChecked: boolean;
+// };
 
 export type TodoType = {
   todoId: string;
   title: string;
   dates: number[];
   time: number;
-  distances: number;
+  objectives: number;
 };
 
 const Home = (): React.ReactElement => {
   const { theme } = useColors();
 
-  const data = [<Intro />, <Distances />, <TodoDate />];
+  const data = [<Intro />, <Objectives />, <TodoDate />];
 
   const renderItem = ({ item }: { item: React.ReactElement }) => {
     return <View style={{ flex: 1 }}>{item}</View>;
@@ -41,6 +42,7 @@ const Home = (): React.ReactElement => {
   return (
     <View
       style={{
+        paddingHorizontal: ms(20, 0.3),
         flex: 1,
         backgroundColor: theme.appBackgroundColor,
       }}>

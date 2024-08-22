@@ -7,46 +7,47 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useQuery } from '@realm/react';
-import { Distance } from '../../../realm/models';
+import { Objective } from '../../../realm/models';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
+import { shadow } from '../../assets/style/shadow';
 
-const Distances = (): React.ReactElement => {
-  const { theme } = useColors();
+const Objectives = (): React.ReactElement => {
+  const { theme, currentTheme } = useColors();
   const [iconSize, setIconSize] = useState<number>(0);
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const distances = useQuery(Distance);
+  const objectiveData = useQuery(Objective);
 
-  const renderItem = ({ item }: { item: Distance }) => {
+  const renderItem = ({ item }: { item: Objective }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('DistanceDetail', { _id: item._id.toString() });
+          navigation.navigate('ObjectiveDetail', { _id: item._id.toString() });
         }}>
         <LinearGradient
           colors={theme.gradientColor[item.color]}
-          style={[distanceStyle.layout]}
+          style={[objectiveStyle.layout]}
           useAngle={true}
           angle={35}>
           <View style={{ flex: 1 }}>
             <View
-              style={[distanceStyle.iconD_day, { flex: ms(0.2, 0.3) }]}
+              style={[objectiveStyle.iconD_day, { flex: ms(0.2, 0.3) }]}
               onLayout={e => {
                 setIconSize(e.nativeEvent.layout.height);
               }}>
               <Icon name={item.icon} size={iconSize}></Icon>
             </View>
             <View
-              style={[{ flex: ms(0.9, 0.3) }, distanceStyle.titleContainer]}>
-              <Text style={distanceStyle.todoText}>
+              style={[{ flex: ms(0.9, 0.3) }, objectiveStyle.titleContainer]}>
+              <Text style={objectiveStyle.todoText}>
                 {item.todos.length}개의 해야 할 일
               </Text>
-              <Text style={distanceStyle.titleText}>{item.title}</Text>
+              <Text style={objectiveStyle.titleText}>{item.title}</Text>
             </View>
           </View>
         </LinearGradient>
@@ -65,7 +66,7 @@ const Distances = (): React.ReactElement => {
         }}>
         <View>
           <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-            방향
+            나아갈 방향들
           </Text>
           <Text
             style={[
@@ -73,38 +74,39 @@ const Distances = (): React.ReactElement => {
               fontStyle.fontSizeSub,
               { color: theme.textColor, opacity: 0.7 },
             ]}>
-            {distances.length}개의 방향
+            {objectiveData.length}개의 목적
           </Text>
         </View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('DistanceAdd');
+            navigation.navigate('ObjectiveAdd');
           }}>
           <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
         </TouchableOpacity>
       </View>
-      {distances.length != 0 ? (
+      {objectiveData.length != 0 ? (
         <FlatList
           showsHorizontalScrollIndicator={false}
           style={{ marginTop: ms(10, 0.3) }}
           horizontal={true}
-          data={distances}
+          data={objectiveData}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
       ) : (
         <TouchableOpacity
           style={[
-            distanceStyle.layout,
+            objectiveStyle.layout,
+            currentTheme === 'light' ? shadow.boxShadow : {},
             {
               marginTop: ms(10, 0.3),
-              backgroundColor: theme.backgroundColor,
+              backgroundColor: 'theme.backgroundColor',
               justifyContent: 'center',
               alignItems: 'center',
             },
           ]}
           onPress={() => {
-            navigation.navigate('DistanceAdd');
+            navigation.navigate('ObjectiveAdd');
           }}
           activeOpacity={1}>
           <PlusIcon name='plus' color={theme.textColor} size={30}></PlusIcon>
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const distanceStyle = StyleSheet.create({
+const objectiveStyle = StyleSheet.create({
   layout: {
     flex: 1,
     width: ms(130, 0.3),
@@ -154,4 +156,4 @@ const distanceStyle = StyleSheet.create({
   },
 });
 
-export default Distances;
+export default Objectives;

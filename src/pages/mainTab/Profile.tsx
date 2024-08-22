@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { dayNames, useDateContext } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
@@ -6,16 +6,18 @@ import { ms } from 'react-native-size-matters';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useQuery } from '@realm/react';
 import { User } from '../../../realm/models';
-import { FlatList } from 'react-native-gesture-handler';
-import HowToUse from '../profileComponents/HowToUse';
-import LateTodo from '../profileComponents/LateTodo';
-import Notes from '../profileComponents/Notes';
-import Options from '../profileComponents/Options';
 import { shadow } from '../../assets/style/shadow';
+import { TouchableOpacity } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../App';
 
 const Profile = (): React.JSX.Element => {
   const { today } = useDateContext();
   const { theme, currentTheme } = useColors();
+  const [itemWidth, setItemWidth] = useState<number>(0);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const user = useQuery(User)[0];
 
@@ -32,20 +34,17 @@ const Profile = (): React.JSX.Element => {
     }}
   /> */
 
-  const profileComponents = [
-    <HowToUse />,
-    <LateTodo />,
-    <Notes />,
-    <Options />,
-  ];
-
-  const renderItem = ({ item }: { item: React.ReactElement }) => {
-    return <View style={{ flex: 1 }}>{item}</View>;
-  };
-
   return (
-    <View style={{ flex: 1, backgroundColor: theme.appBackgroundColor }}>
-      <View>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.appBackgroundColor,
+        paddingHorizontal: ms(20, 0.3),
+      }}>
+      <View
+        onLayout={e => {
+          setItemWidth(e.nativeEvent.layout.width / 2);
+        }}>
         <Text
           style={[
             styles.title,
@@ -67,29 +66,157 @@ const Profile = (): React.JSX.Element => {
       <View
         style={{
           flex: 1,
-          marginTop: ms(20, 0.3),
+          marginTop: ms(15, 0.3),
         }}>
-        <View
-          style={[
-            currentTheme === 'light' ? shadow.boxShadow : {},
-            { backgroundColor: theme.backgroundColor },
-            styles.goalContainer,
-          ]}>
-          <Text
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate('ObjectiveAdd');
+          }}>
+          <View
             style={[
-              { color: theme.textColor, marginBottom: ms(5, 0.3) },
-              fontStyle.fontSizeMain,
+              currentTheme === 'light' ? shadow.boxShadow : {},
+              { backgroundColor: theme.backgroundColor },
+              styles.goalContainer,
             ]}>
-            방향 설정하기
-          </Text>
-          <Text style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
-            해야 할 일들의 대략적인 방향을 설정해보세요
-          </Text>
+            <Text
+              style={[
+                { color: theme.textColor, marginBottom: ms(5, 0.3) },
+                fontStyle.fontSizeMain,
+              ]}>
+              목적 설정하기
+            </Text>
+            <Text style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
+              해야 할 일들의 대략적인 목적을 설정해보세요
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <View
+          style={{
+            flex: 1,
+            marginTop: ms(15, 0.3),
+            flexDirection: 'column',
+          }}>
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                navigation.navigate('HowToUse');
+              }}
+              style={[
+                {
+                  width: itemWidth - ms(7.5, 0.3),
+                  aspectRatio: 1.7,
+                },
+                currentTheme === 'light' ? shadow.boxShadow : {},
+              ]}>
+              <View
+                style={[
+                  {
+                    backgroundColor: theme.backgroundColor,
+                  },
+                  styles.profileTabContainer,
+                ]}>
+                <Text
+                  style={[
+                    fontStyle.fontSizeMain,
+                    { color: theme.textColor, marginBottom: ms(3, 0.3) },
+                  ]}>
+                  Achieve
+                </Text>
+                <Text
+                  style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
+                  제대로 사용하기
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                navigation.navigate('LateTodo');
+              }}
+              style={[
+                {
+                  width: itemWidth - ms(7.5, 0.3),
+                  aspectRatio: 1.7,
+                  borderRightWidth: 0.9,
+                },
+                currentTheme === 'light' ? shadow.boxShadow : {},
+              ]}>
+              <View
+                style={[
+                  {
+                    backgroundColor: theme.backgroundColor,
+                  },
+                  styles.profileTabContainer,
+                ]}>
+                <Text
+                  style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+                  나중에 할 일
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: ms(15, 0.3),
+            }}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                navigation.navigate('Notes');
+              }}
+              style={[
+                {
+                  width: itemWidth - ms(7.4, 0.3),
+                  aspectRatio: 1.7,
+                },
+                currentTheme === 'light' ? shadow.boxShadow : {},
+              ]}>
+              <View
+                style={[
+                  {
+                    backgroundColor: theme.backgroundColor,
+                  },
+                  styles.profileTabContainer,
+                ]}>
+                <Text
+                  style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+                  노트
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                navigation.navigate('Options');
+              }}
+              style={[
+                {
+                  width: itemWidth - ms(7.5, 0.3),
+                  aspectRatio: 1.7,
+                  borderRightWidth: 0.9,
+                },
+                currentTheme === 'light' ? shadow.boxShadow : {},
+              ]}>
+              <View
+                style={[
+                  {
+                    backgroundColor: theme.backgroundColor,
+                  },
+                  styles.profileTabContainer,
+                ]}>
+                <Text
+                  style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+                  설정
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-        <FlatList
-          style={{ marginTop: ms(15, 0.3) }}
-          data={profileComponents}
-          renderItem={renderItem}></FlatList>
       </View>
     </View>
   );
@@ -103,9 +230,14 @@ const styles = StyleSheet.create({
     paddingTop: ms(5, 1),
   },
   goalContainer: {
-    height: ms(100, 0.3),
+    aspectRatio: 3,
     borderRadius: ms(5, 0.3),
-    padding: ms(13, 0.3),
+    padding: ms(15, 0.3),
+  },
+  profileTabContainer: {
+    flex: 1,
+    padding: ms(15, 0.3),
+    borderRadius: ms(5, 0.3),
   },
 });
 

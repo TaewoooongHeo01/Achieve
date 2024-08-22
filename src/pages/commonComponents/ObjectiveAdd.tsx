@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const DistanceAdd = () => {
+const ObjectiveAdd = () => {
   return (
     <View>
       <Text>goalAdd</Text>
@@ -9,4 +9,4 @@ const DistanceAdd = () => {
   );
 };
 
-export default DistanceAdd;
+export default ObjectiveAdd;

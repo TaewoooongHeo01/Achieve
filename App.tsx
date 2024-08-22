@@ -9,21 +9,29 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 //pages
 import Main from './src/pages/Main';
-import DistanceDetail from './src/pages/commonComponents/DistanceDetail';
+import ObjectiveDetail from './src/pages/commonComponents/ObjectiveDetail';
 import { RealmProvider } from '@realm/react';
-import { Distance, Todo, User } from './realm/models';
+import { Objective, Todo, User } from './realm/models';
 import { ThemeContextProvider } from './src/context/ThemeContext';
-import DistanceAdd from './src/pages/commonComponents/DistanceAdd';
+import ObjectiveAdd from './src/pages/commonComponents/ObjectiveAdd';
+import HowToUse from './src/pages/profileComponents/HowToUse';
+import LateTodo from './src/pages/profileComponents/LateTodo';
+import Notes from './src/pages/profileComponents/Notes';
+import Options from './src/pages/profileComponents/Options';
 
 export type RootStackParamList = {
   Main: undefined;
-  DistanceDetail: { _id: string };
-  DistanceAdd: undefined;
+  ObjectiveDetail: { _id: string };
+  ObjectiveAdd: undefined;
+  HowToUse: undefined;
+  LateTodo: undefined;
+  Notes: undefined;
+  Options: undefined;
 };
 
-export type DistanceDetailScreenProps = NativeStackScreenProps<
+export type ObjectiveDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
-  'DistanceDetail'
+  'ObjectiveDetail'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,7 +39,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function App(): React.JSX.Element {
   return (
     <RealmProvider
-      schema={[Distance, Todo, User]}
+      schema={[Objective, Todo, User]}
       deleteRealmIfMigrationNeeded={true}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -44,10 +52,14 @@ function App(): React.JSX.Element {
                   component={Main}
                 />
                 <Stack.Screen
-                  name='DistanceDetail'
-                  component={DistanceDetail}
+                  name='ObjectiveDetail'
+                  component={ObjectiveDetail}
                 />
-                <Stack.Screen name='DistanceAdd' component={DistanceAdd} />
+                <Stack.Screen name='ObjectiveAdd' component={ObjectiveAdd} />
+                <Stack.Screen name='HowToUse' component={HowToUse} />
+                <Stack.Screen name='LateTodo' component={LateTodo} />
+                <Stack.Screen name='Notes' component={Notes} />
+                <Stack.Screen name='Options' component={Options} />
               </Stack.Navigator>
             </ThemeContextProvider>
           </NavigationContainer>
