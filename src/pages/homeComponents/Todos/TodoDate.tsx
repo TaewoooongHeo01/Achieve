@@ -35,7 +35,7 @@ const TodoDate = (): React.ReactElement => {
         disappearsOnIndex={-1}
         appearsOnIndex={0}
         pressBehavior={'close'}
-        opacity={0.4}
+        opacity={0.8}
       />
     ),
     [],
@@ -55,7 +55,7 @@ const TodoDate = (): React.ReactElement => {
         disappearsOnIndex={-1}
         appearsOnIndex={0}
         pressBehavior={'close'}
-        opacity={0.4}
+        opacity={0.8}
       />
     ),
     [],

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import Colors, { ColorSet } from '../assets/style/ThemeColor';
 
-type ThemeContextType = {
+export type ThemeContextType = {
   theme: ColorSet;
   currentTheme: string;
   applyColor: (colors: ColorSet, currentTheme: string) => void;

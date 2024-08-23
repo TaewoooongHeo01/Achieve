@@ -6,13 +6,16 @@ import { useColors } from '../../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { shadow } from '../../../assets/style/shadow';
+import { days } from '../../../context/DateContext';
+import CalendarIcon from 'react-native-vector-icons/AntDesign';
+import CheckboxIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const TodoItemDetail = ({
   item,
-  pageType,
+  // pageType,
 }: {
   item: Todo;
-  pageType: string;
+  // pageType: string;
 }) => {
   const { theme, currentTheme } = useColors();
   const objective = item.linkingObjects<Objective>('Objective', 'todos')[0];
@@ -63,47 +66,47 @@ const TodoItemDetail = ({
         </View>
       </View>
       <View style={[styles.infoContainer]}>
-        <View style={{ flex: 0.6 }}>
+        <View style={{ flex: ms(0.5, 0.3) }}>
           <Text style={[{ color: theme.textColor }, fontStyle.itemTitle]}>
             {item.title}
           </Text>
         </View>
         <View
           style={{
-            flex: 0.4,
+            flex: ms(0.35, 0.3),
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Icon name='alarm-outline' color={theme.textColor} />
+          <CalendarIcon name='calendar' color={theme.textColor} />
           <Text
             style={[
               { color: theme.textColor, flex: 1 },
               fontStyle.itemSubTitle,
             ]}>
-            {item.weekCycle.length == 7 ? ' 매일 ' : ' 오늘 '}
-            {item.alertTime}시
+            {item.weekCycle.length == 7
+              ? ' 매일 '
+              : item.weekCycle.length != 0
+                ? item.weekCycle.map(value => {
+                    return ' ' + days[value] + ' ';
+                  })
+                : ' 오늘 '}
           </Text>
         </View>
       </View>
       <View style={styles.dateContainer}>
-        {(() => {
-          switch (pageType) {
-            case 'HOME':
-              return (
-                <Text
-                  style={[
-                    { color: theme.textColor },
-                    fontStyle.d_dayFont,
-                  ]}></Text>
-              );
-            case 'DETAIL':
-              return (
-                <Text style={[{ color: theme.textColor }]}>{item.date}</Text>
-              );
-            default:
-              return null;
-          }
-        })()}
+        {item.isComplete ? (
+          <CheckboxIcon
+            name='checkbox-marked-circle'
+            size={iconSize + ms(3, 0.3)}
+            color={theme.textColor}
+          />
+        ) : (
+          <CheckboxIcon
+            name='checkbox-blank-circle-outline'
+            size={iconSize + ms(3, 0.3)}
+            color={theme.textColor}
+          />
+        )}
       </View>
     </View>
   );
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
     flex: 0.2,
   },
   infoContainer: {
-    paddingVertical: ms(10, 0.3),
+    marginVertical: ms(10, 0.3),
     flex: 0.6,
     justifyContent: 'center',
     flexDirection: 'column',

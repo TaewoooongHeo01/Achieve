@@ -66,7 +66,7 @@ const Objectives = (): React.ReactElement => {
         }}>
         <View>
           <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-            나아갈 방향들
+            진행중인 목표
           </Text>
           <Text
             style={[

@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
@@ -12,6 +12,14 @@ import Animated, {
 import TodoItemDetail from './TodoItemDetail';
 import { useColors } from '../../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+  BottomSheetView,
+  TouchableOpacity,
+} from '@gorhom/bottom-sheet';
+import TodoInfo from './TodoInfo';
 
 const MemorizedItemDetail = memo(TodoItemDetail);
 
@@ -123,32 +131,83 @@ const TodoItem = ({
     };
   });
 
+  const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const todoSnapPoints = useMemo(() => ['30%'], []);
+
+  const todoHandlePresentModal = useCallback(() => {
+    todoBottomSheetModalRef.current?.present();
+  }, []);
+
+  const todoRenderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior={'close'}
+        opacity={0.8}
+      />
+    ),
+    [],
+  );
+
   return (
-    <GestureDetector gesture={pan}>
-      <Animated.View style={{ flex: 1 }}>
-        <Animated.View
+    <View style={{ flex: 1 }}>
+      <TouchableOpacity activeOpacity={0.8} onPress={todoHandlePresentModal}>
+        <GestureDetector gesture={pan}>
+          <Animated.View style={{ flex: 1 }}>
+            <Animated.View
+              style={[
+                {
+                  flex: 1,
+                  position: 'relative',
+                  zIndex: 2,
+                },
+                // colorTheme === 'light' ? shadow.boxShadow : {},
+                scrollableListSize,
+                animatedStyle,
+              ]}>
+              <MemorizedItemDetail item={item} />
+            </Animated.View>
+            <View style={styles.hiddenContainer}>
+              <Animated.View style={[fontFadeOutLeft]}>
+                <Icon name='doubleright' color={theme.textColor} size={20} />
+              </Animated.View>
+              <Animated.View style={[fontFadeOutRight]}>
+                <Icon name='check' color={theme.textColor} size={20} />
+              </Animated.View>
+            </View>
+          </Animated.View>
+        </GestureDetector>
+      </TouchableOpacity>
+      <BottomSheetModal
+        ref={todoBottomSheetModalRef}
+        index={0}
+        snapPoints={todoSnapPoints}
+        backdropComponent={todoRenderBackdrop}
+        detached={true}
+        bottomInset={50}
+        handleStyle={{
+          backgroundColor: theme.backgroundColor,
+          borderTopRightRadius: 15,
+          borderTopLeftRadius: 15,
+          marginHorizontal: ms(10, 0.3),
+          height: 0,
+        }}
+        handleIndicatorStyle={{ backgroundColor: theme.textColor }}
+        backgroundStyle={{
+          marginHorizontal: ms(10, 0.3),
+          flex: 1,
+        }}>
+        <BottomSheetView
           style={[
-            {
-              flex: 1,
-              position: 'relative',
-              zIndex: 2,
-            },
-            // colorTheme === 'light' ? shadow.boxShadow : {},
-            scrollableListSize,
-            animatedStyle,
+            styles.bottomSheetContainer,
+            { backgroundColor: theme.backgroundColor },
           ]}>
-          <MemorizedItemDetail item={item} pageType={'HOME'} />
-        </Animated.View>
-        <View style={styles.hiddenContainer}>
-          <Animated.View style={[fontFadeOutLeft]}>
-            <Icon name='doubleright' color={theme.textColor} size={20} />
-          </Animated.View>
-          <Animated.View style={[fontFadeOutRight]}>
-            <Icon name='check' color={theme.textColor} size={20} />
-          </Animated.View>
-        </View>
-      </Animated.View>
-    </GestureDetector>
+          <TodoInfo item={item} theme={theme} />
+        </BottomSheetView>
+      </BottomSheetModal>
+    </View>
   );
 };
 
@@ -163,6 +222,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: ms(20, 0.3),
+  },
+  bottomSheetContainer: {
+    flex: 1,
+    paddingHorizontal: ms(20, 0.3),
+    marginHorizontal: ms(10, 0.3),
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
   },
 });
 

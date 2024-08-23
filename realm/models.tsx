@@ -28,7 +28,8 @@ export class Objective extends Realm.Object {
   icon!: string;
   color!: number;
   todos!: Realm.List<Todo>;
-  why?: string;
+  way!: string;
+  description?: string;
 
   static schema: Realm.ObjectSchema = {
     name: 'Objective',
@@ -43,7 +44,8 @@ export class Objective extends Realm.Object {
       icon: 'string',
       color: 'int',
       todos: 'Todo[]',
-      why: 'string?',
+      why: 'string',
+      description: 'string?',
     },
   };
 }
@@ -53,9 +55,9 @@ export class Todo extends Realm.Object {
   title!: string;
   date!: string;
   objective!: Objective;
-  alertOn!: boolean;
-  alertTime?: number; //0~24
   weekCycle!: number[];
+  priority!: number;
+  isComplete!: boolean;
 
   static schema: Realm.ObjectSchema = {
     name: 'Todo',
@@ -67,14 +69,14 @@ export class Todo extends Realm.Object {
       },
       title: 'string',
       date: 'string',
-      Objective: {
+      objective: {
         type: 'linkingObjects',
         objectType: 'Objective',
         property: 'todos',
       },
-      alertOn: 'bool',
-      alertTime: 'int?',
       weekCycle: 'int[]',
+      priority: 'int',
+      isComplete: 'bool',
     },
   };
 }
