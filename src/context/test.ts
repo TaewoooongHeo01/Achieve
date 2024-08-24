@@ -15,11 +15,11 @@ export const initialize = () => {
     });
   });
 
-  for (let i = 0; i < ObjectivesData.length; i++) {
-    const g = ObjectivesData[i];
+  for (let i = 0; i < GoalsData.length; i++) {
+    const g = GoalsData[i];
     const t = todos[i];
     realm.write(() => {
-      const objective = realm.create('Objective', {
+      const Goal = realm.create('Goal', {
         title: g.title,
         isComplete: g.isComplete,
         icon: g.icon,
@@ -33,14 +33,14 @@ export const initialize = () => {
         const todoItem = realm.create('Todo', {
           title: td.title,
           date: td.date,
-          objective: objective,
+          Goal: Goal,
           // alertOn: td.alertOn,
           // alertTime: td.alertTime,
           weekCycle: td.weekCycle,
           priority: td.priority,
           isComplete: td.isComplete,
         });
-        objective.todos.push(todoItem);
+        Goal.todos.push(todoItem);
       }
     });
   }
@@ -56,7 +56,7 @@ const UserData = {
   ],
 };
 
-const ObjectivesData = [
+const GoalsData = [
   {
     title: '10kg 감량하기',
     isComplete: false,
@@ -64,7 +64,8 @@ const ObjectivesData = [
     color: 0,
     todo: [],
     why: '무언가를 끝내보고 싶다는 생각',
-    description: '세달 동안 10kg 감량하기 목표',
+    description:
+      '세달 동안 10kg 감량하기 목표세달 동안 10kg 감량하기 목표세달 동안 10kg 감량하기 목표세달 동안 10kg 감량하기 목표',
   },
   {
     title: '독서 30분 하기',

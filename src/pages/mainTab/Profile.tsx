@@ -71,7 +71,7 @@ const Profile = (): React.JSX.Element => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            navigation.navigate('ObjectiveAdd');
+            navigation.navigate('GoalAdd');
           }}>
           <View
             style={[

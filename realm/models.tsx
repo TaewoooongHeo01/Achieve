@@ -21,18 +21,18 @@ export class User extends Realm.Object {
   };
 }
 
-export class Objective extends Realm.Object {
+export class Goal extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
   isComplete!: boolean;
   icon!: string;
   color!: number;
-  todos!: Realm.List<Todo>;
+  todos?: Realm.List<Todo>;
   way!: string;
   description?: string;
 
   static schema: Realm.ObjectSchema = {
-    name: 'Objective',
+    name: 'Goal',
     primaryKey: '_id',
     properties: {
       _id: {
@@ -50,11 +50,30 @@ export class Objective extends Realm.Object {
   };
 }
 
+// export class FullyDate extends Realm.Object {
+//   dateKey!: string;
+//   fullness!: number;
+//   todos?: Realm.List<Todo>;
+
+//   static schema: Realm.ObjectSchema = {
+//     name: 'FullyDate',
+//     primaryKey: 'dateKey',
+//     properties: {
+//       dateKey: {
+//         type: 'string',
+//         // default: () =>
+//       },
+//       fullness: 'int',
+//       todos: 'Todo[]',
+//     },
+//   };
+// }
+
 export class Todo extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
   date!: string;
-  objective!: Objective;
+  goal!: Goal;
   weekCycle!: number[];
   priority!: number;
   isComplete!: boolean;
@@ -69,9 +88,9 @@ export class Todo extends Realm.Object {
       },
       title: 'string',
       date: 'string',
-      objective: {
+      goal: {
         type: 'linkingObjects',
-        objectType: 'Objective',
+        objectType: 'Goal',
         property: 'todos',
       },
       weekCycle: 'int[]',

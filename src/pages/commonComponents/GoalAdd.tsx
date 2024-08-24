@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const ObjectiveAdd = () => {
+const GoalAdd = () => {
   return (
     <View>
       <Text>goalAdd</Text>
@@ -9,4 +9,4 @@ const ObjectiveAdd = () => {
   );
 };
 
-export default ObjectiveAdd;
+export default GoalAdd;

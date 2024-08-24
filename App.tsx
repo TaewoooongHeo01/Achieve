@@ -9,11 +9,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 //pages
 import Main from './src/pages/Main';
-import ObjectiveDetail from './src/pages/commonComponents/ObjectiveDetail';
+import GoalDetail from './src/pages/commonComponents/GoalDetail';
 import { RealmProvider } from '@realm/react';
-import { Objective, Todo, User } from './realm/models';
+import { Goal, Todo, User } from './realm/models';
 import { ThemeContextProvider } from './src/context/ThemeContext';
-import ObjectiveAdd from './src/pages/commonComponents/ObjectiveAdd';
+import GoalAdd from './src/pages/commonComponents/GoalAdd';
 import HowToUse from './src/pages/profileComponents/HowToUse';
 import LateTodo from './src/pages/profileComponents/LateTodo';
 import Notes from './src/pages/profileComponents/Notes';
@@ -21,17 +21,17 @@ import Options from './src/pages/profileComponents/Options';
 
 export type RootStackParamList = {
   Main: undefined;
-  ObjectiveDetail: { _id: string };
-  ObjectiveAdd: undefined;
+  GoalDetail: { _id: string };
+  GoalAdd: undefined;
   HowToUse: undefined;
   LateTodo: undefined;
   Notes: undefined;
   Options: undefined;
 };
 
-export type ObjectiveDetailScreenProps = NativeStackScreenProps<
+export type GoalDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
-  'ObjectiveDetail'
+  'GoalDetail'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -39,7 +39,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function App(): React.JSX.Element {
   return (
     <RealmProvider
-      schema={[Objective, Todo, User]}
+      schema={[Goal, Todo, User]}
       deleteRealmIfMigrationNeeded={true}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -51,11 +51,8 @@ function App(): React.JSX.Element {
                   name='Main'
                   component={Main}
                 />
-                <Stack.Screen
-                  name='ObjectiveDetail'
-                  component={ObjectiveDetail}
-                />
-                <Stack.Screen name='ObjectiveAdd' component={ObjectiveAdd} />
+                <Stack.Screen name='GoalDetail' component={GoalDetail} />
+                <Stack.Screen name='GoalAdd' component={GoalAdd} />
                 <Stack.Screen name='HowToUse' component={HowToUse} />
                 <Stack.Screen name='LateTodo' component={LateTodo} />
                 <Stack.Screen name='Notes' component={Notes} />

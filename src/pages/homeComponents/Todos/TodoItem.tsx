@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import { Todo } from '../../../../realm/models';
+import { Goal, Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -19,9 +19,10 @@ import {
   BottomSheetView,
   TouchableOpacity,
 } from '@gorhom/bottom-sheet';
-import TodoInfo from './TodoInfo';
+import TodoInfo from './TodoInfoBottomSheet';
 
 const MemorizedItemDetail = memo(TodoItemDetail);
+const MemorizedTodoInfoBottomSheet = memo(TodoInfo);
 
 const TodoItem = ({
   item,
@@ -32,6 +33,7 @@ const TodoItem = ({
   delayTodo(itemId: string): void;
   completeTodo(itemId: string): void;
 }) => {
+  const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const { theme } = useColors();
   let screenWidth = useWindowDimensions().width;
 
@@ -132,7 +134,7 @@ const TodoItem = ({
   });
 
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const todoSnapPoints = useMemo(() => ['30%'], []);
+  const todoSnapPoints = useMemo(() => ['40%'], []);
 
   const todoHandlePresentModal = useCallback(() => {
     todoBottomSheetModalRef.current?.present();
@@ -167,7 +169,7 @@ const TodoItem = ({
                 scrollableListSize,
                 animatedStyle,
               ]}>
-              <MemorizedItemDetail item={item} />
+              <MemorizedItemDetail item={item} goal={goal} />
             </Animated.View>
             <View style={styles.hiddenContainer}>
               <Animated.View style={[fontFadeOutLeft]}>
@@ -204,7 +206,7 @@ const TodoItem = ({
             styles.bottomSheetContainer,
             { backgroundColor: theme.backgroundColor },
           ]}>
-          <TodoInfo item={item} theme={theme} />
+          <MemorizedTodoInfoBottomSheet item={item} theme={theme} goal={goal} />
         </BottomSheetView>
       </BottomSheetModal>
     </View>
@@ -225,7 +227,7 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     flex: 1,
-    paddingHorizontal: ms(20, 0.3),
+    paddingHorizontal: ms(30, 0.3),
     marginHorizontal: ms(10, 0.3),
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,

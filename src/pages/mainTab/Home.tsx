@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 
 //mainTab components
 import Intro from '../homeComponents/Intro';
-import Objectives from '../homeComponents/Objectives';
+import Goals from '../homeComponents/Goals';
 import TodoDate from '../homeComponents/Todos/TodoDate';
 import { useColors } from '../../context/ThemeContext';
 import { ms } from 'react-native-size-matters';
@@ -27,13 +27,13 @@ export type TodoType = {
   title: string;
   dates: number[];
   time: number;
-  objectives: number;
+  goals: number;
 };
 
 const Home = (): React.ReactElement => {
   const { theme } = useColors();
 
-  const data = [<Intro />, <Objectives />, <TodoDate />];
+  const data = [<Intro />, <Goals />, <TodoDate />];
 
   const renderItem = ({ item }: { item: React.ReactElement }) => {
     return <View style={{ flex: 1 }}>{item}</View>;

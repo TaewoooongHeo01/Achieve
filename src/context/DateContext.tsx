@@ -21,7 +21,7 @@ export const dayNames = [
 ];
 
 //context value 타입
-interface TaskDateContextType {
+export interface TaskDateContextType {
   taskDate: TaskDate;
   setTaskDate: React.Dispatch<React.SetStateAction<TaskDate>>;
   today: TaskDate;
@@ -54,10 +54,14 @@ export const DateContextProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useDateContext = () => {
+export const useDateContext = (): TaskDateContextType => {
   const dateContext = useContext(DateContext);
   if (dateContext === undefined) {
     throw new Error('useDateContext hook must be inside a DateContextProvider');
   }
-  return dateContext;
+  return {
+    taskDate: dateContext.taskDate,
+    setTaskDate: dateContext.setTaskDate,
+    today: dateContext.today,
+  };
 };

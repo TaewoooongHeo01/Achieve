@@ -1,37 +1,37 @@
 import React from 'react';
 import Realm from 'realm';
 import { View, Text, Button } from 'react-native';
-import { ObjectiveDetailScreenProps } from '../../../App';
+import { GoalDetailScreenProps } from '../../../App';
 import { useObject, useRealm } from '@realm/react';
-import { Objective } from '../../../realm/models';
+import { Goal } from '../../../realm/models';
 
-const ObjectiveDetail = ({
+const GoalDetail = ({
   route,
   navigation,
-}: ObjectiveDetailScreenProps): React.ReactElement => {
+}: GoalDetailScreenProps): React.ReactElement => {
   const id = new Realm.BSON.ObjectId(route.params._id);
   const realm = useRealm();
-  const objective = useObject<Objective>('Objective', id);
-  const todos = objective?.todos;
+  const Goal = useObject<Goal>('Goal', id);
+  const todos = Goal?.todos;
 
-  const deleteObjective = () => {
+  const deleteGoal = () => {
     navigation.goBack();
     realm.write(() => {
       realm.delete(todos);
-      realm.delete(Objective);
+      realm.delete(Goal);
     });
   };
 
   return (
     <View>
-      <Text>Objective id: </Text>
+      <Text>Goal id: </Text>
       <Button
         title='delete'
         onPress={() => {
-          deleteObjective();
+          deleteGoal();
         }}></Button>
     </View>
   );
 };
 
-export default ObjectiveDetail;
+export default GoalDetail;

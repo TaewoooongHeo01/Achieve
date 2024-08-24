@@ -7,47 +7,46 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useQuery } from '@realm/react';
-import { Objective } from '../../../realm/models';
+import { Goal } from '../../../realm/models';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
 import { shadow } from '../../assets/style/shadow';
 
-const Objectives = (): React.ReactElement => {
+const Goals = (): React.ReactElement => {
   const { theme, currentTheme } = useColors();
   const [iconSize, setIconSize] = useState<number>(0);
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const objectiveData = useQuery(Objective);
+  const goalData = useQuery(Goal);
 
-  const renderItem = ({ item }: { item: Objective }) => {
+  const renderItem = ({ item }: { item: Goal }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ObjectiveDetail', { _id: item._id.toString() });
+          navigation.navigate('GoalDetail', { _id: item._id.toString() });
         }}>
         <LinearGradient
           colors={theme.gradientColor[item.color]}
-          style={[objectiveStyle.layout]}
+          style={[GoalStyle.layout]}
           useAngle={true}
           angle={35}>
           <View style={{ flex: 1 }}>
             <View
-              style={[objectiveStyle.iconD_day, { flex: ms(0.2, 0.3) }]}
+              style={[GoalStyle.iconD_day, { flex: ms(0.2, 0.3) }]}
               onLayout={e => {
                 setIconSize(e.nativeEvent.layout.height);
               }}>
               <Icon name={item.icon} size={iconSize}></Icon>
             </View>
-            <View
-              style={[{ flex: ms(0.9, 0.3) }, objectiveStyle.titleContainer]}>
-              <Text style={objectiveStyle.todoText}>
-                {item.todos.length}개의 해야 할 일
+            <View style={[{ flex: ms(0.9, 0.3) }, GoalStyle.titleContainer]}>
+              <Text style={GoalStyle.todoText}>
+                {item.todos ? item.todos.length : 0}개의 해야 할 일
               </Text>
-              <Text style={objectiveStyle.titleText}>{item.title}</Text>
+              <Text style={GoalStyle.titleText}>{item.title}</Text>
             </View>
           </View>
         </LinearGradient>
@@ -74,29 +73,29 @@ const Objectives = (): React.ReactElement => {
               fontStyle.fontSizeSub,
               { color: theme.textColor, opacity: 0.7 },
             ]}>
-            {objectiveData.length}개의 목적
+            {goalData.length}개의 목적
           </Text>
         </View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('ObjectiveAdd');
+            navigation.navigate('GoalAdd');
           }}>
           <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
         </TouchableOpacity>
       </View>
-      {objectiveData.length != 0 ? (
+      {goalData.length != 0 ? (
         <FlatList
           showsHorizontalScrollIndicator={false}
           style={{ marginTop: ms(10, 0.3) }}
           horizontal={true}
-          data={objectiveData}
+          data={goalData}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
       ) : (
         <TouchableOpacity
           style={[
-            objectiveStyle.layout,
+            GoalStyle.layout,
             currentTheme === 'light' ? shadow.boxShadow : {},
             {
               marginTop: ms(10, 0.3),
@@ -106,7 +105,7 @@ const Objectives = (): React.ReactElement => {
             },
           ]}
           onPress={() => {
-            navigation.navigate('ObjectiveAdd');
+            navigation.navigate('GoalAdd');
           }}
           activeOpacity={1}>
           <PlusIcon name='plus' color={theme.textColor} size={30}></PlusIcon>
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const objectiveStyle = StyleSheet.create({
+const GoalStyle = StyleSheet.create({
   layout: {
     flex: 1,
     width: ms(130, 0.3),
@@ -156,4 +155,4 @@ const objectiveStyle = StyleSheet.create({
   },
 });
 
-export default Objectives;
+export default Goals;

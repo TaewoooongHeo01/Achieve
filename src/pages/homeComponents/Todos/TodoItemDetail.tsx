@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Objective, Todo } from '../../../../realm/models';
+import { Goal, Todo } from '../../../../realm/models';
 import { StyleSheet, Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useColors } from '../../../context/ThemeContext';
@@ -12,13 +12,14 @@ import CheckboxIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const TodoItemDetail = ({
   item,
+  goal,
   // pageType,
 }: {
   item: Todo;
+  goal: Goal;
   // pageType: string;
 }) => {
   const { theme, currentTheme } = useColors();
-  const objective = item.linkingObjects<Objective>('Objective', 'todos')[0];
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
   const [iconSize, setIconSize] = useState<number>(0);
   return (
@@ -46,7 +47,7 @@ const TodoItemDetail = ({
           }}>
           <LinearGradient
             style={{ flex: 1, borderRadius: ms(10, 0.3) }}
-            colors={theme.gradientColor[objective.color]}>
+            colors={theme.gradientColor[goal.color]}>
             <View
               style={{
                 marginVertical: ms(10.3, 0.3),
@@ -58,7 +59,7 @@ const TodoItemDetail = ({
                 setIconSize(e.nativeEvent.layout.height);
               }}>
               <Icon
-                name={objective.icon}
+                name={goal.icon}
                 style={{ textAlign: 'center' }}
                 size={iconSize}></Icon>
             </View>
