@@ -8,15 +8,18 @@ import {
   MediumTextMemoization,
   SemiBoldTextMemoization,
 } from '../../../utils/CustomText';
-import {
-  makeWeekCalendar,
-  selectedCheck,
-} from '../../../utils/makeWeekCalendar';
-import { days, TaskDate, useDateContext } from '../../../context/DateContext';
+import { makeWeekCalendar } from '../../../utils/makeWeekCalendar';
+import { days, TaskDate } from '../../../context/DateContext';
 import {
   BottomSheetScrollView,
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
+import { fontStyle } from '../../../assets/style/fontStyle';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../../../App';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useColors } from '../../../context/ThemeContext';
+import { shadow } from '../../../assets/style/shadow';
 
 type dateUI = {
   taskDate: TaskDate;
@@ -29,18 +32,23 @@ const TodoInfo = ({
   item,
   theme,
   goal,
+  todoCompleteAnimation,
 }: {
   item: Todo;
   theme: ColorSet;
   goal: Goal;
+  todoCompleteAnimation(): void;
 }) => {
+  const { currentTheme } = useColors();
   const week = makeWeekCalendar();
   const weekCycle = item.weekCycle;
-  const { today } = useDateContext();
   const { dismiss } = useBottomSheetModal();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const [weekCycleUI, setWeekCycleUI] = useState<dateUI[]>([]);
   const weekUI: dateUI[] = [];
+
   useEffect(() => {
     for (let i = 0; i < 7; i++) {
       const taskDate = week[i];
@@ -55,10 +63,8 @@ const TodoInfo = ({
         rightOn = weekCycle.includes(i + 1);
         leftOn = weekCycle.includes(i - 1);
       }
-      if (taskDate != undefined) {
-        if (selectedCheck(taskDate, today) || weekCycle.includes(i)) {
-          contain = true;
-        }
+      if (weekCycle.includes(i)) {
+        contain = true;
       }
       const dateUI: dateUI = {
         taskDate: taskDate,
@@ -92,7 +98,7 @@ const TodoInfo = ({
               <Text
                 style={[
                   {
-                    fontSize: ms(25, 0.3),
+                    fontSize: ms(21, 0.3),
                     color: theme.textColor,
                     fontFamily: 'Pretendard-SemiBold',
                     paddingBottom: ms(1, 0.3),
@@ -121,13 +127,20 @@ const TodoInfo = ({
             </TouchableOpacity>
           </View>
         </View>
-        <View
-          style={{
-            marginTop: ms(14, 0.3),
-            backgroundColor: theme.appBackgroundColor,
-            borderRadius: ms(10, 0.3),
-            justifyContent: 'center',
-          }}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => {
+            navigation.navigate('GoalDetail', { _id: item._id.toString() });
+          }}
+          style={[
+            {
+              marginTop: ms(14, 0.3),
+              backgroundColor: theme.appBackgroundColor,
+              borderRadius: ms(10, 0.3),
+              justifyContent: 'center',
+            },
+            currentTheme === 'light' ? shadow.boxShadow : {},
+          ]}>
           <Text
             style={[
               {
@@ -140,7 +153,7 @@ const TodoInfo = ({
             ]}>
             {goal.description}
           </Text>
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             flex: ms(0.3, 0.3),
@@ -151,7 +164,11 @@ const TodoInfo = ({
           {weekCycleUI.map((value, index) => {
             return value.taskDate != undefined ? (
               <View
-                key={index.toString()}
+                key={(
+                  value.taskDate.year +
+                  value.taskDate.month +
+                  value.taskDate.date
+                ).toString()}
                 style={[
                   styles.btn,
                   value.contain ? { backgroundColor: theme.textColor } : {},
@@ -195,11 +212,12 @@ const TodoInfo = ({
           {!item.isComplete ? (
             <TouchableOpacity
               onPress={() => {
-                dismiss;
+                dismiss();
+                todoCompleteAnimation();
               }}
               style={{
                 marginTop: ms(14, 0.3),
-                backgroundColor: 'green',
+                backgroundColor: 'rgba(0, 217, 0, 1)',
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: ms(8, 0.3),
@@ -210,6 +228,7 @@ const TodoInfo = ({
                     padding: ms(16, 0.3),
                     color: theme.textColor,
                   },
+                  fontStyle.fontSizeSub,
                 ]}>
                 완료
               </MediumTextMemoization>
@@ -220,7 +239,7 @@ const TodoInfo = ({
               style={{
                 marginTop: ms(14, 0.3),
                 flex: 0.3,
-                backgroundColor: '#121212',
+                backgroundColor: 'rgba(0, 128, 0, 0.2)',
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: ms(8, 0.3),
@@ -230,7 +249,9 @@ const TodoInfo = ({
                   {
                     padding: ms(16, 0.3),
                     color: theme.textColor,
+                    opacity: 0.3,
                   },
+                  fontStyle.fontSizeSub,
                 ]}>
                 완료
               </MediumTextMemoization>
@@ -254,7 +275,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: ms(5, 0.3),
+    padding: ms(8, 0.3),
   },
   days: {
     fontFamily: 'Pretendard-Regular',

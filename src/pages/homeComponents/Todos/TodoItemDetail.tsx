@@ -28,7 +28,11 @@ const TodoItemDetail = ({
         styles.todoContainer,
         {
           borderRadius: ms(6, 0.3),
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: item.isComplete
+            ? currentTheme === 'dark'
+              ? 'rgba(40, 40, 40, 0.4)'
+              : 'E4E4E4'
+            : theme.backgroundColor,
         },
         currentTheme === 'light' ? shadow.boxShadow : {},
       ]}
@@ -46,7 +50,11 @@ const TodoItemDetail = ({
             margin: ms(13, 0.3),
           }}>
           <LinearGradient
-            style={{ flex: 1, borderRadius: ms(10, 0.3) }}
+            style={{
+              flex: 1,
+              borderRadius: ms(10, 0.3),
+              opacity: item.isComplete ? 0.4 : 1,
+            }}
             colors={theme.gradientColor[goal.color]}>
             <View
               style={{
@@ -67,7 +75,8 @@ const TodoItemDetail = ({
         </View>
       </View>
       <View style={[styles.infoContainer]}>
-        <View style={{ flex: ms(0.5, 0.3) }}>
+        <View
+          style={{ flex: ms(0.5, 0.3), opacity: item.isComplete ? 0.4 : 1 }}>
           <Text style={[{ color: theme.textColor }, fontStyle.itemTitle]}>
             {item.title}
           </Text>
@@ -81,7 +90,10 @@ const TodoItemDetail = ({
           <CalendarIcon name='calendar' color={theme.textColor} />
           <Text
             style={[
-              { color: theme.textColor, flex: 1 },
+              {
+                color: theme.textColor,
+                flex: 1,
+              },
               fontStyle.itemSubTitle,
             ]}>
             {item.weekCycle.length == 7

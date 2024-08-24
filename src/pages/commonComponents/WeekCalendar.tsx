@@ -9,13 +9,13 @@ import { makeWeekCalendar, selectedCheck } from '../../utils/makeWeekCalendar';
 
 const WeekCalender = (): React.ReactElement => {
   const { theme } = useColors();
-  const { setTaskDate, today } = useDateContext();
+  const { setTaskDate, taskDate } = useDateContext();
   const week = makeWeekCalendar();
 
   return (
     <View style={styles.layout}>
       {week.map((value, index) => {
-        const isToday: boolean = selectedCheck(value, today);
+        const isToday: boolean = selectedCheck(value, taskDate);
         return (
           <Pressable
             key={index}

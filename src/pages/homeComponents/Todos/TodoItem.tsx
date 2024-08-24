@@ -51,6 +51,18 @@ const TodoItem = ({
 
   const itemId = item._id.toString();
 
+  const todoCompleteAnimation = () => {
+    'worklet';
+    backFontOpacityRight.value = withTiming(0, {}, () => {
+      translateX.value = withTiming(-screenWidth, {}, () => {
+        marginXY.value = withTiming(0);
+        scaleX.value = withTiming(0, {}, () => {
+          runOnJS(completeTodo)(itemId);
+        });
+      });
+    });
+  };
+
   const pan = Gesture.Pan()
     .activeOffsetX([-20, 20])
     .onStart(() => {
@@ -83,14 +95,7 @@ const TodoItem = ({
             });
           });
         } else {
-          backFontOpacityRight.value = withTiming(0, {}, () => {
-            translateX.value = withTiming(screenWidth, {}, () => {
-              marginXY.value = withTiming(0);
-              scaleX.value = withTiming(0, {}, () => {
-                runOnJS(completeTodo)(itemId);
-              });
-            });
-          });
+          todoCompleteAnimation();
         }
         animatiomIsRunning.current = false;
       } else {
@@ -134,7 +139,7 @@ const TodoItem = ({
   });
 
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const todoSnapPoints = useMemo(() => ['40%'], []);
+  const todoSnapPoints = useMemo(() => ['45%'], []);
 
   const todoHandlePresentModal = useCallback(() => {
     todoBottomSheetModalRef.current?.present();
@@ -165,7 +170,7 @@ const TodoItem = ({
                   position: 'relative',
                   zIndex: 2,
                 },
-                // colorTheme === 'light' ? shadow.boxShadow : {},
+                // colorTheme === 'light' ? shadow.boxShadow : {}
                 scrollableListSize,
                 animatedStyle,
               ]}>
@@ -206,7 +211,12 @@ const TodoItem = ({
             styles.bottomSheetContainer,
             { backgroundColor: theme.backgroundColor },
           ]}>
-          <MemorizedTodoInfoBottomSheet item={item} theme={theme} goal={goal} />
+          <MemorizedTodoInfoBottomSheet
+            item={item}
+            theme={theme}
+            goal={goal}
+            todoCompleteAnimation={todoCompleteAnimation}
+          />
         </BottomSheetView>
       </BottomSheetModal>
     </View>
