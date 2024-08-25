@@ -73,7 +73,7 @@ const Goals = (): React.ReactElement => {
               fontStyle.fontSizeSub,
               { color: theme.textColor, opacity: 0.7 },
             ]}>
-            {goalData.length}개의 목적
+            {goalData.length}개의 목표
           </Text>
         </View>
         <TouchableOpacity

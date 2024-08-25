@@ -1,5 +1,6 @@
+import { FullyDate } from './../../realm/models';
 //개발 단계에서 넣는 테스트 데이터
-import { useRealm } from '@realm/react';
+import { useObject, useQuery, useRealm } from '@realm/react';
 
 export const initialize = () => {
   const realm = useRealm();
@@ -25,7 +26,6 @@ export const initialize = () => {
         icon: g.icon,
         color: g.color,
         todos: [],
-        why: g.why,
         description: g.description,
       });
       for (let i = 0; i < t.length; i++) {
@@ -34,12 +34,20 @@ export const initialize = () => {
           title: td.title,
           date: td.date,
           Goal: Goal,
-          // alertOn: td.alertOn,
-          // alertTime: td.alertTime,
           weekCycle: td.weekCycle,
           priority: td.priority,
           isComplete: td.isComplete,
         });
+        const date = useObject(FullyDate, todoItem.date);
+        if (date != undefined) {
+          date.todos?.push(todoItem);
+        } else {
+          realm.create('FullyDate', {
+            dateKey: todoItem.date,
+            fullness: 0,
+            todos: [],
+          });
+        }
         Goal.todos.push(todoItem);
       }
     });
@@ -58,22 +66,11 @@ const UserData = {
 
 const GoalsData = [
   {
-    title: '10kg 감량하기',
-    isComplete: false,
-    icon: 'barbell',
-    color: 0,
-    todo: [],
-    why: '무언가를 끝내보고 싶다는 생각',
-    description:
-      '세달 동안 10kg 감량하기 목표세달 동안 10kg 감량하기 목표세달 동안 10kg 감량하기 목표세달 동안 10kg 감량하기 목표',
-  },
-  {
     title: '독서 30분 하기',
     isComplete: false,
     icon: 'book',
     color: 3,
     todo: [],
-    why: '무언가를 끝내보고 싶다는 생각',
     description: '매일 30분씩 독서하기',
   },
   {
@@ -82,7 +79,6 @@ const GoalsData = [
     icon: 'code',
     color: 11,
     todo: [],
-    why: '2달 동안 새로운 프로그래밍 언어 마스터하기',
     description: '매일 30분씩 독서하기',
   },
   {
@@ -91,7 +87,6 @@ const GoalsData = [
     icon: 'accessibility',
     color: 3,
     todo: [],
-    why: '무언가를 끝내보고 싶다는 생각',
     description: '건강을 위해 매일 걷기',
   },
   {
@@ -100,7 +95,6 @@ const GoalsData = [
     icon: 'leaf',
     color: 8,
     todo: [],
-    why: '무언가를 끝내보고 싶다는 생각',
     description: '매일 자기 전 명상으로 하루를 마무리',
   },
 ];
@@ -114,9 +108,9 @@ const today = String(now.getDate()).padStart(2, '0');
 // const tomorrow = String(now.getDate() + 1).padStart(2, '0');
 
 // const yesterdayDate: string = year + month + yesterday;
-const yesterdayDate = '20240810';
+const yesterdayDate = '20240824';
 const todayDate: string = year + month + today;
-const tomorrowDate = '20240814';
+const tomorrowDate = '20240828';
 // const tomorrowDate: string = year + month + tomorrow;
 
 const todos = [
@@ -124,17 +118,13 @@ const todos = [
     {
       title: '식단 장 보기',
       date: todayDate,
-      // alertOn: false,
-      // alertTime: 13,
-      weekCycle: [],
+      weekCycle: [1, 2],
       priority: 3,
       isComplete: false,
     },
     {
       title: '운동 루틴 찾아보기',
       date: todayDate,
-      // alertOn: true,
-      // alertTime: 20,
       weekCycle: [],
       priority: 2,
       isComplete: false,
@@ -142,8 +132,6 @@ const todos = [
     {
       title: '런닝 30분',
       date: tomorrowDate,
-      // alertOn: true,
-      // alertTime: 22,
       weekCycle: [0, 1, 2, 3, 4, 5, 6],
       priority: 1,
       isComplete: false,
@@ -153,8 +141,6 @@ const todos = [
     {
       title: '아침에 책 읽기',
       date: todayDate,
-      alertOn: true,
-      alertTime: 8,
       weekCycle: [0, 1, 2, 3, 4, 5, 6],
       priority: 3,
       isComplete: true,
@@ -162,8 +148,6 @@ const todos = [
     {
       title: '점심 시간에 책 읽기',
       date: todayDate,
-      // alertOn: true,
-      // alertTime: 12,
       weekCycle: [0, 1, 2, 3, 4, 5],
       priority: 2,
       isComplete: true,
@@ -173,8 +157,6 @@ const todos = [
     {
       title: '기초 문법 공부하기',
       date: yesterdayDate,
-      // alertOn: true,
-      // alertTime: 10,
       weekCycle: [1, 3, 5],
       priority: 1,
       isComplete: true,
@@ -182,8 +164,6 @@ const todos = [
     {
       title: '작은 프로젝트 시작하기',
       date: todayDate,
-      // alertOn: true,
-      // alertTime: 16,
       weekCycle: [2, 4, 6],
       priority: 2,
       isComplete: false,
@@ -193,8 +173,6 @@ const todos = [
     {
       title: '출근길에 걷기',
       date: todayDate,
-      // alertOn: false,
-      // alertTime: 8,
       weekCycle: [0, 1, 2, 3, 4, 5, 6],
       priority: 2,
       isComplete: true,
@@ -202,8 +180,6 @@ const todos = [
     {
       title: '저녁에 가벼운 산책하기',
       date: tomorrowDate,
-      // alertOn: true,
-      // alertTime: 20,
       weekCycle: [0, 1, 2, 3, 4, 5, 6],
       priority: 3,
       isComplete: false,
@@ -213,8 +189,6 @@ const todos = [
     {
       title: '명상 연습하기',
       date: todayDate,
-      // alertOn: true,
-      // alertTime: 22,
       weekCycle: [0, 1, 2, 3, 4, 5, 6],
       priority: 3,
       isComplete: true,

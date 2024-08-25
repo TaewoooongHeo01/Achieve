@@ -22,13 +22,13 @@ import { ms } from 'react-native-size-matters';
 //   isChecked: boolean;
 // };
 
-export type TodoType = {
-  todoId: string;
-  title: string;
-  dates: number[];
-  time: number;
-  goals: number;
-};
+// export type TodoType = {
+//   todoId: string;
+//   title: string;
+//   dates: number[];
+//   time: number;
+//   goals: number;
+// };
 
 const Home = (): React.ReactElement => {
   const { theme } = useColors();

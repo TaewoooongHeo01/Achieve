@@ -170,7 +170,6 @@ const TodoItem = ({
                   position: 'relative',
                   zIndex: 2,
                 },
-                // colorTheme === 'light' ? shadow.boxShadow : {}
                 scrollableListSize,
                 animatedStyle,
               ]}>

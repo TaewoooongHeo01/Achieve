@@ -20,7 +20,7 @@ import {
 const Main = (): React.JSX.Element => {
   const { top } = useSafeAreaInsets();
   const Tab = createBottomTabNavigator();
-  const { theme } = useColors();
+  const { theme, currentTheme } = useColors();
   initialize();
 
   return (
@@ -39,18 +39,14 @@ const Main = (): React.JSX.Element => {
               }}>
               <StatusBar
                 barStyle={
-                  theme.appBackgroundColor === '#121212'
-                    ? 'light-content'
-                    : 'dark-content'
+                  currentTheme === 'dark' ? 'light-content' : 'dark-content'
                 }
               />
             </View>
           ) : (
             <StatusBar
               barStyle={
-                theme.appBackgroundColor === '#121212'
-                  ? 'light-content'
-                  : 'dark-content'
+                currentTheme === 'dark' ? 'light-content' : 'dark-content'
               }
               backgroundColor={theme.appBackgroundColor}
             />

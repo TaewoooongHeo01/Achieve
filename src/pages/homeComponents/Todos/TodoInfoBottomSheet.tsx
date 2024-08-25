@@ -48,6 +48,13 @@ const TodoInfo = ({
 
   const [weekCycleUI, setWeekCycleUI] = useState<dateUI[]>([]);
   const weekUI: dateUI[] = [];
+  const date = item.date
+    ? item.date.substring(0, 4) +
+      '.' +
+      item.date.substring(4, 6) +
+      '.' +
+      item.date.substring(6, 8)
+    : '날짜없음';
 
   useEffect(() => {
     for (let i = 0; i < 7; i++) {
@@ -55,15 +62,20 @@ const TodoInfo = ({
       let contain = false;
       let leftOn = false;
       let rightOn = false;
+      let result;
       if (i == 0) {
-        rightOn = weekCycle.includes(i + 1);
+        result = weekCycle?.includes(i + 1);
+        rightOn = result != undefined ? result : false;
       } else if (i == 6) {
-        leftOn = weekCycle.includes(i - 1);
+        result = weekCycle?.includes(i - 1);
+        leftOn = result != undefined ? result : false;
       } else {
-        rightOn = weekCycle.includes(i + 1);
-        leftOn = weekCycle.includes(i - 1);
+        result = weekCycle?.includes(i + 1);
+        rightOn = result != undefined ? result : false;
+        result = weekCycle?.includes(i - 1);
+        leftOn = result != undefined ? result : false;
       }
-      if (weekCycle.includes(i)) {
+      if (weekCycle?.includes(i)) {
         contain = true;
       }
       const dateUI: dateUI = {
@@ -101,15 +113,14 @@ const TodoInfo = ({
                     fontSize: ms(21, 0.3),
                     color: theme.textColor,
                     fontFamily: 'Pretendard-SemiBold',
-                    paddingBottom: ms(1, 0.3),
+                    paddingBottom: ms(5, 0.3),
                   },
                 ]}>
                 {item.title}
               </Text>
               <SemiBoldTextMemoization
                 style={[{ marginLeft: ms(1, 0.3), color: theme.textColor }]}>
-                {item.date.substring(0, 4)}.{item.date.substring(4, 6)}.
-                {item.date.substring(6, 8)}
+                {date}
               </SemiBoldTextMemoization>
             </View>
             <TouchableOpacity
@@ -127,33 +138,6 @@ const TodoInfo = ({
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => {
-            navigation.navigate('GoalDetail', { _id: item._id.toString() });
-          }}
-          style={[
-            {
-              marginTop: ms(14, 0.3),
-              backgroundColor: theme.appBackgroundColor,
-              borderRadius: ms(10, 0.3),
-              justifyContent: 'center',
-            },
-            currentTheme === 'light' ? shadow.boxShadow : {},
-          ]}>
-          <Text
-            style={[
-              {
-                color: theme.textColor,
-                margin: ms(20, 0.3),
-                fontSize: ms(16, 0.3),
-                fontFamily: 'Pretendard-Medium',
-                lineHeight: ms(23, 0.3),
-              },
-            ]}>
-            {goal.description}
-          </Text>
-        </TouchableOpacity>
         <View
           style={{
             flex: ms(0.3, 0.3),
@@ -164,11 +148,7 @@ const TodoInfo = ({
           {weekCycleUI.map((value, index) => {
             return value.taskDate != undefined ? (
               <View
-                key={(
-                  value.taskDate.year +
-                  value.taskDate.month +
-                  value.taskDate.date
-                ).toString()}
+                key={index.toString()}
                 style={[
                   styles.btn,
                   value.contain ? { backgroundColor: theme.textColor } : {},
@@ -208,6 +188,33 @@ const TodoInfo = ({
             );
           })}
         </View>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => {
+            navigation.navigate('GoalDetail', { _id: item._id.toString() });
+          }}
+          style={[
+            {
+              marginTop: ms(14, 0.3),
+              backgroundColor: theme.appBackgroundColor,
+              borderRadius: ms(10, 0.3),
+              justifyContent: 'center',
+            },
+            currentTheme === 'light' ? shadow.boxShadow : {},
+          ]}>
+          <Text
+            style={[
+              {
+                color: theme.textColor,
+                margin: ms(20, 0.3),
+                fontSize: ms(16, 0.3),
+                fontFamily: 'Pretendard-Medium',
+                lineHeight: ms(23, 0.3),
+              },
+            ]}>
+            {goal.description}
+          </Text>
+        </TouchableOpacity>
         <View style={{ flex: 0.3 }}>
           {!item.isComplete ? (
             <TouchableOpacity

@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Main from './src/pages/Main';
 import GoalDetail from './src/pages/commonComponents/GoalDetail';
 import { RealmProvider } from '@realm/react';
-import { Goal, Todo, User } from './realm/models';
+import { FullyDate, Goal, Todo, User } from './realm/models';
 import { ThemeContextProvider } from './src/context/ThemeContext';
 import GoalAdd from './src/pages/commonComponents/GoalAdd';
 import HowToUse from './src/pages/profileComponents/HowToUse';
@@ -39,7 +39,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function App(): React.JSX.Element {
   return (
     <RealmProvider
-      schema={[Goal, Todo, User]}
+      schema={[Goal, Todo, User, FullyDate]}
       deleteRealmIfMigrationNeeded={true}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -51,7 +51,11 @@ function App(): React.JSX.Element {
                   name='Main'
                   component={Main}
                 />
-                <Stack.Screen name='GoalDetail' component={GoalDetail} />
+                <Stack.Screen
+                  name='GoalDetail'
+                  component={GoalDetail}
+                  options={{ headerShown: false }}
+                />
                 <Stack.Screen name='GoalAdd' component={GoalAdd} />
                 <Stack.Screen name='HowToUse' component={HowToUse} />
                 <Stack.Screen name='LateTodo' component={LateTodo} />

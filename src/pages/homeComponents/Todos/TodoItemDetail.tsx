@@ -30,8 +30,8 @@ const TodoItemDetail = ({
           borderRadius: ms(6, 0.3),
           backgroundColor: item.isComplete
             ? currentTheme === 'dark'
-              ? 'rgba(40, 40, 40, 0.4)'
-              : 'E4E4E4'
+              ? '#222222'
+              : '#F4F4F4'
             : theme.backgroundColor,
         },
         currentTheme === 'light' ? shadow.boxShadow : {},
@@ -53,7 +53,7 @@ const TodoItemDetail = ({
             style={{
               flex: 1,
               borderRadius: ms(10, 0.3),
-              opacity: item.isComplete ? 0.4 : 1,
+              opacity: item.isComplete ? 0.5 : 1,
             }}
             colors={theme.gradientColor[goal.color]}>
             <View
@@ -68,16 +68,21 @@ const TodoItemDetail = ({
               }}>
               <Icon
                 name={goal.icon}
-                style={{ textAlign: 'center' }}
+                style={{
+                  textAlign: 'center',
+                }}
                 size={iconSize}></Icon>
             </View>
           </LinearGradient>
         </View>
       </View>
       <View style={[styles.infoContainer]}>
-        <View
-          style={{ flex: ms(0.5, 0.3), opacity: item.isComplete ? 0.4 : 1 }}>
-          <Text style={[{ color: theme.textColor }, fontStyle.itemTitle]}>
+        <View style={{ flex: ms(0.5, 0.3) }}>
+          <Text
+            style={[
+              { color: theme.textColor, opacity: item.isComplete ? 0.4 : 1 },
+              fontStyle.itemTitle,
+            ]}>
             {item.title}
           </Text>
         </View>
@@ -96,13 +101,15 @@ const TodoItemDetail = ({
               },
               fontStyle.itemSubTitle,
             ]}>
-            {item.weekCycle.length == 7
-              ? ' 매일 '
-              : item.weekCycle.length != 0
-                ? item.weekCycle.map(value => {
-                    return ' ' + days[value] + ' ';
-                  })
-                : ' 오늘 '}
+            {item.weekCycle
+              ? item.weekCycle.length == 7
+                ? ' 매일 '
+                : item.weekCycle.length != 0
+                  ? item.weekCycle.map(value => {
+                      return ' ' + days[value] + ' ';
+                    })
+                  : ' 오늘 '
+              : ''}
           </Text>
         </View>
       </View>

@@ -1,4 +1,4 @@
-export const makeDateFormat = (
+export const makeDateFormatKey = (
   year: number,
   month: number,
   date: number,

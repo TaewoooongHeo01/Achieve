@@ -28,7 +28,6 @@ export class Goal extends Realm.Object {
   icon!: string;
   color!: number;
   todos?: Realm.List<Todo>;
-  way!: string;
   description?: string;
 
   static schema: Realm.ObjectSchema = {
@@ -44,38 +43,36 @@ export class Goal extends Realm.Object {
       icon: 'string',
       color: 'int',
       todos: 'Todo[]',
-      why: 'string',
       description: 'string?',
     },
   };
 }
 
-// export class FullyDate extends Realm.Object {
-//   dateKey!: string;
-//   fullness!: number;
-//   todos?: Realm.List<Todo>;
+export class FullyDate extends Realm.Object {
+  dateKey!: string;
+  fullness?: number;
+  todos?: Realm.List<Todo>;
 
-//   static schema: Realm.ObjectSchema = {
-//     name: 'FullyDate',
-//     primaryKey: 'dateKey',
-//     properties: {
-//       dateKey: {
-//         type: 'string',
-//         // default: () =>
-//       },
-//       fullness: 'int',
-//       todos: 'Todo[]',
-//     },
-//   };
-// }
+  static schema: Realm.ObjectSchema = {
+    name: 'FullyDate',
+    primaryKey: 'dateKey',
+    properties: {
+      dateKey: {
+        type: 'string',
+      },
+      fullness: 'int',
+      todos: 'Todo[]',
+    },
+  };
+}
 
 export class Todo extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
-  date!: string;
-  goal!: Goal;
-  weekCycle!: number[];
-  priority!: number;
+  date?: string;
+  goal?: Goal;
+  weekCycle?: number[];
+  priority?: number;
   isComplete!: boolean;
 
   static schema: Realm.ObjectSchema = {

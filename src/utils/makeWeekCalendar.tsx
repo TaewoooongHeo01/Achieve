@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { calculateStartAndEndDayOfMonth } from './calStartEndWeek';
 import { TaskDate, useDateContext } from '../context/DateContext';
 import { useQuery } from '@realm/react';
-import { makeDateFormat } from './makeDateFormat';
+import { makeDateFormatKey } from './makeDateFormatKey';
 import { Todo } from '../../realm/models';
 
 export const selectedCheck = (taskDate: TaskDate, today: TaskDate) => {
@@ -59,7 +59,7 @@ export const makeWeekCalendar = () => {
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
-        dateFormat = makeDateFormat(yearOfWeek, monthOfWeek, dateOfWeek);
+        dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
         for (let j = 0; j < todos.length; j++) {
           if (todos[j].date == dateFormat) {
             isInclude = true;
@@ -87,7 +87,7 @@ export const makeWeekCalendar = () => {
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
-        dateFormat = makeDateFormat(yearOfWeek, monthOfWeek, dateOfWeek);
+        dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
         for (let j = 0; j < todos.length; j++) {
           if (todos[j].date == dateFormat) {
             isInclude = true;
@@ -109,7 +109,7 @@ export const makeWeekCalendar = () => {
         dateOfWeek = curDate - curDay;
         for (let i = 0; i < 7; i++) {
           isInclude = false;
-          dateFormat = makeDateFormat(yearOfWeek, monthOfWeek, dateOfWeek);
+          dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
           for (let j = 0; j < todos.length; j++) {
             if (todos[j].date == dateFormat) {
               isInclude = true;

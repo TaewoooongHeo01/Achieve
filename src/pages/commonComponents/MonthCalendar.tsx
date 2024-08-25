@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     fontSize: ms(18, 0.3),
   },
   cell: {
-    padding: ms(12, 0.3), //요일 박스 크기
+    padding: ms(11, 0.3), //요일 박스 크기
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
