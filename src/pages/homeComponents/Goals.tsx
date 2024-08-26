@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     marginTop: ms(20, 0.3),
   },
   subTitle: {
-    paddingTop: ms(5, 0.3),
+    paddingTop: ms(3, 0.3),
   },
 });
 

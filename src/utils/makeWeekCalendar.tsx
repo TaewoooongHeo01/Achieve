@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { calculateStartAndEndDayOfMonth } from './calStartEndWeek';
 import { TaskDate, useDateContext } from '../context/DateContext';
-import { useQuery } from '@realm/react';
+import { useQuery, useRealm } from '@realm/react';
 import { makeDateFormatKey } from './makeDateFormatKey';
-import { Todo } from '../../realm/models';
+import { FullyDate, Todo } from '../../realm/models';
 
 export const selectedCheck = (taskDate: TaskDate, today: TaskDate) => {
   return (
@@ -15,6 +15,7 @@ export const selectedCheck = (taskDate: TaskDate, today: TaskDate) => {
 
 export const makeWeekCalendar = () => {
   const { taskDate } = useDateContext();
+  const realm = useRealm();
 
   const [week, setWeek] = useState<TaskDate[]>([]);
   const todos = useQuery(Todo);
@@ -60,11 +61,12 @@ export const makeWeekCalendar = () => {
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
         dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
-        for (let j = 0; j < todos.length; j++) {
-          if (todos[j].date == dateFormat) {
-            isInclude = true;
-            break;
-          }
+        const date = realm.objectForPrimaryKey<FullyDate>(
+          'FullyDate',
+          dateFormat,
+        );
+        if (date && date.todos && date.todos.length > 0) {
+          isInclude = true;
         }
         const dateData: TaskDate = {
           year: yearOfWeek,
@@ -88,11 +90,12 @@ export const makeWeekCalendar = () => {
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
         dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
-        for (let j = 0; j < todos.length; j++) {
-          if (todos[j].date == dateFormat) {
-            isInclude = true;
-            break;
-          }
+        const date = realm.objectForPrimaryKey<FullyDate>(
+          'FullyDate',
+          dateFormat,
+        );
+        if (date && date.todos && date.todos.length > 0) {
+          isInclude = true;
         }
         const dateData: TaskDate = {
           year: yearOfWeek,
@@ -110,11 +113,12 @@ export const makeWeekCalendar = () => {
         for (let i = 0; i < 7; i++) {
           isInclude = false;
           dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
-          for (let j = 0; j < todos.length; j++) {
-            if (todos[j].date == dateFormat) {
-              isInclude = true;
-              break;
-            }
+          const date = realm.objectForPrimaryKey<FullyDate>(
+            'FullyDate',
+            dateFormat,
+          );
+          if (date && date.todos && date.todos.length > 0) {
+            isInclude = true;
           }
           const dateData: TaskDate = {
             year: yearOfWeek,

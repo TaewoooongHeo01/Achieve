@@ -27,7 +27,7 @@ export class Goal extends Realm.Object {
   isComplete!: boolean;
   icon!: string;
   color!: number;
-  todos?: Realm.List<Todo>;
+  todos!: Realm.List<Todo>;
   description?: string;
 
   static schema: Realm.ObjectSchema = {
@@ -51,7 +51,7 @@ export class Goal extends Realm.Object {
 export class FullyDate extends Realm.Object {
   dateKey!: string;
   fullness?: number;
-  todos?: Realm.List<Todo>;
+  todos!: Realm.List<Todo>;
 
   static schema: Realm.ObjectSchema = {
     name: 'FullyDate',
@@ -69,8 +69,8 @@ export class FullyDate extends Realm.Object {
 export class Todo extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
-  date?: string;
   goal?: Goal;
+  date?: string;
   weekCycle?: number[];
   priority?: number;
   isComplete!: boolean;
@@ -84,12 +84,12 @@ export class Todo extends Realm.Object {
         default: () => new Realm.BSON.ObjectId(),
       },
       title: 'string',
-      date: 'string',
       goal: {
         type: 'linkingObjects',
         objectType: 'Goal',
         property: 'todos',
       },
+      date: 'string',
       weekCycle: 'int[]',
       priority: 'int',
       isComplete: 'bool',

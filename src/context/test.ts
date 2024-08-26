@@ -1,6 +1,6 @@
 import { FullyDate } from './../../realm/models';
 //개발 단계에서 넣는 테스트 데이터
-import { useObject, useQuery, useRealm } from '@realm/react';
+import { useRealm } from '@realm/react';
 
 export const initialize = () => {
   const realm = useRealm();
@@ -38,15 +38,19 @@ export const initialize = () => {
           priority: td.priority,
           isComplete: td.isComplete,
         });
-        const date = useObject(FullyDate, todoItem.date);
-        if (date != undefined) {
-          date.todos?.push(todoItem);
+        const date = realm.objectForPrimaryKey<FullyDate>(
+          'FullyDate',
+          todoItem.date,
+        );
+        if (date) {
+          date.todos.push(todoItem);
         } else {
-          realm.create('FullyDate', {
+          const newDate = realm.create('FullyDate', {
             dateKey: todoItem.date,
             fullness: 0,
             todos: [],
           });
+          newDate.todos.push(todoItem);
         }
         Goal.todos.push(todoItem);
       }
@@ -81,22 +85,22 @@ const GoalsData = [
     todo: [],
     description: '매일 30분씩 독서하기',
   },
-  {
-    title: '매일 10,000보 걷기',
-    isComplete: true,
-    icon: 'accessibility',
-    color: 3,
-    todo: [],
-    description: '건강을 위해 매일 걷기',
-  },
-  {
-    title: '자기 전 명상 15분 하기',
-    isComplete: false,
-    icon: 'leaf',
-    color: 8,
-    todo: [],
-    description: '매일 자기 전 명상으로 하루를 마무리',
-  },
+  // {
+  //   title: '매일 10,000보 걷기',
+  //   isComplete: true,
+  //   icon: 'accessibility',
+  //   color: 3,
+  //   todo: [],
+  //   description: '건강을 위해 매일 걷기',
+  // },
+  // {
+  //   title: '자기 전 명상 15분 하기',
+  //   isComplete: false,
+  //   icon: 'leaf',
+  //   color: 8,
+  //   todo: [],
+  //   description: '매일 자기 전 명상으로 하루를 마무리',
+  // },
 ];
 
 const now = new Date();
@@ -108,39 +112,39 @@ const today = String(now.getDate()).padStart(2, '0');
 // const tomorrow = String(now.getDate() + 1).padStart(2, '0');
 
 // const yesterdayDate: string = year + month + yesterday;
-const yesterdayDate = '20240824';
+const yesterdayDate = '20240825';
 const todayDate: string = year + month + today;
-const tomorrowDate = '20240828';
+const tomorrowDate = '20240831';
 // const tomorrowDate: string = year + month + tomorrow;
 
 const todos = [
-  [
-    {
-      title: '식단 장 보기',
-      date: todayDate,
-      weekCycle: [1, 2],
-      priority: 3,
-      isComplete: false,
-    },
-    {
-      title: '운동 루틴 찾아보기',
-      date: todayDate,
-      weekCycle: [],
-      priority: 2,
-      isComplete: false,
-    },
-    {
-      title: '런닝 30분',
-      date: tomorrowDate,
-      weekCycle: [0, 1, 2, 3, 4, 5, 6],
-      priority: 1,
-      isComplete: false,
-    },
-  ],
+  // [
+  //   {
+  //     title: '식단 장 보기',
+  //     date: todayDate,
+  //     weekCycle: [1, 2],
+  //     priority: 3,
+  //     isComplete: false,
+  //   },
+  //   {
+  //     title: '운동 루틴 찾아보기',
+  //     date: todayDate,
+  //     weekCycle: [],
+  //     priority: 2,
+  //     isComplete: false,
+  //   },
+  //   {
+  //     title: '런닝 30분',
+  //     date: tomorrowDate,
+  //     weekCycle: [0, 1, 2, 3, 4, 5, 6],
+  //     priority: 1,
+  //     isComplete: false,
+  //   },
+  // ],
   [
     {
       title: '아침에 책 읽기',
-      date: todayDate,
+      date: yesterdayDate,
       weekCycle: [0, 1, 2, 3, 4, 5, 6],
       priority: 3,
       isComplete: true,
@@ -162,36 +166,43 @@ const todos = [
       isComplete: true,
     },
     {
-      title: '작은 프로젝트 시작하기',
+      title: '토이프로젝트 기획',
       date: todayDate,
+      weekCycle: [3],
+      priority: 3,
+      isComplete: false,
+    },
+    {
+      title: '작은 프로젝트 시작하기',
+      date: tomorrowDate,
       weekCycle: [2, 4, 6],
       priority: 2,
       isComplete: false,
     },
   ],
-  [
-    {
-      title: '출근길에 걷기',
-      date: todayDate,
-      weekCycle: [0, 1, 2, 3, 4, 5, 6],
-      priority: 2,
-      isComplete: true,
-    },
-    {
-      title: '저녁에 가벼운 산책하기',
-      date: tomorrowDate,
-      weekCycle: [0, 1, 2, 3, 4, 5, 6],
-      priority: 3,
-      isComplete: false,
-    },
-  ],
-  [
-    {
-      title: '명상 연습하기',
-      date: todayDate,
-      weekCycle: [0, 1, 2, 3, 4, 5, 6],
-      priority: 3,
-      isComplete: true,
-    },
-  ],
+  // [
+  //   {
+  //     title: '출근길에 걷기',
+  //     date: todayDate,
+  //     weekCycle: [0, 1, 2, 3, 4, 5, 6],
+  //     priority: 2,
+  //     isComplete: true,
+  //   },
+  //   {
+  //     title: '저녁에 가벼운 산책하기',
+  //     date: tomorrowDate,
+  //     weekCycle: [0, 1, 2, 3, 4, 5, 6],
+  //     priority: 3,
+  //     isComplete: false,
+  //   },
+  // ],
+  // [
+  //   {
+  //     title: '명상 연습하기',
+  //     date: todayDate,
+  //     weekCycle: [0, 1, 2, 3, 4, 5, 6],
+  //     priority: 3,
+  //     isComplete: true,
+  //   },
+  // ],
 ];

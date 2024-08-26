@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { TaskDate, useDateContext } from '../../../context/DateContext';
+import { useDateContext } from '../../../context/DateContext';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
-import { useObject, useRealm } from '@realm/react';
+import { useQuery, useRealm } from '@realm/react';
 import { FullyDate, Todo } from '../../../../realm/models';
 import TodoItem from './TodoItem';
 import { FlatList } from 'react-native-gesture-handler';
@@ -10,46 +10,81 @@ import { Realm } from '@realm/react';
 
 const MemorizedItem = memo(TodoItem);
 
-const Todolist = (): React.ReactElement => {
+const Todolist = () => {
   const realm = useRealm();
-  const date: TaskDate = useDateContext().taskDate;
+  const { taskDate } = useDateContext();
   const [dateFormatKey, setDateFormatKey] = useState<string>('');
-
   useEffect(() => {
-    setDateFormatKey(makeDateFormatKey(date.year, date.month, date.date));
-  }, [date]);
+    setDateFormatKey(
+      makeDateFormatKey(taskDate.year, taskDate.month, taskDate.date),
+    );
+  }, [taskDate]);
 
-  const fullyDate = useObject(FullyDate, dateFormatKey);
-  const todos = fullyDate?.todos;
-  // const fullness = fullyDate?.fullness;
+  // const fullyDate = useObject(FullyDate, dateFormatKey);
+  // const todos = fullyDate?.todos.sorted('isComplete', false);
+  const todos = useQuery(Todo)
+    .filtered('date == $0', dateFormatKey)
+    .sorted('isComplete', false);
 
   const delayTodo = (itemId: string) => {
     const item = realm.objectForPrimaryKey<Todo>(
       'Todo',
       new Realm.BSON.ObjectId(itemId),
     );
-    if (item?.date != undefined) {
-      const year = Number(item?.date.substring(0, 4));
-      const month = Number(item?.date.substring(4, 6));
-      const date = Number(item?.date.substring(6, 8));
-      const nextDate = new Date(year, month - 1, date + 1);
-      const nextYear = String(nextDate.getFullYear());
-      const nextMonth = String(nextDate.getMonth() + 1).padStart(2, '0');
-      const nextDay = String(nextDate.getDate()).padStart(2, '0');
+    const dateKey = makeDateFormatKey(
+      taskDate.year,
+      taskDate.month,
+      taskDate.date + 1,
+    );
+    if (item != null) {
       realm.write(() => {
-        item.date = nextYear + nextMonth + nextDay;
+        const fullyDate = realm.objectForPrimaryKey(FullyDate, item.date);
+        console.log(item.date);
+        if (fullyDate) {
+          const todoToRemove = fullyDate.todos.find(todo =>
+            todo._id.equals(item._id),
+          );
+          if (todoToRemove) {
+            for (let i = 0; i < fullyDate.todos.length; i++) {
+              const todosItem = fullyDate.todos[i];
+              if (todoToRemove._id.equals(todosItem._id)) {
+                fullyDate.todos.splice(i, 1);
+              }
+            }
+          } else {
+            throw new Error("can't find todo to remove");
+          }
+        } else {
+          throw new Error("can't find fully date");
+        }
+
+        const nextDate = realm.objectForPrimaryKey(FullyDate, dateKey);
+        item.date = dateKey;
+        if (nextDate) {
+          nextDate.todos.push(item);
+        } else {
+          const newNextDate = realm.create<FullyDate>('FullyDate', {
+            dateKey: dateKey,
+            fullness: 0,
+            todos: [],
+          });
+          newNextDate.todos.push(item);
+        }
       });
     }
+    console.log(item?.date);
   };
 
   const completeTodo = (itemId: string) => {
-    const item = realm.objectForPrimaryKey(
+    const item = realm.objectForPrimaryKey<Todo>(
       'Todo',
       new Realm.BSON.ObjectId(itemId),
     );
-    realm.write(() => {
-      realm.delete(item);
-    });
+    if (item) {
+      realm.write(() => {
+        item.isComplete = true;
+      });
+    }
   };
 
   return (
@@ -60,6 +95,7 @@ const Todolist = (): React.ReactElement => {
           return (
             <MemorizedItem
               item={item}
+              dateFormatKey={dateFormatKey}
               delayTodo={delayTodo}
               completeTodo={completeTodo}
             />

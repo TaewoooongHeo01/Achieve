@@ -8,20 +8,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import { shadow } from '../../../assets/style/shadow';
 import { days } from '../../../context/DateContext';
 import CalendarIcon from 'react-native-vector-icons/AntDesign';
-import CheckboxIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CheckboxIcon from 'react-native-vector-icons/Feather';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const TodoItemDetail = ({
-  item,
-  goal,
-  // pageType,
-}: {
-  item: Todo;
-  goal: Goal;
-  // pageType: string;
-}) => {
+const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
   const { theme, currentTheme } = useColors();
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
   const [iconSize, setIconSize] = useState<number>(0);
+
   return (
     <View
       style={[
@@ -55,7 +49,7 @@ const TodoItemDetail = ({
               borderRadius: ms(10, 0.3),
               opacity: item.isComplete ? 0.5 : 1,
             }}
-            colors={theme.gradientColor[goal.color]}>
+            colors={theme.gradientColor[goal != undefined ? goal.color : 1]}>
             <View
               style={{
                 marginVertical: ms(10.3, 0.3),
@@ -66,12 +60,16 @@ const TodoItemDetail = ({
               onLayout={e => {
                 setIconSize(e.nativeEvent.layout.height);
               }}>
-              <Icon
-                name={goal.icon}
-                style={{
-                  textAlign: 'center',
-                }}
-                size={iconSize}></Icon>
+              {goal != undefined ? (
+                <Icon
+                  name={goal.icon}
+                  style={{
+                    textAlign: 'center',
+                  }}
+                  size={iconSize}></Icon>
+              ) : (
+                <Text>no icon</Text>
+              )}
             </View>
           </LinearGradient>
         </View>
@@ -114,16 +112,18 @@ const TodoItemDetail = ({
         </View>
       </View>
       <View style={styles.dateContainer}>
-        {item.isComplete ? (
-          <CheckboxIcon
-            name='checkbox-marked-circle'
-            size={iconSize + ms(3, 0.3)}
-            color={theme.textColor}
-          />
+        {!item.isComplete ? (
+          <TouchableOpacity style={{ zIndex: 1000 }} onPress={() => {}}>
+            <CheckboxIcon
+              name='square'
+              size={iconSize + ms(8, 0.3)}
+              color={theme.textColor}
+            />
+          </TouchableOpacity>
         ) : (
           <CheckboxIcon
-            name='checkbox-blank-circle-outline'
-            size={iconSize + ms(3, 0.3)}
+            name='check-square'
+            size={iconSize + ms(8, 0.3)}
             color={theme.textColor}
           />
         )}

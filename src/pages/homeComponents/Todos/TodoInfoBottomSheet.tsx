@@ -3,11 +3,8 @@ import { Goal, Todo } from '../../../../realm/models';
 import { StyleSheet, Text, View } from 'react-native';
 import { ColorSet } from '../../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import {
-  MediumTextMemoization,
-  SemiBoldTextMemoization,
-} from '../../../utils/CustomText';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { MediumTextMemoization } from '../../../utils/CustomText';
 import { makeWeekCalendar } from '../../../utils/makeWeekCalendar';
 import { days, TaskDate } from '../../../context/DateContext';
 import {
@@ -30,11 +27,13 @@ type dateUI = {
 
 const TodoInfo = ({
   item,
+  dateFormatKey,
   theme,
   goal,
   todoCompleteAnimation,
 }: {
   item: Todo;
+  dateFormatKey: string;
   theme: ColorSet;
   goal: Goal;
   todoCompleteAnimation(): void;
@@ -48,13 +47,12 @@ const TodoInfo = ({
 
   const [weekCycleUI, setWeekCycleUI] = useState<dateUI[]>([]);
   const weekUI: dateUI[] = [];
-  const date = item.date
-    ? item.date.substring(0, 4) +
-      '.' +
-      item.date.substring(4, 6) +
-      '.' +
-      item.date.substring(6, 8)
-    : '날짜없음';
+  const date =
+    dateFormatKey.substring(0, 4) +
+    '.' +
+    dateFormatKey.substring(4, 6) +
+    '.' +
+    dateFormatKey.substring(6, 8);
 
   useEffect(() => {
     for (let i = 0; i < 7; i++) {
@@ -112,16 +110,22 @@ const TodoInfo = ({
                   {
                     fontSize: ms(21, 0.3),
                     color: theme.textColor,
-                    fontFamily: 'Pretendard-SemiBold',
-                    paddingBottom: ms(5, 0.3),
+                    fontFamily: 'Pretendard-Medium',
+                    paddingBottom: ms(4, 0.3),
                   },
                 ]}>
                 {item.title}
               </Text>
-              <SemiBoldTextMemoization
-                style={[{ marginLeft: ms(1, 0.3), color: theme.textColor }]}>
+              <Text
+                style={[
+                  {
+                    fontFamily: 'Pretendard-Medium',
+                    marginLeft: ms(1, 0.3),
+                    color: theme.textColor,
+                  },
+                ]}>
                 {date}
-              </SemiBoldTextMemoization>
+              </Text>
             </View>
             <TouchableOpacity
               style={{
@@ -145,48 +149,70 @@ const TodoInfo = ({
             padding: ms(10, 0.3),
             flexDirection: 'row',
           }}>
-          {weekCycleUI.map((value, index) => {
-            return value.taskDate != undefined ? (
-              <View
-                key={index.toString()}
-                style={[
-                  styles.btn,
-                  value.contain ? { backgroundColor: theme.textColor } : {},
-                  value.leftOn
-                    ? {}
-                    : {
-                        borderTopLeftRadius: ms(5, 0.3),
-                        borderBottomLeftRadius: ms(5, 0.3),
-                      },
-                  value.rightOn
-                    ? {}
-                    : {
-                        borderTopRightRadius: ms(5, 0.3),
-                        borderBottomRightRadius: ms(5, 0.3),
-                      },
-                ]}>
-                <MediumTextMemoization
-                  style={[
-                    styles.days,
-                    { color: theme.textColor, fontWeight: 'bold' },
-                    { marginBottom: ms(3, 0.3) },
-                    value.contain ? { color: theme.backgroundColor } : {},
-                  ]}>
-                  {days[index]}
-                </MediumTextMemoization>
-                <Text
-                  style={[
-                    styles.days,
-                    { color: theme.textColor },
-                    value.contain ? { color: theme.backgroundColor } : {},
-                  ]}>
-                  {value.taskDate.date}
-                </Text>
-              </View>
-            ) : (
-              <></>
-            );
-          })}
+          <ScrollView
+            horizontal={true}
+            contentContainerStyle={{
+              flex: 1,
+              justifyContent: 'space-between',
+            }}>
+            {weekCycleUI.map((value, index) => {
+              if (value.taskDate !== undefined) {
+                return (
+                  <View
+                    key={value.taskDate.date.toString()}
+                    style={[
+                      styles.btn,
+                      value.contain ? { backgroundColor: theme.textColor } : {},
+                      value.leftOn
+                        ? {
+                            borderWidth: 0.1,
+                            marginLeft: -0.1,
+                            marginRight: -0.1,
+                          }
+                        : {
+                            borderWidth: 0.1,
+                            marginLeft: -0.1,
+                            marginRight: -0.1,
+                            borderTopLeftRadius: ms(7, 0.3),
+                            borderBottomLeftRadius: ms(7, 0.3),
+                          },
+                      value.rightOn
+                        ? {
+                            borderWidth: 0.1,
+                            marginLeft: -0.1,
+                            marginRight: -0.1,
+                          }
+                        : {
+                            borderWidth: 0.1,
+                            marginLeft: -0.1,
+                            marginRight: -0.1,
+                            borderTopRightRadius: ms(7, 0.3),
+                            borderBottomRightRadius: ms(7, 0.3),
+                          },
+                    ]}>
+                    <MediumTextMemoization
+                      style={[
+                        styles.days,
+                        { color: theme.textColor, fontWeight: 'bold' },
+                        { marginBottom: ms(3, 0.3) },
+                        value.contain ? { color: theme.backgroundColor } : {},
+                      ]}>
+                      {days[index]}
+                    </MediumTextMemoization>
+                    <Text
+                      style={[
+                        styles.days,
+                        { color: theme.textColor },
+                        value.contain ? { color: theme.backgroundColor } : {},
+                      ]}>
+                      {value.taskDate.date}
+                    </Text>
+                  </View>
+                );
+              }
+              return null;
+            })}
+          </ScrollView>
         </View>
         <TouchableOpacity
           activeOpacity={0.7}

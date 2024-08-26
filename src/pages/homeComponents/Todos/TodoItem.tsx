@@ -26,16 +26,18 @@ const MemorizedTodoInfoBottomSheet = memo(TodoInfo);
 
 const TodoItem = ({
   item,
+  dateFormatKey,
   delayTodo,
   completeTodo,
 }: {
   item: Todo;
+  dateFormatKey: string;
   delayTodo(itemId: string): void;
   completeTodo(itemId: string): void;
 }) => {
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const { theme } = useColors();
-  let screenWidth = useWindowDimensions().width;
+  const screenWidth = useWindowDimensions().width;
 
   const translateX = useSharedValue(0);
   const startX = useSharedValue(0);
@@ -44,7 +46,7 @@ const TodoItem = ({
   const marginXY = useSharedValue(ms(10, 0.3));
 
   const backFontOpacityLeft = useSharedValue(0);
-  const backFontOpacityRight = useSharedValue(0);
+  const todoItemOpacity = useSharedValue(1);
 
   const threshold = screenWidth / 4;
   const animatiomIsRunning = useRef<boolean>(false);
@@ -53,12 +55,10 @@ const TodoItem = ({
 
   const todoCompleteAnimation = () => {
     'worklet';
-    backFontOpacityRight.value = withTiming(0, {}, () => {
-      translateX.value = withTiming(-screenWidth, {}, () => {
-        marginXY.value = withTiming(0);
-        scaleX.value = withTiming(0, {}, () => {
-          runOnJS(completeTodo)(itemId);
-        });
+    todoItemOpacity.value = withTiming(0, { duration: 300 }, () => {
+      marginXY.value = withTiming(0);
+      scaleX.value = withTiming(0, {}, () => {
+        runOnJS(completeTodo)(itemId);
       });
     });
   };
@@ -73,7 +73,7 @@ const TodoItem = ({
       if (translateX.value > 0) {
         backFontOpacityLeft.value = withTiming(1);
       } else if (translateX.value < 0) {
-        backFontOpacityRight.value = withTiming(1);
+        translateX.value = 0;
       }
     })
     .onEnd(() => {
@@ -83,7 +83,6 @@ const TodoItem = ({
         animatiomIsRunning.current = true;
       }
       if (animatiomIsRunning.current) {
-        screenWidth = translateX.value > 0 ? screenWidth : -screenWidth;
         const state = translateX.value;
         if (state > 0) {
           backFontOpacityLeft.value = withTiming(0, {}, () => {
@@ -94,13 +93,11 @@ const TodoItem = ({
               });
             });
           });
-        } else {
-          todoCompleteAnimation();
         }
         animatiomIsRunning.current = false;
       } else {
         translateX.value = withTiming(0, {
-          duration: 300,
+          duration: 200,
         });
       }
     });
@@ -131,10 +128,10 @@ const TodoItem = ({
     };
   });
 
-  const fontFadeOutRight = useAnimatedStyle(() => {
+  const completeTodoAnimation = useAnimatedStyle(() => {
     'worklet';
     return {
-      opacity: backFontOpacityRight.value,
+      opacity: todoItemOpacity.value,
     };
   });
 
@@ -161,30 +158,43 @@ const TodoItem = ({
   return (
     <View style={{ flex: 1 }}>
       <TouchableOpacity activeOpacity={0.8} onPress={todoHandlePresentModal}>
-        <GestureDetector gesture={pan}>
-          <Animated.View style={{ flex: 1 }}>
-            <Animated.View
-              style={[
-                {
-                  flex: 1,
-                  position: 'relative',
-                  zIndex: 2,
-                },
-                scrollableListSize,
-                animatedStyle,
-              ]}>
-              <MemorizedItemDetail item={item} goal={goal} />
+        {!item.isComplete ? (
+          <GestureDetector gesture={pan}>
+            <Animated.View style={{ flex: 1 }}>
+              <Animated.View
+                style={[
+                  {
+                    flex: 1,
+                    position: 'relative',
+                    zIndex: 2,
+                  },
+                  scrollableListSize,
+                  animatedStyle,
+                  completeTodoAnimation,
+                ]}>
+                <MemorizedItemDetail item={item} goal={goal} />
+              </Animated.View>
+              <View style={styles.hiddenContainer}>
+                <Animated.View style={[fontFadeOutLeft]}>
+                  <Icon name='doubleright' color={theme.textColor} size={20} />
+                </Animated.View>
+              </View>
             </Animated.View>
-            <View style={styles.hiddenContainer}>
-              <Animated.View style={[fontFadeOutLeft]}>
-                <Icon name='doubleright' color={theme.textColor} size={20} />
-              </Animated.View>
-              <Animated.View style={[fontFadeOutRight]}>
-                <Icon name='check' color={theme.textColor} size={20} />
-              </Animated.View>
-            </View>
-          </Animated.View>
-        </GestureDetector>
+          </GestureDetector>
+        ) : (
+          <View
+            style={[
+              {
+                flex: 1,
+                position: 'relative',
+                zIndex: 2,
+                marginBottom: ms(10, 0.3),
+                height: ms(60, 0.3),
+              },
+            ]}>
+            <MemorizedItemDetail item={item} goal={goal} />
+          </View>
+        )}
       </TouchableOpacity>
       <BottomSheetModal
         ref={todoBottomSheetModalRef}
@@ -212,6 +222,7 @@ const TodoItem = ({
           ]}>
           <MemorizedTodoInfoBottomSheet
             item={item}
+            dateFormatKey={dateFormatKey}
             theme={theme}
             goal={goal}
             todoCompleteAnimation={todoCompleteAnimation}

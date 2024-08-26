@@ -3,9 +3,9 @@ export const makeDateFormatKey = (
   month: number,
   date: number,
 ): string => {
-  return (
-    String(year) +
-    String(month).padStart(2, '0') +
-    String(date).padStart(2, '0')
-  );
+  const d = new Date(year, month - 1, date);
+  const y = d.getFullYear();
+  const m = d.getMonth() + 1;
+  const dt = d.getDate();
+  return String(y) + String(m).padStart(2, '0') + String(dt).padStart(2, '0');
 };

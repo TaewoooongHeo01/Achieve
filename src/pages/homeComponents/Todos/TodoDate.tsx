@@ -85,7 +85,7 @@ const TodoDate = (): React.ReactElement => {
             <Text
               style={[
                 fontStyle.fontSizeMain,
-                { paddingBottom: ms(3, 0.3) },
+                { paddingBottom: ms(2, 0.3) },
                 { color: theme.textColor },
               ]}>
               {todoString}
