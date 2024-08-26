@@ -1,9 +1,10 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { Easing, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Goal, Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
+  ReduceMotion,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -46,20 +47,35 @@ const TodoItem = ({
   const marginXY = useSharedValue(ms(10, 0.3));
 
   const backFontOpacityLeft = useSharedValue(0);
-  const todoItemOpacity = useSharedValue(1);
+  const backFontOpacityRight = useSharedValue(0);
 
   const threshold = screenWidth / 4;
   const animatiomIsRunning = useRef<boolean>(false);
 
   const itemId = item._id.toString();
 
+  const todoItemOpacity = useSharedValue(1);
+
+  const completeTodoAnimation = useAnimatedStyle(() => {
+    'worklet';
+    return {
+      opacity: todoItemOpacity.value,
+    };
+  });
+
   const todoCompleteAnimation = () => {
     'worklet';
-    todoItemOpacity.value = withTiming(0, { duration: 300 }, () => {
-      marginXY.value = withTiming(0);
-      scaleX.value = withTiming(0, {}, () => {
-        runOnJS(completeTodo)(itemId);
+    backFontOpacityRight.value = withTiming(0, {}, () => {
+      translateX.value = withTiming(-screenWidth, {}, () => {
+        marginXY.value = withTiming(0);
+        scaleX.value = withTiming(0, {}, () => {
+          runOnJS(completeTodo)(itemId);
+        });
       });
+    });
+    todoItemOpacity.value = 0;
+    todoItemOpacity.value = withTiming(1, {
+      duration: 1800,
     });
   };
 
@@ -73,7 +89,7 @@ const TodoItem = ({
       if (translateX.value > 0) {
         backFontOpacityLeft.value = withTiming(1);
       } else if (translateX.value < 0) {
-        translateX.value = 0;
+        backFontOpacityRight.value = withTiming(1);
       }
     })
     .onEnd(() => {
@@ -84,6 +100,7 @@ const TodoItem = ({
       }
       if (animatiomIsRunning.current) {
         const state = translateX.value;
+        console.log(state);
         if (state > 0) {
           backFontOpacityLeft.value = withTiming(0, {}, () => {
             translateX.value = withTiming(screenWidth, {}, () => {
@@ -93,6 +110,8 @@ const TodoItem = ({
               });
             });
           });
+        } else {
+          todoCompleteAnimation();
         }
         animatiomIsRunning.current = false;
       } else {
@@ -128,10 +147,10 @@ const TodoItem = ({
     };
   });
 
-  const completeTodoAnimation = useAnimatedStyle(() => {
+  const fontFadeOutRight = useAnimatedStyle(() => {
     'worklet';
     return {
-      opacity: todoItemOpacity.value,
+      opacity: backFontOpacityRight.value,
     };
   });
 
@@ -170,7 +189,6 @@ const TodoItem = ({
                   },
                   scrollableListSize,
                   animatedStyle,
-                  completeTodoAnimation,
                 ]}>
                 <MemorizedItemDetail item={item} goal={goal} />
               </Animated.View>
@@ -178,11 +196,14 @@ const TodoItem = ({
                 <Animated.View style={[fontFadeOutLeft]}>
                   <Icon name='doubleright' color={theme.textColor} size={20} />
                 </Animated.View>
+                <Animated.View style={[fontFadeOutRight]}>
+                  <Icon name='check' color={theme.textColor} size={20} />
+                </Animated.View>
               </View>
             </Animated.View>
           </GestureDetector>
         ) : (
-          <View
+          <Animated.View
             style={[
               {
                 flex: 1,
@@ -191,9 +212,10 @@ const TodoItem = ({
                 marginBottom: ms(10, 0.3),
                 height: ms(60, 0.3),
               },
+              completeTodoAnimation,
             ]}>
             <MemorizedItemDetail item={item} goal={goal} />
-          </View>
+          </Animated.View>
         )}
       </TouchableOpacity>
       <BottomSheetModal

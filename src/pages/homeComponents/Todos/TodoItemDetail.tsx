@@ -9,7 +9,6 @@ import { shadow } from '../../../assets/style/shadow';
 import { days } from '../../../context/DateContext';
 import CalendarIcon from 'react-native-vector-icons/AntDesign';
 import CheckboxIcon from 'react-native-vector-icons/Feather';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
   const { theme, currentTheme } = useColors();
@@ -112,21 +111,21 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
         </View>
       </View>
       <View style={styles.dateContainer}>
-        {!item.isComplete ? (
-          <TouchableOpacity style={{ zIndex: 1000 }} onPress={() => {}}>
-            <CheckboxIcon
-              name='square'
-              size={iconSize + ms(8, 0.3)}
-              color={theme.textColor}
-            />
-          </TouchableOpacity>
+        {/* 우선순위 아이콘? */}
+
+        {/* {!item.isComplete ? (
+          <CheckboxIcon
+            name='square'
+            size={iconSize + ms(8, 0.3)}
+            color={theme.textColor}
+          />
         ) : (
           <CheckboxIcon
             name='check-square'
             size={iconSize + ms(8, 0.3)}
             color={theme.textColor}
           />
-        )}
+        )} */}
       </View>
     </View>
   );

@@ -127,19 +127,33 @@ const TodoInfo = ({
                 {date}
               </Text>
             </View>
-            <TouchableOpacity
-              style={{
-                padding: ms(8, 0.3),
-                backgroundColor: theme.textColor,
-                borderRadius: ms(5, 0.3),
-              }}
-              onPress={() => {
-                console.log('설정');
-              }}>
-              <MediumTextMemoization style={{ color: theme.backgroundColor }}>
-                설정
-              </MediumTextMemoization>
-            </TouchableOpacity>
+            {!item.isComplete ? (
+              <TouchableOpacity
+                style={{
+                  padding: ms(8, 0.3),
+                  backgroundColor: theme.textColor,
+                  borderRadius: ms(5, 0.3),
+                }}
+                onPress={() => {
+                  console.log('설정');
+                }}>
+                <MediumTextMemoization style={{ color: theme.backgroundColor }}>
+                  설정
+                </MediumTextMemoization>
+              </TouchableOpacity>
+            ) : (
+              <View
+                style={{
+                  padding: ms(8, 0.3),
+                  backgroundColor: theme.textColor,
+                  borderRadius: ms(5, 0.3),
+                  opacity: 0.3,
+                }}>
+                <MediumTextMemoization style={{ color: theme.backgroundColor }}>
+                  설정
+                </MediumTextMemoization>
+              </View>
+            )}
           </View>
         </View>
         <View
