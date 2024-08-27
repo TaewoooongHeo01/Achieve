@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Goal, Todo } from '../../../../realm/models';
+import { FullyDate, Goal, Todo } from '../../../../realm/models';
 import { StyleSheet, Text, View } from 'react-native';
 import { ColorSet } from '../../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { MediumTextMemoization } from '../../../utils/CustomText';
-import { makeWeekCalendar } from '../../../utils/makeWeekCalendar';
-import { days, TaskDate } from '../../../context/DateContext';
+import { days, TaskDate, useDateContext } from '../../../context/DateContext';
 import {
   BottomSheetScrollView,
   useBottomSheetModal,
@@ -17,6 +16,9 @@ import { RootStackParamList } from '../../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useColors } from '../../../context/ThemeContext';
 import { shadow } from '../../../assets/style/shadow';
+import { useRealm } from '@realm/react';
+import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
+import { calculateStartAndEndDayOfMonth } from '../../../utils/calStartEndWeek';
 
 type dateUI = {
   taskDate: TaskDate;
@@ -38,9 +40,11 @@ const TodoInfo = ({
   goal: Goal;
   todoCompleteAnimation(isRemove: boolean): void;
 }) => {
+  const realm = useRealm();
   const { currentTheme } = useColors();
-  const week = makeWeekCalendar();
-  const weekCycle = item.weekCycle;
+  // const week = makeWeekCalendar();
+  const { taskDate } = useDateContext();
+  const weekCycle: number[] = item.weekCycle;
   const { dismiss } = useBottomSheetModal();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -55,6 +59,118 @@ const TodoInfo = ({
     dateFormatKey.substring(6, 8);
 
   useEffect(() => {
+    const week = [];
+    const curYear = taskDate.year;
+    const curMonth = taskDate.month;
+    const curDate = taskDate.date;
+    const curDay = taskDate.day;
+    const [
+      startWeekDateOfMonth,
+      lastWeekDateOfMonth,
+      lastDayOfMonth,
+      lastDayOfPrevMonth,
+    ] = calculateStartAndEndDayOfMonth(curYear, curMonth);
+
+    let dateOfWeek;
+    let yearOfWeek = curYear;
+    let monthOfWeek = curMonth;
+    //저번 달 남은 일수
+    let leftDayCntOfPrevMonth = lastDayOfPrevMonth - startWeekDateOfMonth + 1;
+    leftDayCntOfPrevMonth =
+      leftDayCntOfPrevMonth == lastDayOfPrevMonth ? 0 : leftDayCntOfPrevMonth;
+
+    let dateFormat: string;
+    let isInclude: boolean = false;
+
+    if (7 - leftDayCntOfPrevMonth >= curDate) {
+      //선택된 날짜가 첫번째 주에 포함
+      dateOfWeek = startWeekDateOfMonth;
+      if (leftDayCntOfPrevMonth != 0) {
+        monthOfWeek = curMonth - 1 == 0 ? 12 : curMonth - 1;
+      }
+      if (curMonth - 1 == 0) {
+        yearOfWeek -= 1;
+      }
+      for (let i = 0; i < 7; i++) {
+        isInclude = false;
+        if (dateOfWeek > lastDayOfPrevMonth) {
+          dateOfWeek = 1;
+          monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
+          yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
+        }
+        dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
+        const date = realm.objectForPrimaryKey<FullyDate>(
+          'FullyDate',
+          dateFormat,
+        );
+        if (date && date.todos && date.todos.length > 0) {
+          isInclude = true;
+        }
+        const dateData: TaskDate = {
+          year: yearOfWeek,
+          month: monthOfWeek,
+          date: dateOfWeek,
+          day: i,
+          isInclude: isInclude,
+        };
+
+        week[i] = dateData;
+        dateOfWeek += 1;
+      }
+    } else if (lastWeekDateOfMonth <= curDate) {
+      //선택된 날짜가 마지막 주에 포함
+      dateOfWeek = lastWeekDateOfMonth;
+      for (let i = 0; i < 7; i++) {
+        isInclude = false;
+        if (dateOfWeek > lastDayOfMonth) {
+          dateOfWeek = 1;
+          monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
+          yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
+        }
+        dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
+        const date = realm.objectForPrimaryKey<FullyDate>(
+          'FullyDate',
+          dateFormat,
+        );
+        if (date && date.todos && date.todos.length > 0) {
+          isInclude = true;
+        }
+        const dateData: TaskDate = {
+          year: yearOfWeek,
+          month: monthOfWeek,
+          date: dateOfWeek,
+          day: i,
+          isInclude: isInclude,
+        };
+        week[i] = dateData;
+        dateOfWeek += 1;
+      }
+    } else {
+      if (curDay !== undefined) {
+        dateOfWeek = curDate - curDay;
+        for (let i = 0; i < 7; i++) {
+          isInclude = false;
+          dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
+          const date = realm.objectForPrimaryKey<FullyDate>(
+            'FullyDate',
+            dateFormat,
+          );
+          if (date && date.todos && date.todos.length > 0) {
+            isInclude = true;
+          }
+          const dateData: TaskDate = {
+            year: yearOfWeek,
+            month: monthOfWeek,
+            date: dateOfWeek,
+            day: i,
+            isInclude: isInclude,
+          };
+          week[i] = dateData;
+          dateOfWeek += 1;
+        }
+      }
+    }
+
     for (let i = 0; i < 7; i++) {
       const taskDate = week[i];
       let contain = false;
@@ -85,7 +201,7 @@ const TodoInfo = ({
       weekUI.push(dateUI);
       setWeekCycleUI(weekUI);
     }
-  }, [week]);
+  }, []);
 
   return (
     <BottomSheetScrollView
@@ -136,8 +252,10 @@ const TodoInfo = ({
                   marginLeft: ms(5, 0.3),
                 }}
                 onPress={() => {
-                  console.log('delete!');
                   todoCompleteAnimation(true);
+                  realm.write(() => {
+                    realm.delete(item);
+                  });
                   dismiss();
                 }}>
                 <MediumTextMemoization style={{ color: theme.backgroundColor }}>

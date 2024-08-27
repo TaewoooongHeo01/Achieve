@@ -1,8 +1,8 @@
 import React from 'react';
 import Realm from 'realm';
-import { View, Text, Platform, StatusBar } from 'react-native';
+import { View, Text, Platform, StatusBar, Button } from 'react-native';
 import { GoalDetailScreenProps } from '../../../App';
-import { useObject } from '@realm/react';
+import { useObject, useRealm } from '@realm/react';
 import { FullyDate, Goal, Todo } from '../../../realm/models';
 import {
   SafeAreaView,
@@ -21,17 +21,18 @@ const GoalDetail = ({
   const id = new Realm.BSON.ObjectId(route.params._id);
   const goal = useObject<Goal>('Goal', id);
   const todos = goal?.todos.sorted('isComplete', false);
+  const realm = useRealm();
 
   const { top } = useSafeAreaInsets();
   const { theme, currentTheme } = useColors();
 
-  // const deleteGoal = () => {
-  //   navigation.goBack();
-  //   realm.write(() => {
-  //     realm.delete(todos);
-  //     realm.delete(Goal);
-  //   });
-  // };
+  const deleteGoal = () => {
+    navigation.goBack();
+    realm.write(() => {
+      realm.delete(todos);
+      realm.delete(goal);
+    });
+  };
 
   const renderItem = ({ item }: { item: Todo }) => {
     const date = item.linkingObjects<FullyDate>('FullyDate', 'todos')[0];
@@ -67,6 +68,12 @@ const GoalDetail = ({
             {date.dateKey.substring(6, 8)}
           </Text>
         </View>
+        <Button
+          title='delete'
+          onPress={() => {
+            deleteGoal();
+          }}
+        />
       </View>
     );
   };

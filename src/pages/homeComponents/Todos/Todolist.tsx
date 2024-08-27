@@ -40,11 +40,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
     fullnessCheck = true;
   }
 
-  // console.log(todos.length);
-  // for (let i = 0; i < todos.length; i++) {
-  //   console.log('Ok: ' + todos[i].title);
-  // }
-
   useEffect(() => {
     if (taskDate === today && fullnessCheck && isAlertOpened === false) {
       setIsAlertOpened(true);
@@ -116,25 +111,15 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
     }
   };
 
-  const completeTodo = (itemId: string, isRemove: boolean) => {
+  const completeTodo = (itemId: string) => {
     const item = realm.objectForPrimaryKey<Todo>(
       'Todo',
       new Realm.BSON.ObjectId(itemId),
     );
-    console.log(item);
     if (item) {
-      if (isRemove) {
-        console.log('remove');
-        realm.write(() => {
-          realm.delete(item);
-        });
-        console.log('remove success');
-      } else {
-        console.log('isComplete -> true');
-        realm.write(() => {
-          item.isComplete = true;
-        });
-      }
+      realm.write(() => {
+        item.isComplete = true;
+      });
     }
   };
 

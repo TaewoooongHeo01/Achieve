@@ -39,7 +39,7 @@ const TodoItem = ({
   const { theme } = useColors();
   const screenWidth = useWindowDimensions().width;
 
-  console.log(item.isValid());
+  // const [itemDelete, setItemDelete] = useState<boolean>(false);
 
   const translateX = useSharedValue(0);
   const startX = useSharedValue(0);
@@ -66,22 +66,20 @@ const TodoItem = ({
 
   const todoCompleteAnimation = (isRemove: boolean) => {
     'worklet';
-    if (!isRemove) {
-      backFontOpacityRight.value = withTiming(0, {}, () => {
-        translateX.value = withTiming(-screenWidth, {}, () => {
-          marginXY.value = withTiming(0);
-          scaleX.value = withTiming(0, {}, () => {
+    backFontOpacityRight.value = withTiming(0, {}, () => {
+      translateX.value = withTiming(-screenWidth, {}, () => {
+        marginXY.value = withTiming(0);
+        scaleX.value = withTiming(0, {}, () => {
+          if (!isRemove) {
             runOnJS(completeTodo)(itemId, false);
-            todoItemOpacity.value = 0;
-            todoItemOpacity.value = withTiming(1, {
-              duration: 300,
-            });
+          }
+          todoItemOpacity.value = 0;
+          todoItemOpacity.value = withTiming(1, {
+            duration: 500,
           });
         });
       });
-    } else {
-      runOnJS(completeTodo)(itemId, true);
-    }
+    });
   };
 
   const pan = Gesture.Pan()
