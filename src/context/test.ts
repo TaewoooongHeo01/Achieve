@@ -13,6 +13,7 @@ export const initialize = () => {
     realm.create('User', {
       username: UserData.username,
       phrase: UserData.phrase,
+      fullnessCheck: UserData.fullnessCheck,
     });
   });
 
@@ -47,7 +48,7 @@ export const initialize = () => {
         } else {
           const newDate = realm.create('FullyDate', {
             dateKey: todoItem.date,
-            fullness: 0,
+            fullness: 0.1,
             todos: [],
           });
           newDate.todos.push(todoItem);
@@ -65,6 +66,12 @@ const UserData = {
     '길을 걷다가 돌을 보면 약자는 그것을 걸림돌이라고 하고 강자는 그것을 디딤돌이라고 한다.',
     '먹는 칼로리보다 에너지 소모가 적으면 살이 찌듯이, 걱정만 하고 행동하지 않으면 걱정이 찐다.',
     '이미 끝나버린 일을 후회하기 보다는 하고 싶었던 일을 하지 못한 것을 후회하라.',
+  ],
+  fullnessCheck: [
+    '진짜 후회가 없는가?',
+    '완전한 몰입을 경험했는가?',
+    '완전한 몰입을 경험했는가?',
+    '완전한 몰입을 경험했는가?',
   ],
 };
 

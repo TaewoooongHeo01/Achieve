@@ -8,7 +8,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { shadow } from '../../../assets/style/shadow';
 import { days } from '../../../context/DateContext';
 import CalendarIcon from 'react-native-vector-icons/AntDesign';
-import CheckboxIcon from 'react-native-vector-icons/Feather';
 
 const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
   const { theme, currentTheme } = useColors();

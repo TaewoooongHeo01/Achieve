@@ -2,17 +2,21 @@ import React, { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useDateContext } from '../../../context/DateContext';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
-import { useQuery, useRealm } from '@realm/react';
+import { useObject, useQuery, useRealm } from '@realm/react';
 import { FullyDate, Todo } from '../../../../realm/models';
 import TodoItem from './TodoItem';
 import { FlatList } from 'react-native-gesture-handler';
 import { Realm } from '@realm/react';
+import CustomisableAlert, { showAlert } from 'react-native-customisable-alert';
+import CheckFullnessAlert from '../../Alert/CheckFullnessAlert';
+import { ColorSet } from '../../../assets/style/ThemeColor';
 
 const MemorizedItem = memo(TodoItem);
 
-const Todolist = () => {
+const Todolist = ({ theme }: { theme: ColorSet }) => {
   const realm = useRealm();
-  const { taskDate } = useDateContext();
+  const { taskDate, today } = useDateContext();
+  const [checkedValue, setCheckedValue] = useState<number>(0.6);
   const [dateFormatKey, setDateFormatKey] = useState<string>('');
   useEffect(() => {
     setDateFormatKey(
@@ -20,11 +24,50 @@ const Todolist = () => {
     );
   }, [taskDate]);
 
-  // const fullyDate = useObject(FullyDate, dateFormatKey);
+  const fullyDate = useObject(FullyDate, dateFormatKey);
   // const todos = fullyDate?.todos.sorted('isComplete', false);
+
   const todos = useQuery(Todo)
     .filtered('date == $0', dateFormatKey)
     .sorted('isComplete', false);
+
+  const [isAlertOpened, setIsAlertOpened] = useState<boolean>(false);
+  let fullnessCheck = false;
+  for (const todo of todos) {
+    if (!todo.isComplete) {
+      break;
+    }
+    fullnessCheck = true;
+  }
+
+  // console.log(todos.length);
+  // for (let i = 0; i < todos.length; i++) {
+  //   console.log('Ok: ' + todos[i].title);
+  // }
+
+  useEffect(() => {
+    if (taskDate === today && fullnessCheck && isAlertOpened === false) {
+      setIsAlertOpened(true);
+      showAlert({
+        alertType: 'custom',
+        customAlert: (
+          <CheckFullnessAlert
+            theme={theme}
+            checkedValue={checkedValue}
+            setCheckedValue={setCheckedValue}
+          />
+        ),
+      });
+      if (fullyDate) {
+        realm.write(() => {
+          fullyDate.fullness = checkedValue;
+        });
+      }
+    }
+    if (!isAlertOpened) {
+      setIsAlertOpened(false);
+    }
+  }, [fullnessCheck, checkedValue]);
 
   const delayTodo = (itemId: string) => {
     const item = realm.objectForPrimaryKey<Todo>(
@@ -39,7 +82,6 @@ const Todolist = () => {
     if (item != null) {
       realm.write(() => {
         const fullyDate = realm.objectForPrimaryKey(FullyDate, item.date);
-        console.log(item.date);
         if (fullyDate) {
           const todoToRemove = fullyDate.todos.find(todo =>
             todo._id.equals(item._id),
@@ -72,23 +114,33 @@ const Todolist = () => {
         }
       });
     }
-    console.log(item?.date);
   };
 
-  const completeTodo = (itemId: string) => {
+  const completeTodo = (itemId: string, isRemove: boolean) => {
     const item = realm.objectForPrimaryKey<Todo>(
       'Todo',
       new Realm.BSON.ObjectId(itemId),
     );
+    console.log(item);
     if (item) {
-      realm.write(() => {
-        item.isComplete = true;
-      });
+      if (isRemove) {
+        console.log('remove');
+        realm.write(() => {
+          realm.delete(item);
+        });
+        console.log('remove success');
+      } else {
+        console.log('isComplete -> true');
+        realm.write(() => {
+          item.isComplete = true;
+        });
+      }
     }
   };
 
   return (
     <View style={{ flex: 1 }}>
+      <CustomisableAlert />
       <FlatList
         data={todos}
         renderItem={({ item }) => {

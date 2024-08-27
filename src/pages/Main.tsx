@@ -69,12 +69,12 @@ const Main = (): React.JSX.Element => {
                   tabBarIcon: ({ focused }) =>
                     focused ? (
                       <Icon
-                        name='trophy'
+                        name='th'
                         color={theme.textColor}
-                        size={ms(15, 0.3)}
+                        size={ms(17, 0.3)}
                       />
                     ) : (
-                      <Icon name='trophy' color={'grey'} size={ms(17, 0.3)} />
+                      <Icon name='th' color={'grey'} size={ms(17, 0.3)} />
                     ),
                 }}
               />
@@ -87,7 +87,7 @@ const Main = (): React.JSX.Element => {
                       <Icon
                         name='home'
                         color={theme.textColor}
-                        size={ms(15, 0.3)}
+                        size={ms(17, 0.3)}
                       />
                     ) : (
                       <Icon name='home' color={'grey'} size={ms(17, 0.3)} />
@@ -103,7 +103,7 @@ const Main = (): React.JSX.Element => {
                       <Icon
                         name='user-alt'
                         color={theme.textColor}
-                        size={ms(15, 0.3)}
+                        size={ms(17, 0.3)}
                       />
                     ) : (
                       <Icon name='user-alt' color={'grey'} size={ms(17, 0.3)} />

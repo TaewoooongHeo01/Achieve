@@ -19,6 +19,14 @@ const gradientColorset: string[][] = [
   ['#E3FDF5', '#FFE6FA'], //Perfect White
 ];
 
+export const fullnessCheckColor: string[] = [
+  'tomato',
+  'dodgerblue',
+  'yellowgreen',
+  'grey',
+  'pink',
+];
+
 export type ColorSet = {
   textColor: string;
   backgroundColor: string;

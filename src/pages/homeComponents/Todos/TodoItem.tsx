@@ -1,10 +1,9 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
-import { Easing, StyleSheet, useWindowDimensions, View } from 'react-native';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Goal, Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
-  ReduceMotion,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -34,11 +33,13 @@ const TodoItem = ({
   item: Todo;
   dateFormatKey: string;
   delayTodo(itemId: string): void;
-  completeTodo(itemId: string): void;
+  completeTodo(itemId: string, isRemove: boolean): void;
 }) => {
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const { theme } = useColors();
   const screenWidth = useWindowDimensions().width;
+
+  console.log(item.isValid());
 
   const translateX = useSharedValue(0);
   const startX = useSharedValue(0);
@@ -63,20 +64,24 @@ const TodoItem = ({
     };
   });
 
-  const todoCompleteAnimation = () => {
+  const todoCompleteAnimation = (isRemove: boolean) => {
     'worklet';
-    backFontOpacityRight.value = withTiming(0, {}, () => {
-      translateX.value = withTiming(-screenWidth, {}, () => {
-        marginXY.value = withTiming(0);
-        scaleX.value = withTiming(0, {}, () => {
-          runOnJS(completeTodo)(itemId);
+    if (!isRemove) {
+      backFontOpacityRight.value = withTiming(0, {}, () => {
+        translateX.value = withTiming(-screenWidth, {}, () => {
+          marginXY.value = withTiming(0);
+          scaleX.value = withTiming(0, {}, () => {
+            runOnJS(completeTodo)(itemId, false);
+            todoItemOpacity.value = 0;
+            todoItemOpacity.value = withTiming(1, {
+              duration: 300,
+            });
+          });
         });
       });
-    });
-    todoItemOpacity.value = 0;
-    todoItemOpacity.value = withTiming(1, {
-      duration: 1800,
-    });
+    } else {
+      runOnJS(completeTodo)(itemId, true);
+    }
   };
 
   const pan = Gesture.Pan()
@@ -100,7 +105,6 @@ const TodoItem = ({
       }
       if (animatiomIsRunning.current) {
         const state = translateX.value;
-        console.log(state);
         if (state > 0) {
           backFontOpacityLeft.value = withTiming(0, {}, () => {
             translateX.value = withTiming(screenWidth, {}, () => {
@@ -111,7 +115,7 @@ const TodoItem = ({
             });
           });
         } else {
-          todoCompleteAnimation();
+          todoCompleteAnimation(false);
         }
         animatiomIsRunning.current = false;
       } else {

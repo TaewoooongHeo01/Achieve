@@ -2,6 +2,9 @@ import Realm from 'realm';
 
 //Data Object Models
 
+//User 없애고, username 은 state 나 context 로 관리.
+//phrase, fullnessChecklist 는 따로 만들어서 나중에 사용자가 바꿀 수 있도록 하기 .
+
 export class User extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   username!: string;
@@ -60,7 +63,7 @@ export class FullyDate extends Realm.Object {
       dateKey: {
         type: 'string',
       },
-      fullness: 'int',
+      fullness: 'float',
       todos: 'Todo[]',
     },
   };

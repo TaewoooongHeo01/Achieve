@@ -2,7 +2,7 @@ import React from 'react';
 import Realm from 'realm';
 import { View, Text, Platform, StatusBar } from 'react-native';
 import { GoalDetailScreenProps } from '../../../App';
-import { useObject, useRealm } from '@realm/react';
+import { useObject } from '@realm/react';
 import { FullyDate, Goal, Todo } from '../../../realm/models';
 import {
   SafeAreaView,
@@ -12,7 +12,6 @@ import { useColors } from '../../context/ThemeContext';
 import { ms } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { shadow } from '../../assets/style/shadow';
 import { fontStyle } from '../../assets/style/fontStyle';
 
 const GoalDetail = ({

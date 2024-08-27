@@ -117,7 +117,7 @@ const TodoDate = (): React.ReactElement => {
         </TouchableOpacity>
       </View>
       <WeekCalender></WeekCalender>
-      <TodoDetail></TodoDetail>
+      <TodoDetail theme={theme}></TodoDetail>
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={0}

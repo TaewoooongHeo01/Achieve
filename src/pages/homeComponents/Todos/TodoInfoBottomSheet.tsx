@@ -36,7 +36,7 @@ const TodoInfo = ({
   dateFormatKey: string;
   theme: ColorSet;
   goal: Goal;
-  todoCompleteAnimation(): void;
+  todoCompleteAnimation(isRemove: boolean): void;
 }) => {
   const { currentTheme } = useColors();
   const week = makeWeekCalendar();
@@ -104,7 +104,7 @@ const TodoInfo = ({
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <View>
+            <View style={{ flex: 0.7 }}>
               <Text
                 style={[
                   {
@@ -127,33 +127,55 @@ const TodoInfo = ({
                 {date}
               </Text>
             </View>
-            {!item.isComplete ? (
+            <View style={{ flexDirection: 'row', flex: 0.3 }}>
               <TouchableOpacity
                 style={{
                   padding: ms(8, 0.3),
-                  backgroundColor: theme.textColor,
+                  backgroundColor: '#DD0000',
                   borderRadius: ms(5, 0.3),
+                  marginLeft: ms(5, 0.3),
                 }}
                 onPress={() => {
-                  console.log('설정');
+                  console.log('delete!');
+                  todoCompleteAnimation(true);
+                  dismiss();
                 }}>
                 <MediumTextMemoization style={{ color: theme.backgroundColor }}>
-                  설정
+                  삭제
                 </MediumTextMemoization>
               </TouchableOpacity>
-            ) : (
-              <View
-                style={{
-                  padding: ms(8, 0.3),
-                  backgroundColor: theme.textColor,
-                  borderRadius: ms(5, 0.3),
-                  opacity: 0.3,
-                }}>
-                <MediumTextMemoization style={{ color: theme.backgroundColor }}>
-                  설정
-                </MediumTextMemoization>
-              </View>
-            )}
+              {!item.isComplete ? (
+                <TouchableOpacity
+                  style={{
+                    padding: ms(8, 0.3),
+                    backgroundColor: theme.textColor,
+                    borderRadius: ms(5, 0.3),
+                    marginLeft: ms(5, 0.3),
+                  }}
+                  onPress={() => {
+                    console.log('설정');
+                  }}>
+                  <MediumTextMemoization
+                    style={{ color: theme.backgroundColor }}>
+                    설정
+                  </MediumTextMemoization>
+                </TouchableOpacity>
+              ) : (
+                <View
+                  style={{
+                    padding: ms(8, 0.3),
+                    backgroundColor: theme.textColor,
+                    borderRadius: ms(5, 0.3),
+                    opacity: 0.3,
+                    marginLeft: ms(5, 0.3),
+                  }}>
+                  <MediumTextMemoization
+                    style={{ color: theme.backgroundColor }}>
+                    설정
+                  </MediumTextMemoization>
+                </View>
+              )}
+            </View>
           </View>
         </View>
         <View
@@ -260,7 +282,7 @@ const TodoInfo = ({
             <TouchableOpacity
               onPress={() => {
                 dismiss();
-                todoCompleteAnimation();
+                todoCompleteAnimation(false);
               }}
               style={{
                 marginTop: ms(14, 0.3),
@@ -313,8 +335,6 @@ const TodoInfo = ({
 const styles = StyleSheet.create({
   layout: {
     flex: 1,
-    marginVertical: ms(10, 0.3),
-    marginHorizontal: ms(9, 0.3),
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
