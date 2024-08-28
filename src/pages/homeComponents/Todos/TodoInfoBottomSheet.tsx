@@ -18,6 +18,7 @@ import { useColors } from '../../../context/ThemeContext';
 import { shadow } from '../../../assets/style/shadow';
 import { useRealm } from '@realm/react';
 import { calculateStartAndEndDayOfMonth } from '../../../utils/calStartEndWeek';
+import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 
 type dateUI = {
   taskDate: TaskDate;
@@ -43,7 +44,7 @@ const TodoInfo = ({
 }) => {
   const realm = useRealm();
   const { currentTheme } = useColors();
-  const { taskDate } = useDateContext();
+  const { taskDate, today } = useDateContext();
   const weekCycle: number[] = item.weekCycle;
   const { dismiss } = useBottomSheetModal();
   const navigation =
@@ -169,6 +170,13 @@ const TodoInfo = ({
       setWeekCycleUI(weekUI);
     }
   }, []);
+
+  const taskDateFormat = Number(
+    makeDateFormatKey(taskDate.year, taskDate.month, taskDate.date),
+  );
+  const todayFormat = Number(
+    makeDateFormatKey(today.year, today.month, today.date),
+  );
 
   return (
     <BottomSheetScrollView
@@ -364,7 +372,7 @@ const TodoInfo = ({
           </Text>
         </TouchableOpacity>
         <View style={{ flex: 0.3 }}>
-          {!item.isComplete ? (
+          {!item.isComplete && taskDateFormat == todayFormat ? (
             <TouchableOpacity
               onPress={() => {
                 dismiss();
@@ -389,8 +397,7 @@ const TodoInfo = ({
               </MediumTextMemoization>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity
-              activeOpacity={1}
+            <View
               style={{
                 marginTop: ms(14, 0.3),
                 flex: 0.3,
@@ -410,7 +417,7 @@ const TodoInfo = ({
                 ]}>
                 완료
               </MediumTextMemoization>
-            </TouchableOpacity>
+            </View>
           )}
         </View>
       </View>

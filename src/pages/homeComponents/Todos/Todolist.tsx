@@ -34,12 +34,15 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
   //현재 date 와 today 가 같고, 현재 todos 들이 모두 완료된 상태라면 모달 띄우기
   //하지만 처음부터 완료된 상태면 모달 x.
 
+  //completeTodo 나 delayTodo 같이 특정 기능이 실행되면 트리거 -> changed state
+
   const [changed, setChanged] = useState(false);
 
   useEffect(() => {
     if (
       taskDate.year === today.year &&
-      (taskDate.month === today.month) === (taskDate.date === today.date)
+      taskDate.month === today.month &&
+      taskDate.date === today.date
     ) {
       let fullnessCheck = false;
       for (let i = 0; i < todos.length; i++) {

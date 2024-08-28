@@ -119,7 +119,7 @@ const today = String(now.getDate()).padStart(2, '0');
 // const tomorrow = String(now.getDate() + 1).padStart(2, '0');
 
 // const yesterdayDate: string = year + month + yesterday;
-const yesterdayDate = '20240825';
+const yesterdayDate = '20240827';
 const todayDate: string = year + month + today;
 const tomorrowDate = '20240831';
 // const tomorrowDate: string = year + month + tomorrow;
@@ -154,7 +154,7 @@ const todos = [
       date: yesterdayDate,
       weekCycle: [0, 1, 2, 3, 4, 5, 6],
       priority: 3,
-      isComplete: true,
+      isComplete: false,
     },
     {
       title: '점심 시간에 책 읽기',
