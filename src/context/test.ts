@@ -167,7 +167,7 @@ const todos = [
   [
     {
       title: '기초 문법 공부하기',
-      date: yesterdayDate,
+      date: todayDate,
       weekCycle: [1, 3, 5],
       priority: 1,
       isComplete: true,

@@ -31,40 +31,46 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
     .filtered('date == $0', dateFormatKey)
     .sorted('isComplete', false);
 
-  const [isAlertOpened, setIsAlertOpened] = useState<boolean>(false);
-  let fullnessCheck = false;
-  for (const todo of todos) {
-    if (!todo.isComplete) {
-      break;
-    }
-    fullnessCheck = true;
-  }
+  //현재 date 와 today 가 같고, 현재 todos 들이 모두 완료된 상태라면 모달 띄우기
+  //하지만 처음부터 완료된 상태면 모달 x.
+
+  const [changed, setChanged] = useState(false);
 
   useEffect(() => {
-    if (taskDate === today && fullnessCheck && isAlertOpened === false) {
-      setIsAlertOpened(true);
-      showAlert({
-        alertType: 'custom',
-        customAlert: (
-          <CheckFullnessAlert
-            theme={theme}
-            checkedValue={checkedValue}
-            setCheckedValue={setCheckedValue}
-          />
-        ),
-      });
+    if (
+      taskDate.year === today.year &&
+      (taskDate.month === today.month) === (taskDate.date === today.date)
+    ) {
+      let fullnessCheck = false;
+      for (let i = 0; i < todos.length; i++) {
+        if (!todos[i].isComplete) {
+          break;
+        }
+        fullnessCheck = true;
+      }
+      if (fullnessCheck) {
+        setCheckedValue(checkedValue);
+        showAlert({
+          alertType: 'custom',
+          customAlert: (
+            <CheckFullnessAlert
+              theme={theme}
+              checkedValue={checkedValue}
+              setCheckedValue={setCheckedValue}
+            />
+          ),
+        });
+      }
       if (fullyDate) {
         realm.write(() => {
           fullyDate.fullness = checkedValue;
         });
       }
     }
-    if (!isAlertOpened) {
-      setIsAlertOpened(false);
-    }
-  }, [fullnessCheck, checkedValue]);
+  }, [checkedValue, taskDate, changed]);
 
   const delayTodo = (itemId: string) => {
+    setChanged(changed => !changed);
     const item = realm.objectForPrimaryKey<Todo>(
       'Todo',
       new Realm.BSON.ObjectId(itemId),
@@ -121,6 +127,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
         item.isComplete = true;
       });
     }
+    setChanged(changed => !changed);
   };
 
   return (
@@ -135,6 +142,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
               dateFormatKey={dateFormatKey}
               delayTodo={delayTodo}
               completeTodo={completeTodo}
+              setChanged={setChanged}
             />
           );
         }}

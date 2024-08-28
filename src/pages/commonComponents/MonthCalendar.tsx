@@ -117,6 +117,9 @@ const MonthCalendar = (): React.ReactElement => {
 
   const todayCheck = (taskDate: TaskDate) => {
     const today: TaskDate = dateContext.today;
+    if (!taskDate.isInclude) {
+      return false;
+    }
     return (
       today.year == taskDate.year &&
       today.month == taskDate.month &&

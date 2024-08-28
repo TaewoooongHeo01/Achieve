@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FullyDate, Goal, Todo } from '../../../../realm/models';
+import { Goal, Todo } from '../../../../realm/models';
 import { StyleSheet, Text, View } from 'react-native';
 import { ColorSet } from '../../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
@@ -17,7 +17,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useColors } from '../../../context/ThemeContext';
 import { shadow } from '../../../assets/style/shadow';
 import { useRealm } from '@realm/react';
-import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 import { calculateStartAndEndDayOfMonth } from '../../../utils/calStartEndWeek';
 
 type dateUI = {
@@ -33,16 +32,17 @@ const TodoInfo = ({
   theme,
   goal,
   todoCompleteAnimation,
+  setChanged,
 }: {
   item: Todo;
   dateFormatKey: string;
   theme: ColorSet;
   goal: Goal;
   todoCompleteAnimation(isRemove: boolean): void;
+  setChanged(changed: boolean): void;
 }) => {
   const realm = useRealm();
   const { currentTheme } = useColors();
-  // const week = makeWeekCalendar();
   const { taskDate } = useDateContext();
   const weekCycle: number[] = item.weekCycle;
   const { dismiss } = useBottomSheetModal();
@@ -79,9 +79,6 @@ const TodoInfo = ({
     leftDayCntOfPrevMonth =
       leftDayCntOfPrevMonth == lastDayOfPrevMonth ? 0 : leftDayCntOfPrevMonth;
 
-    let dateFormat: string;
-    let isInclude: boolean = false;
-
     if (7 - leftDayCntOfPrevMonth >= curDate) {
       //선택된 날짜가 첫번째 주에 포함
       dateOfWeek = startWeekDateOfMonth;
@@ -92,26 +89,16 @@ const TodoInfo = ({
         yearOfWeek -= 1;
       }
       for (let i = 0; i < 7; i++) {
-        isInclude = false;
         if (dateOfWeek > lastDayOfPrevMonth) {
           dateOfWeek = 1;
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
-        }
-        dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
-        const date = realm.objectForPrimaryKey<FullyDate>(
-          'FullyDate',
-          dateFormat,
-        );
-        if (date && date.todos && date.todos.length > 0) {
-          isInclude = true;
         }
         const dateData: TaskDate = {
           year: yearOfWeek,
           month: monthOfWeek,
           date: dateOfWeek,
           day: i,
-          isInclude: isInclude,
         };
 
         week[i] = dateData;
@@ -121,26 +108,16 @@ const TodoInfo = ({
       //선택된 날짜가 마지막 주에 포함
       dateOfWeek = lastWeekDateOfMonth;
       for (let i = 0; i < 7; i++) {
-        isInclude = false;
         if (dateOfWeek > lastDayOfMonth) {
           dateOfWeek = 1;
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
-        }
-        dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
-        const date = realm.objectForPrimaryKey<FullyDate>(
-          'FullyDate',
-          dateFormat,
-        );
-        if (date && date.todos && date.todos.length > 0) {
-          isInclude = true;
         }
         const dateData: TaskDate = {
           year: yearOfWeek,
           month: monthOfWeek,
           date: dateOfWeek,
           day: i,
-          isInclude: isInclude,
         };
         week[i] = dateData;
         dateOfWeek += 1;
@@ -149,21 +126,11 @@ const TodoInfo = ({
       if (curDay !== undefined) {
         dateOfWeek = curDate - curDay;
         for (let i = 0; i < 7; i++) {
-          isInclude = false;
-          dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
-          const date = realm.objectForPrimaryKey<FullyDate>(
-            'FullyDate',
-            dateFormat,
-          );
-          if (date && date.todos && date.todos.length > 0) {
-            isInclude = true;
-          }
           const dateData: TaskDate = {
             year: yearOfWeek,
             month: monthOfWeek,
             date: dateOfWeek,
             day: i,
-            isInclude: isInclude,
           };
           week[i] = dateData;
           dateOfWeek += 1;
@@ -252,6 +219,7 @@ const TodoInfo = ({
                   marginLeft: ms(5, 0.3),
                 }}
                 onPress={() => {
+                  setChanged(true);
                   todoCompleteAnimation(true);
                   realm.write(() => {
                     realm.delete(item);

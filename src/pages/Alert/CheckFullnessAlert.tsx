@@ -36,7 +36,7 @@ const CheckFullnessAlert = ({
             { marginBottom: ms(8, 0.3), color: theme.textColor },
             fontStyle.fontSizeMain,
           ]}>
-          축하합니다! 모든 할 일을 완료했어요
+          오늘 하루를 점검해보세요 😊
         </Text>
         {checkList.map((value, index) => {
           return (

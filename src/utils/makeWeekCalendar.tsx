@@ -90,6 +90,7 @@ export const makeWeekCalendar = () => {
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
         dateFormat = makeDateFormatKey(yearOfWeek, monthOfWeek, dateOfWeek);
+
         const date = realm.objectForPrimaryKey<FullyDate>(
           'FullyDate',
           dateFormat,

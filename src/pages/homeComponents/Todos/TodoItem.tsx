@@ -29,11 +29,13 @@ const TodoItem = ({
   dateFormatKey,
   delayTodo,
   completeTodo,
+  setChanged,
 }: {
   item: Todo;
   dateFormatKey: string;
   delayTodo(itemId: string): void;
   completeTodo(itemId: string, isRemove: boolean): void;
+  setChanged(changed: boolean): void;
 }) => {
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const { theme } = useColors();
@@ -250,6 +252,7 @@ const TodoItem = ({
             theme={theme}
             goal={goal}
             todoCompleteAnimation={todoCompleteAnimation}
+            setChanged={setChanged}
           />
         </BottomSheetView>
       </BottomSheetModal>
