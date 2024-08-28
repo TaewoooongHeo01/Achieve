@@ -18,7 +18,6 @@ import { useColors } from '../../../context/ThemeContext';
 import { shadow } from '../../../assets/style/shadow';
 import { useRealm } from '@realm/react';
 import { calculateStartAndEndDayOfMonth } from '../../../utils/calStartEndWeek';
-import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 
 type dateUI = {
   taskDate: TaskDate;
@@ -34,6 +33,8 @@ const TodoInfo = ({
   goal,
   todoCompleteAnimation,
   setChanged,
+  taskDateFormat,
+  todayFormat,
 }: {
   item: Todo;
   dateFormatKey: string;
@@ -41,10 +42,12 @@ const TodoInfo = ({
   goal: Goal;
   todoCompleteAnimation(isRemove: boolean): void;
   setChanged(changed: boolean): void;
+  taskDateFormat: number;
+  todayFormat: number;
 }) => {
   const realm = useRealm();
   const { currentTheme } = useColors();
-  const { taskDate, today } = useDateContext();
+  const { taskDate } = useDateContext();
   const weekCycle: number[] = item.weekCycle;
   const { dismiss } = useBottomSheetModal();
   const navigation =
@@ -170,13 +173,6 @@ const TodoInfo = ({
       setWeekCycleUI(weekUI);
     }
   }, []);
-
-  const taskDateFormat = Number(
-    makeDateFormatKey(taskDate.year, taskDate.month, taskDate.date),
-  );
-  const todayFormat = Number(
-    makeDateFormatKey(today.year, today.month, today.date),
-  );
 
   return (
     <BottomSheetScrollView

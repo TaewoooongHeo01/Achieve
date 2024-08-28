@@ -30,12 +30,16 @@ const TodoItem = ({
   delayTodo,
   completeTodo,
   setChanged,
+  taskDateFormat,
+  todayFormat,
 }: {
   item: Todo;
   dateFormatKey: string;
   delayTodo(itemId: string): void;
   completeTodo(itemId: string, isRemove: boolean): void;
   setChanged(changed: boolean): void;
+  taskDateFormat: number;
+  todayFormat: number;
 }) => {
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
   const { theme } = useColors();
@@ -181,33 +185,53 @@ const TodoItem = ({
   return (
     <View style={{ flex: 1 }}>
       <TouchableOpacity activeOpacity={0.8} onPress={todoHandlePresentModal}>
-        {!item.isComplete ? (
-          <GestureDetector gesture={pan}>
-            <Animated.View style={{ flex: 1 }}>
-              <Animated.View
-                style={[
-                  {
-                    flex: 1,
-                    position: 'relative',
-                    zIndex: 2,
-                  },
-                  scrollableListSize,
-                  animatedStyle,
-                ]}>
-                <MemorizedItemDetail item={item} goal={goal} />
+        {taskDateFormat === todayFormat ? (
+          !item.isComplete ? (
+            <GestureDetector gesture={pan}>
+              <Animated.View style={{ flex: 1 }}>
+                <Animated.View
+                  style={[
+                    {
+                      flex: 1,
+                      position: 'relative',
+                      zIndex: 2,
+                    },
+                    scrollableListSize,
+                    animatedStyle,
+                  ]}>
+                  <MemorizedItemDetail item={item} goal={goal} />
+                </Animated.View>
+                <View style={styles.hiddenContainer}>
+                  <Animated.View style={[fontFadeOutLeft]}>
+                    <Icon
+                      name='doubleright'
+                      color={theme.textColor}
+                      size={20}
+                    />
+                  </Animated.View>
+                  <Animated.View style={[fontFadeOutRight]}>
+                    <Icon name='check' color={theme.textColor} size={20} />
+                  </Animated.View>
+                </View>
               </Animated.View>
-              <View style={styles.hiddenContainer}>
-                <Animated.View style={[fontFadeOutLeft]}>
-                  <Icon name='doubleright' color={theme.textColor} size={20} />
-                </Animated.View>
-                <Animated.View style={[fontFadeOutRight]}>
-                  <Icon name='check' color={theme.textColor} size={20} />
-                </Animated.View>
-              </View>
+            </GestureDetector>
+          ) : (
+            <Animated.View
+              style={[
+                {
+                  flex: 1,
+                  position: 'relative',
+                  zIndex: 2,
+                  marginBottom: ms(10, 0.3),
+                  height: ms(60, 0.3),
+                },
+                completeTodoAnimation,
+              ]}>
+              <MemorizedItemDetail item={item} goal={goal} />
             </Animated.View>
-          </GestureDetector>
+          )
         ) : (
-          <Animated.View
+          <View
             style={[
               {
                 flex: 1,
@@ -216,10 +240,9 @@ const TodoItem = ({
                 marginBottom: ms(10, 0.3),
                 height: ms(60, 0.3),
               },
-              completeTodoAnimation,
             ]}>
             <MemorizedItemDetail item={item} goal={goal} />
-          </Animated.View>
+          </View>
         )}
       </TouchableOpacity>
       <BottomSheetModal
@@ -253,6 +276,8 @@ const TodoItem = ({
             goal={goal}
             todoCompleteAnimation={todoCompleteAnimation}
             setChanged={setChanged}
+            taskDateFormat={taskDateFormat}
+            todayFormat={todayFormat}
           />
         </BottomSheetView>
       </BottomSheetModal>

@@ -38,12 +38,15 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
 
   const [changed, setChanged] = useState(false);
 
+  const taskDateFormat = Number(
+    makeDateFormatKey(taskDate.year, taskDate.month, taskDate.date),
+  );
+  const todayFormat = Number(
+    makeDateFormatKey(today.year, today.month, today.date),
+  );
+
   useEffect(() => {
-    if (
-      taskDate.year === today.year &&
-      taskDate.month === today.month &&
-      taskDate.date === today.date
-    ) {
+    if (taskDateFormat === todayFormat) {
       let fullnessCheck = false;
       for (let i = 0; i < todos.length; i++) {
         if (!todos[i].isComplete) {
@@ -146,6 +149,8 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
               delayTodo={delayTodo}
               completeTodo={completeTodo}
               setChanged={setChanged}
+              taskDateFormat={taskDateFormat}
+              todayFormat={todayFormat}
             />
           );
         }}
