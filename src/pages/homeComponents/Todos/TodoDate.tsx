@@ -16,10 +16,12 @@ import { fontStyle } from '../../../assets/style/fontStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
+import TodoAdd from './TodoAdd';
+import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 
 const TodoDate = (): React.ReactElement => {
   const { theme } = useColors();
-  const dateContext = useDateContext();
+  const { taskDate, today, setTaskDate } = useDateContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['50%'], []);
   const todoString = '해야 할 일 ';
@@ -42,7 +44,7 @@ const TodoDate = (): React.ReactElement => {
   );
 
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const todoSnapPoints = useMemo(() => ['70%'], []);
+  const todoSnapPoints = useMemo(() => ['60%'], []);
 
   const todoHandlePresentModal = useCallback(() => {
     todoBottomSheetModalRef.current?.present();
@@ -61,10 +63,17 @@ const TodoDate = (): React.ReactElement => {
     [],
   );
 
-  const year = dateContext.taskDate.year;
-  const month = String(dateContext.taskDate.month).padStart(2, '0');
-  const date = String(dateContext.taskDate.date).padStart(2, '0');
-  const day = dateContext.taskDate.day;
+  const year = String(taskDate.year);
+  const month = String(taskDate.month).padStart(2, '0');
+  const date = String(taskDate.date).padStart(2, '0');
+  const day = taskDate.day;
+
+  const taskDateFormat = Number(
+    makeDateFormatKey(taskDate.year, taskDate.month, taskDate.date),
+  );
+  const todayFormat = Number(
+    makeDateFormatKey(today.year, today.month, today.date),
+  );
 
   return (
     <View style={styles.layout}>
@@ -97,7 +106,7 @@ const TodoDate = (): React.ReactElement => {
           </Pressable>
           <Pressable
             onPress={() => {
-              dateContext.setTaskDate(dateContext.today);
+              setTaskDate(today);
             }}
             style={[
               styles.setTodayBtn,
@@ -112,9 +121,18 @@ const TodoDate = (): React.ReactElement => {
             </Text>
           </Pressable>
         </View>
-        <TouchableOpacity onPress={todoHandlePresentModal}>
-          <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
-        </TouchableOpacity>
+        {taskDateFormat >= todayFormat ? (
+          <TouchableOpacity onPress={todoHandlePresentModal}>
+            <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
+          </TouchableOpacity>
+        ) : (
+          <PlusIcon
+            name='plus'
+            color={theme.textColor}
+            style={{ opacity: 0.2 }}
+            size={ms(25, 0.3)}
+          />
+        )}
       </View>
       <WeekCalender></WeekCalender>
       <TodoDetail theme={theme}></TodoDetail>
@@ -151,12 +169,12 @@ const TodoDate = (): React.ReactElement => {
         index={0}
         snapPoints={todoSnapPoints}
         backdropComponent={todoRenderBackdrop}
-        detached={true}
-        bottomInset={50}
+        keyboardBehavior='interactive'
+        keyboardBlurBehavior='restore'
         handleStyle={{
           backgroundColor: theme.backgroundColor,
-          borderTopRightRadius: 15,
-          borderTopLeftRadius: 15,
+          borderTopRightRadius: ms(15, 0.3),
+          borderTopLeftRadius: ms(15, 0.3),
           marginHorizontal: ms(10, 0.3),
           height: 0,
         }}
@@ -171,7 +189,7 @@ const TodoDate = (): React.ReactElement => {
             styles.bottomSheetContainer,
             { backgroundColor: theme.backgroundColor },
           ]}>
-          <Text>todo</Text>
+          <TodoAdd />
         </BottomSheetView>
       </BottomSheetModal>
     </View>

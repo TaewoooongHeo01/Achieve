@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { ColorSet, fullnessCheckColor } from '../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { closeAlert } from 'react-native-customisable-alert';
 
 const CheckFullnessAlert = ({
@@ -16,8 +16,9 @@ const CheckFullnessAlert = ({
   setCheckedValue: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const checkList: string[] = [
-    '진짜 후회가 없는가?',
-    '완전한 몰입을 경험했는가?',
+    '체크사항 ~~~~',
+    '체크사항 ~~~~',
+    '체크사항 ~~~~',
   ];
 
   return (

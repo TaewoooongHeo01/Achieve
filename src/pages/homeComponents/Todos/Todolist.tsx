@@ -25,11 +25,13 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
   }, [taskDate]);
 
   const fullyDate = useObject(FullyDate, dateFormatKey);
-  // const todos = fullyDate?.todos.sorted('isComplete', false);
 
   const todos = useQuery(Todo)
     .filtered('date == $0', dateFormatKey)
-    .sorted('isComplete', false);
+    .sorted([
+      ['isComplete', false], // false: isComplete가 false인 항목이 위로 정렬됨
+      ['priority', true], // true: priority가 높은 항목이 위로 정렬됨
+    ]);
 
   //현재 date 와 today 가 같고, 현재 todos 들이 모두 완료된 상태라면 모달 띄우기
   //하지만 처음부터 완료된 상태면 모달 x.
@@ -124,6 +126,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
   };
 
   const completeTodo = (itemId: string) => {
+    setChanged(changed => !changed);
     const item = realm.objectForPrimaryKey<Todo>(
       'Todo',
       new Realm.BSON.ObjectId(itemId),
@@ -133,7 +136,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
         item.isComplete = true;
       });
     }
-    setChanged(changed => !changed);
   };
 
   return (

@@ -18,6 +18,7 @@ import { useColors } from '../../../context/ThemeContext';
 import { shadow } from '../../../assets/style/shadow';
 import { useRealm } from '@realm/react';
 import { calculateStartAndEndDayOfMonth } from '../../../utils/calStartEndWeek';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 type dateUI = {
   taskDate: TaskDate;
@@ -203,16 +204,32 @@ const TodoInfo = ({
                 ]}>
                 {item.title}
               </Text>
-              <Text
-                style={[
-                  {
-                    fontFamily: 'Pretendard-Medium',
-                    marginLeft: ms(1, 0.3),
-                    color: theme.textColor,
-                  },
-                ]}>
-                {date}
-              </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Icon
+                  name='exclamationcircle'
+                  color={
+                    item.priority === 2
+                      ? 'orange'
+                      : item.priority === 1
+                        ? 'green'
+                        : 'red'
+                  }
+                  size={ms(15, 0.3)}
+                  style={{
+                    marginRight: ms(5, 0.3),
+                  }}
+                />
+                <Text
+                  style={[
+                    {
+                      fontFamily: 'Pretendard-Medium',
+                      marginLeft: ms(1, 0.3),
+                      color: theme.textColor,
+                    },
+                  ]}>
+                  {date}
+                </Text>
+              </View>
             </View>
             <View style={{ flexDirection: 'row', flex: 0.3 }}>
               <TouchableOpacity

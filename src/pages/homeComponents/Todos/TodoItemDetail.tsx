@@ -73,7 +73,10 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
         </View>
       </View>
       <View style={[styles.infoContainer]}>
-        <View style={{ flex: ms(0.5, 0.3) }}>
+        <View
+          style={{
+            flex: ms(0.5, 0.3),
+          }}>
           <Text
             style={[
               { color: theme.textColor, opacity: item.isComplete ? 0.4 : 1 },
@@ -110,21 +113,20 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
         </View>
       </View>
       <View style={styles.dateContainer}>
-        {/* 우선순위 아이콘? */}
-
-        {/* {!item.isComplete ? (
-          <CheckboxIcon
-            name='square'
-            size={iconSize + ms(8, 0.3)}
-            color={theme.textColor}
-          />
-        ) : (
-          <CheckboxIcon
-            name='check-square'
-            size={iconSize + ms(8, 0.3)}
-            color={theme.textColor}
-          />
-        )} */}
+        <CalendarIcon
+          name='exclamationcircle'
+          color={
+            item.priority === 2
+              ? 'orange'
+              : item.priority === 1
+                ? 'green'
+                : 'red'
+          }
+          size={ms(15, 0.3)}
+          style={{
+            marginLeft: ms(5, 0.3),
+          }}
+        />
       </View>
     </View>
   );
