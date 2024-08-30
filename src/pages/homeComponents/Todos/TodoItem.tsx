@@ -79,18 +79,17 @@ const TodoItem = ({
 
   const todoCompleteAnimation = (isRemove: boolean) => {
     'worklet';
-    iconBackgroundColor.value = withTiming('transparent', {}, () => {
-      backFontOpacityRight.value = withTiming(0, {}, () => {
-        translateX.value = withTiming(-screenWidth, {}, () => {
-          marginXY.value = withTiming(0);
-          scaleX.value = withTiming(0, {}, () => {
-            if (!isRemove) {
-              runOnJS(completeTodo)(itemId, false);
-            }
-            todoItemOpacity.value = 0;
-            todoItemOpacity.value = withTiming(1, {
-              duration: 500,
-            });
+    iconBackgroundColor.value = withTiming('transparent');
+    backFontOpacityRight.value = withTiming(0, {}, () => {
+      translateX.value = withTiming(-screenWidth, {}, () => {
+        marginXY.value = withTiming(0);
+        scaleX.value = withTiming(0, {}, () => {
+          if (!isRemove) {
+            runOnJS(completeTodo)(itemId, false);
+          }
+          todoItemOpacity.value = 0;
+          todoItemOpacity.value = withTiming(1, {
+            duration: 500,
           });
         });
       });
@@ -105,10 +104,10 @@ const TodoItem = ({
     .onUpdate(e => {
       translateX.value = startX.value + e.translationX;
       if (translateX.value > 0) {
-        (iconBackgroundColor.value = 'orange'),
+        (iconBackgroundColor.value = '#FB8159'),
           (backFontOpacityLeft.value = withTiming(1));
       } else if (translateX.value < 0) {
-        (iconBackgroundColor.value = 'green'),
+        (iconBackgroundColor.value = '#D2E168'),
           (backFontOpacityRight.value = withTiming(1));
       }
     })
@@ -121,13 +120,12 @@ const TodoItem = ({
       if (animatiomIsRunning.current) {
         const state = translateX.value;
         if (state > 0) {
-          iconBackgroundColor.value = withTiming('transparent', {}, () => {
-            backFontOpacityLeft.value = withTiming(0, {}, () => {
-              translateX.value = withTiming(screenWidth, {}, () => {
-                marginXY.value = withTiming(0);
-                scaleX.value = withTiming(0, {}, () => {
-                  runOnJS(delayTodo)(itemId);
-                });
+          iconBackgroundColor.value = withTiming('transparent');
+          backFontOpacityLeft.value = withTiming(0, {}, () => {
+            translateX.value = withTiming(screenWidth, {}, () => {
+              marginXY.value = withTiming(0);
+              scaleX.value = withTiming(0, {}, () => {
+                runOnJS(delayTodo)(itemId);
               });
             });
           });
@@ -179,7 +177,7 @@ const TodoItem = ({
     'worklet';
     return {
       backgroundColor: withTiming(iconBackgroundColor.value, {
-        duration: 500,
+        duration: 100,
       }),
     };
   });
