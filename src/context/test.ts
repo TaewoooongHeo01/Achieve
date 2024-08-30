@@ -121,7 +121,7 @@ const today = String(now.getDate()).padStart(2, '0');
 // const yesterdayDate: string = year + month + yesterday;
 const yesterdayDate = '20240827';
 const todayDate: string = year + month + today;
-const tomorrowDate = '20240831';
+const tomorrowDate = '20240901';
 // const tomorrowDate: string = year + month + tomorrow;
 
 const todos = [
@@ -170,7 +170,7 @@ const todos = [
       date: todayDate,
       weekCycle: [1, 3, 5],
       priority: 1,
-      isComplete: true,
+      isComplete: false,
     },
     {
       title: '토이프로젝트 기획',

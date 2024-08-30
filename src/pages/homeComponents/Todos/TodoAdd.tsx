@@ -170,16 +170,9 @@ const TodoAdd = () => {
             borderWidth: 0.2,
             borderRadius: ms(7, 0.3),
             padding: ms(10, 0.3),
-            borderColor:
-              currentTheme === 'dark'
-                ? theme.backgroundColor
-                : Platform.OS === 'ios'
-                  ? '#ccc'
-                  : 'black',
+            borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
             backgroundColor:
-              currentTheme === 'dark'
-                ? theme.appBackgroundColor
-                : theme.backgroundColor,
+              currentTheme === 'dark' ? theme.appBackgroundColor : '#F4F4F4',
             color: theme.textColor,
           }}
         />
@@ -211,7 +204,7 @@ const TodoAdd = () => {
                     ? theme.textColor
                     : currentTheme === 'dark'
                       ? theme.appBackgroundColor
-                      : theme.backgroundColor,
+                      : '#F4F4F4',
                 borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               },
             ]}>
@@ -230,7 +223,7 @@ const TodoAdd = () => {
                     ? theme.textColor
                     : currentTheme === 'dark'
                       ? theme.appBackgroundColor
-                      : theme.backgroundColor,
+                      : '#F4F4F4',
                 borderRadius: 1,
                 borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
                 marginLeft: ms(-0.1, 0.3),
@@ -254,7 +247,7 @@ const TodoAdd = () => {
                     ? theme.textColor
                     : currentTheme === 'dark'
                       ? theme.appBackgroundColor
-                      : theme.backgroundColor,
+                      : '#F4F4F4',
                 borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               },
             ]}>
@@ -288,7 +281,9 @@ const TodoAdd = () => {
                     {
                       backgroundColor: weekCycle.includes(index)
                         ? theme.textColor
-                        : theme.appBackgroundColor,
+                        : currentTheme === 'dark'
+                          ? theme.appBackgroundColor
+                          : '#F4F4F4',
                       borderTopLeftRadius: ms(5, 0.3),
                       borderBottomLeftRadius: ms(5, 0.3),
                       borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
@@ -318,7 +313,9 @@ const TodoAdd = () => {
                     {
                       backgroundColor: weekCycle.includes(index)
                         ? theme.textColor
-                        : theme.appBackgroundColor,
+                        : currentTheme === 'dark'
+                          ? theme.appBackgroundColor
+                          : '#F4F4F4',
                       borderTopRightRadius: ms(5, 0.3),
                       borderBottomRightRadius: ms(5, 0.3),
                       borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
@@ -348,7 +345,9 @@ const TodoAdd = () => {
                     {
                       backgroundColor: weekCycle.includes(index)
                         ? theme.textColor
-                        : theme.appBackgroundColor,
+                        : currentTheme === 'dark'
+                          ? theme.appBackgroundColor
+                          : '#F4F4F4',
                       borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
                       borderRadius: Platform.OS === 'ios' ? 0 : ms(0.01, 0.1),
                       marginLeft: ms(-1, 0.3),

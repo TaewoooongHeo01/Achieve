@@ -86,11 +86,19 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
     const dateKey = makeDateFormatKey(
       taskDate.year,
       taskDate.month,
+      taskDate.date,
+    );
+    const nextDateKey = makeDateFormatKey(
+      taskDate.year,
+      taskDate.month,
       taskDate.date + 1,
     );
-    if (item != null) {
+    if (item) {
       realm.write(() => {
-        const fullyDate = realm.objectForPrimaryKey(FullyDate, item.date);
+        const fullyDate = realm.objectForPrimaryKey<FullyDate>(
+          'FullyDate',
+          dateKey,
+        );
         if (fullyDate) {
           const todoToRemove = fullyDate.todos.find(todo =>
             todo._id.equals(item._id),
@@ -109,17 +117,18 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
           throw new Error("can't find fully date");
         }
 
-        const nextDate = realm.objectForPrimaryKey(FullyDate, dateKey);
-        item.date = dateKey;
+        const nextDate = realm.objectForPrimaryKey(FullyDate, nextDateKey);
+        item.date = nextDateKey;
         if (nextDate) {
           nextDate.todos.push(item);
         } else {
           const newNextDate = realm.create<FullyDate>('FullyDate', {
-            dateKey: dateKey,
-            fullness: 0,
+            dateKey: nextDateKey,
+            fullness: 0.2,
             todos: [],
           });
           newNextDate.todos.push(item);
+          console.log(newNextDate);
         }
       });
     }

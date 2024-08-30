@@ -26,7 +26,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import TodoInfo from './TodoInfoBottomSheet';
 
-const MemorizedItemDetail = memo(TodoItemDetail);
+export const MemorizedItemDetail = memo(TodoItemDetail);
 const MemorizedTodoInfoBottomSheet = memo(TodoInfo);
 
 const TodoItem = ({
@@ -61,6 +61,8 @@ const TodoItem = ({
   const backFontOpacityLeft = useSharedValue(0);
   const backFontOpacityRight = useSharedValue(0);
 
+  const iconBackgroundColor = useSharedValue('transparent');
+
   const threshold = screenWidth / 4;
   const animatiomIsRunning = useRef<boolean>(false);
 
@@ -77,16 +79,18 @@ const TodoItem = ({
 
   const todoCompleteAnimation = (isRemove: boolean) => {
     'worklet';
-    backFontOpacityRight.value = withTiming(0, {}, () => {
-      translateX.value = withTiming(-screenWidth, {}, () => {
-        marginXY.value = withTiming(0);
-        scaleX.value = withTiming(0, {}, () => {
-          if (!isRemove) {
-            runOnJS(completeTodo)(itemId, false);
-          }
-          todoItemOpacity.value = 0;
-          todoItemOpacity.value = withTiming(1, {
-            duration: 500,
+    iconBackgroundColor.value = withTiming('transparent', {}, () => {
+      backFontOpacityRight.value = withTiming(0, {}, () => {
+        translateX.value = withTiming(-screenWidth, {}, () => {
+          marginXY.value = withTiming(0);
+          scaleX.value = withTiming(0, {}, () => {
+            if (!isRemove) {
+              runOnJS(completeTodo)(itemId, false);
+            }
+            todoItemOpacity.value = 0;
+            todoItemOpacity.value = withTiming(1, {
+              duration: 500,
+            });
           });
         });
       });
@@ -101,9 +105,11 @@ const TodoItem = ({
     .onUpdate(e => {
       translateX.value = startX.value + e.translationX;
       if (translateX.value > 0) {
-        backFontOpacityLeft.value = withTiming(1);
+        (iconBackgroundColor.value = 'orange'),
+          (backFontOpacityLeft.value = withTiming(1));
       } else if (translateX.value < 0) {
-        backFontOpacityRight.value = withTiming(1);
+        (iconBackgroundColor.value = 'green'),
+          (backFontOpacityRight.value = withTiming(1));
       }
     })
     .onEnd(() => {
@@ -115,11 +121,13 @@ const TodoItem = ({
       if (animatiomIsRunning.current) {
         const state = translateX.value;
         if (state > 0) {
-          backFontOpacityLeft.value = withTiming(0, {}, () => {
-            translateX.value = withTiming(screenWidth, {}, () => {
-              marginXY.value = withTiming(0);
-              scaleX.value = withTiming(0, {}, () => {
-                runOnJS(delayTodo)(itemId);
+          iconBackgroundColor.value = withTiming('transparent', {}, () => {
+            backFontOpacityLeft.value = withTiming(0, {}, () => {
+              translateX.value = withTiming(screenWidth, {}, () => {
+                marginXY.value = withTiming(0);
+                scaleX.value = withTiming(0, {}, () => {
+                  runOnJS(delayTodo)(itemId);
+                });
               });
             });
           });
@@ -167,6 +175,15 @@ const TodoItem = ({
     };
   });
 
+  const iconBackgroundColorAnime = useAnimatedStyle(() => {
+    'worklet';
+    return {
+      backgroundColor: withTiming(iconBackgroundColor.value, {
+        duration: 500,
+      }),
+    };
+  });
+
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
   const todoSnapPoints = useMemo(() => ['45%'], []);
 
@@ -208,7 +225,13 @@ const TodoItem = ({
                   ]}>
                   <MemorizedItemDetail item={item} goal={goal} />
                 </Animated.View>
-                <View style={styles.hiddenContainer}>
+                <Animated.View
+                  style={[
+                    styles.hiddenContainer,
+                    scrollableListSize,
+                    iconBackgroundColorAnime,
+                    { borderRadius: ms(6, 0.3) },
+                  ]}>
                   <Animated.View style={[fontFadeOutLeft]}>
                     <Icon
                       name='doubleright'
@@ -219,7 +242,7 @@ const TodoItem = ({
                   <Animated.View style={[fontFadeOutRight]}>
                     <Icon name='check' color={theme.textColor} size={20} />
                   </Animated.View>
-                </View>
+                </Animated.View>
               </Animated.View>
             </GestureDetector>
           ) : (
@@ -261,8 +284,8 @@ const TodoItem = ({
         bottomInset={50}
         handleStyle={{
           backgroundColor: theme.backgroundColor,
-          borderTopRightRadius: 15,
-          borderTopLeftRadius: 15,
+          borderTopRightRadius: ms(15, 0.3),
+          borderTopLeftRadius: ms(15, 0.3),
           marginHorizontal: ms(10, 0.3),
           height: 0,
         }}
@@ -308,8 +331,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: ms(30, 0.3),
     marginHorizontal: ms(10, 0.3),
-    borderBottomRightRadius: 15,
-    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: ms(15, 0.3),
+    borderBottomLeftRadius: ms(15, 0.3),
   },
 });
 

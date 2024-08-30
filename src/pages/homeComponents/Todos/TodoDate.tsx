@@ -64,7 +64,6 @@ const TodoDate = (): React.ReactElement => {
     [todoBottomSheetSnapPoint],
   );
 
-  console.log(todoBottomSheetSnapPoint);
   useEffect(() => {
     if (Platform.OS === 'android') {
       const keyboardDidShowListener = Keyboard.addListener(

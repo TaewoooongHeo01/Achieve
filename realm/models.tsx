@@ -53,7 +53,7 @@ export class Goal extends Realm.Object {
 
 export class FullyDate extends Realm.Object {
   dateKey!: string;
-  fullness?: number;
+  fullness!: number;
   todos!: Realm.List<Todo>;
 
   static schema: Realm.ObjectSchema = {

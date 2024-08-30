@@ -21,6 +21,8 @@ const Main = (): React.JSX.Element => {
   const { top } = useSafeAreaInsets();
   const Tab = createBottomTabNavigator();
   const { theme, currentTheme } = useColors();
+
+  //test code
   initialize();
 
   return (

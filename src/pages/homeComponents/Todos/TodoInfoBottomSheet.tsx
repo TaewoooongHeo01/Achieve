@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Goal, Todo } from '../../../../realm/models';
+import { FullyDate, Goal, Todo } from '../../../../realm/models';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { ColorSet } from '../../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
@@ -242,9 +242,18 @@ const TodoInfo = ({
                 onPress={() => {
                   setChanged(true);
                   todoCompleteAnimation(true);
+                  const fd = realm.objectForPrimaryKey<FullyDate>(
+                    'FullyDate',
+                    dateFormatKey,
+                  );
                   realm.write(() => {
                     realm.delete(item);
                   });
+                  if (fd?.todos.length == 0) {
+                    realm.write(() => {
+                      realm.delete(fd);
+                    });
+                  }
                   dismiss();
                 }}>
                 <MediumTextMemoization style={{ color: theme.backgroundColor }}>
