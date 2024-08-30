@@ -7,8 +7,9 @@ import {
   StyleSheet,
   Keyboard,
   Alert,
+  Platform,
 } from 'react-native';
-import { Goal } from '../../../../realm/models';
+import { FullyDate, Goal } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { days, useDateContext } from '../../../context/DateContext';
 import { useColors } from '../../../context/ThemeContext';
@@ -26,7 +27,7 @@ import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 const TodoAdd = () => {
   const goals = useQuery(Goal);
   const { taskDate } = useDateContext();
-  const { theme } = useColors();
+  const { theme, currentTheme } = useColors();
   const realm = useRealm();
   const { dismiss } = useBottomSheetModal();
 
@@ -83,7 +84,7 @@ const TodoAdd = () => {
         <LinearGradient
           style={{
             padding: ms(10, 0.3),
-            borderRadius: ms(5, 0.3),
+            borderRadius: ms(7, 0.3),
             opacity: item._id.toString() === goal?._id.toString() ? 0.4 : 1,
           }}
           colors={theme.gradientColor[item.color]}>
@@ -105,6 +106,7 @@ const TodoAdd = () => {
         marginTop: ms(7, 0.3),
         marginBottom: ms(-40, 0.3),
         marginHorizontal: ms(5, 0.3),
+        height: 100,
       }}>
       <View
         style={{
@@ -118,14 +120,14 @@ const TodoAdd = () => {
               fontSize: ms(20, 0.3),
               color: theme.textColor,
               paddingTop: ms(8, 0.3),
-              paddingRight: ms(-8, 0.3),
+              marginRight: ms(-3, 0.3),
             },
           ]}>
           {year}.{month}.{date}
         </Text>
         <Text
           style={{
-            fontFamily: 'Pretendard-Regular',
+            fontFamily: 'Pretendard-Medium',
             fontSize: ms(20, 0.3),
             color: theme.textColor,
             padding: ms(8, 0.3),
@@ -134,7 +136,14 @@ const TodoAdd = () => {
         </Text>
       </View>
       <View style={{ flex: ms(0.17, 0.3) }}>
-        <Text style={[fontStyle.fontSizeSub, { marginBottom: ms(2, 0.3) }]}>
+        <Text
+          style={[
+            fontStyle.fontSizeSub,
+            {
+              marginBottom: ms(2, 0.3),
+              color: theme.textColor,
+            },
+          ]}>
           {goal === undefined ? '목표선택' : goal.title}
         </Text>
         <FlatList
@@ -145,7 +154,11 @@ const TodoAdd = () => {
         />
       </View>
       <View style={{ flex: ms(0.15, 0.3) }}>
-        <Text style={[fontStyle.fontSizeSub, { marginBottom: ms(2, 0.3) }]}>
+        <Text
+          style={[
+            fontStyle.fontSizeSub,
+            { marginBottom: ms(2, 0.3), color: theme.textColor },
+          ]}>
           제목
         </Text>
         <BottomSheetTextInput
@@ -155,14 +168,26 @@ const TodoAdd = () => {
             marginHorizontal: ms(10, 0.3),
             marginVertical: ms(5, 0.3),
             borderWidth: 0.2,
-            borderRadius: ms(5, 0.3),
+            borderRadius: ms(7, 0.3),
             padding: ms(10, 0.3),
-            borderColor: '#ccc',
+            borderColor:
+              currentTheme === 'dark'
+                ? theme.backgroundColor
+                : Platform.OS === 'ios'
+                  ? '#ccc'
+                  : 'black',
+            backgroundColor:
+              currentTheme === 'dark'
+                ? theme.appBackgroundColor
+                : theme.backgroundColor,
+            color: theme.textColor,
           }}
         />
       </View>
       <View style={{ flex: ms(0.15, 0.3) }}>
-        <Text style={[fontStyle.fontSizeSub]}>중요도</Text>
+        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+          중요도
+        </Text>
         <View
           style={{
             flex: 1,
@@ -182,7 +207,12 @@ const TodoAdd = () => {
                 borderTopLeftRadius: ms(5, 0.3),
                 borderBottomLeftRadius: ms(5, 0.3),
                 backgroundColor:
-                  priority === 1 ? theme.textColor : theme.backgroundColor,
+                  priority === 1
+                    ? theme.textColor
+                    : currentTheme === 'dark'
+                      ? theme.appBackgroundColor
+                      : theme.backgroundColor,
+                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               },
             ]}>
             <Icon name='exclamationcircle' color='green' size={ms(20, 0.3)} />
@@ -196,7 +226,15 @@ const TodoAdd = () => {
               styles.priorityBox,
               {
                 backgroundColor:
-                  priority === 2 ? theme.textColor : theme.backgroundColor,
+                  priority === 2
+                    ? theme.textColor
+                    : currentTheme === 'dark'
+                      ? theme.appBackgroundColor
+                      : theme.backgroundColor,
+                borderRadius: 1,
+                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                marginLeft: ms(-0.1, 0.3),
+                marginRight: ms(-0.1, 0.3),
               },
             ]}>
             <Icon name='exclamationcircle' color='orange' size={ms(20, 0.3)} />
@@ -212,7 +250,12 @@ const TodoAdd = () => {
                 borderTopRightRadius: ms(5, 0.3),
                 borderBottomRightRadius: ms(5, 0.3),
                 backgroundColor:
-                  priority === 3 ? theme.textColor : theme.backgroundColor,
+                  priority === 3
+                    ? theme.textColor
+                    : currentTheme === 'dark'
+                      ? theme.appBackgroundColor
+                      : theme.backgroundColor,
+                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               },
             ]}>
             <Icon name='exclamationcircle' color='red' size={ms(20, 0.3)} />
@@ -220,7 +263,9 @@ const TodoAdd = () => {
         </View>
       </View>
       <View style={{ flex: ms(0.15, 0.3) }}>
-        <Text style={[fontStyle.fontSizeSub]}>반복일</Text>
+        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+          반복일
+        </Text>
         <View
           style={{
             flex: 1,
@@ -243,16 +288,17 @@ const TodoAdd = () => {
                     {
                       backgroundColor: weekCycle.includes(index)
                         ? theme.textColor
-                        : theme.backgroundColor,
+                        : theme.appBackgroundColor,
                       borderTopLeftRadius: ms(5, 0.3),
                       borderBottomLeftRadius: ms(5, 0.3),
+                      borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
                     },
                   ]}>
                   <Text
                     style={{
                       fontFamily: 'Pretendard-Regular',
                       color: weekCycle.includes(index)
-                        ? theme.backgroundColor
+                        ? theme.appBackgroundColor
                         : theme.textColor,
                     }}>
                     {value}
@@ -272,16 +318,17 @@ const TodoAdd = () => {
                     {
                       backgroundColor: weekCycle.includes(index)
                         ? theme.textColor
-                        : theme.backgroundColor,
+                        : theme.appBackgroundColor,
                       borderTopRightRadius: ms(5, 0.3),
                       borderBottomRightRadius: ms(5, 0.3),
+                      borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
                     },
                   ]}>
                   <Text
                     style={{
                       fontFamily: 'Pretendard-Regular',
                       color: weekCycle.includes(index)
-                        ? theme.backgroundColor
+                        ? theme.appBackgroundColor
                         : theme.textColor,
                     }}>
                     {value}
@@ -301,14 +348,18 @@ const TodoAdd = () => {
                     {
                       backgroundColor: weekCycle.includes(index)
                         ? theme.textColor
-                        : theme.backgroundColor,
+                        : theme.appBackgroundColor,
+                      borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                      borderRadius: Platform.OS === 'ios' ? 0 : ms(0.01, 0.1),
+                      marginLeft: ms(-1, 0.3),
+                      marginRight: ms(-1, 0.3),
                     },
                   ]}>
                   <Text
                     style={{
                       fontFamily: 'Pretendard-Regular',
                       color: weekCycle.includes(index)
-                        ? theme.backgroundColor
+                        ? theme.appBackgroundColor
                         : theme.textColor,
                     }}>
                     {value}
@@ -332,7 +383,7 @@ const TodoAdd = () => {
               backgroundColor: theme.textColor,
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: ms(5, 0.3),
+              borderRadius: ms(7, 0.3),
             }}
             onPress={() => {
               if (inputValid()) {
@@ -349,6 +400,20 @@ const TodoAdd = () => {
                     priority: priority,
                     isComplete: false,
                   });
+                  const date = realm.objectForPrimaryKey<FullyDate>(
+                    'FullyDate',
+                    todo.date,
+                  );
+                  if (date) {
+                    date.todos.push(todo);
+                  } else {
+                    const newDate = realm.create('FullyDate', {
+                      dateKey: todo.date,
+                      fullness: 0.2,
+                      todos: [],
+                    });
+                    newDate.todos.push(todo);
+                  }
                   goal?.todos.push(todo);
                   dismiss();
                 });
@@ -375,7 +440,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.2,
     paddingVertical: ms(10, 0.3),
-    borderColor: '#ccc',
   },
   priorityBox: {
     flex: 1,
@@ -383,7 +447,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.2,
     paddingVertical: ms(10, 0.3),
-    borderColor: '#ccc',
   },
 });
 

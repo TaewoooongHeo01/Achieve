@@ -71,9 +71,9 @@ const CheckFullnessAlert = ({
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: ms(7, 0.3),
                 borderRadius: ms(5, 0.3),
                 borderWidth: 0.2,
+                borderColor: '#ccc',
                 backgroundColor:
                   checkedValue === calValue
                     ? theme.textColor
@@ -85,6 +85,7 @@ const CheckFullnessAlert = ({
               <Text
                 style={{
                   textAlign: 'center',
+                  fontFamily: 'Pretendard-Medium',
                   color:
                     checkedValue === calValue
                       ? theme.backgroundColor

@@ -48,7 +48,7 @@ export const initialize = () => {
         } else {
           const newDate = realm.create('FullyDate', {
             dateKey: todoItem.date,
-            fullness: 0.1,
+            fullness: 0.2,
             todos: [],
           });
           newDate.todos.push(todoItem);

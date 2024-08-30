@@ -1,5 +1,18 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Platform,
+  Keyboard,
+} from 'react-native';
 import TodoDetail from './Todolist';
 import { ms } from 'react-native-size-matters';
 import {
@@ -43,8 +56,36 @@ const TodoDate = (): React.ReactElement => {
     [],
   );
 
+  const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
+    useState<string>('60%');
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const todoSnapPoints = useMemo(() => ['60%'], []);
+  const todoSnapPoints = useMemo(
+    () => [todoBottomSheetSnapPoint],
+    [todoBottomSheetSnapPoint],
+  );
+
+  console.log(todoBottomSheetSnapPoint);
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setTodoBottomSheetSnapPoint('90%');
+        },
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setTodoBottomSheetSnapPoint('60%');
+        },
+      );
+
+      return () => {
+        keyboardDidShowListener.remove();
+        keyboardDidHideListener.remove();
+      };
+    }
+  }, []);
 
   const todoHandlePresentModal = useCallback(() => {
     todoBottomSheetModalRef.current?.present();
@@ -171,6 +212,7 @@ const TodoDate = (): React.ReactElement => {
         backdropComponent={todoRenderBackdrop}
         keyboardBehavior='interactive'
         keyboardBlurBehavior='restore'
+        android_keyboardInputMode='adjustResize'
         handleStyle={{
           backgroundColor: theme.backgroundColor,
           borderTopRightRadius: ms(15, 0.3),

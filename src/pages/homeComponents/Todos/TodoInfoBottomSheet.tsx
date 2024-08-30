@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Goal, Todo } from '../../../../realm/models';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { ColorSet } from '../../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -204,7 +204,7 @@ const TodoInfo = ({
                 ]}>
                 {item.title}
               </Text>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Icon
                   name='exclamationcircle'
                   color={
@@ -291,6 +291,7 @@ const TodoInfo = ({
             marginTop: ms(10, 0.3),
             padding: ms(10, 0.3),
             flexDirection: 'row',
+            justifyContent: 'center',
           }}>
           <ScrollView
             horizontal={true}
@@ -308,40 +309,41 @@ const TodoInfo = ({
                       value.contain ? { backgroundColor: theme.textColor } : {},
                       value.leftOn
                         ? {
-                            borderWidth: 0.1,
-                            marginLeft: -0.1,
-                            marginRight: -0.1,
+                            marginLeft: ms(-0.1, 0.3),
+                            marginRight: ms(-0.1, 0.3),
+                            borderRadius:
+                              Platform.OS === 'ios' ? 0 : ms(0.1, 0.3),
                           }
                         : {
-                            borderWidth: 0.1,
-                            marginLeft: -0.1,
-                            marginRight: -0.1,
+                            marginRight: ms(-0.1, 0.3),
                             borderTopLeftRadius: ms(7, 0.3),
                             borderBottomLeftRadius: ms(7, 0.3),
                           },
                       value.rightOn
                         ? {
-                            borderWidth: 0.1,
-                            marginLeft: -0.1,
-                            marginRight: -0.1,
+                            marginLeft: ms(-0.1, 0.3),
+                            marginRight: ms(-0.1, 0.3),
+                            borderRadius:
+                              Platform.OS === 'ios' ? 0 : ms(0.1, 0.3),
                           }
                         : {
-                            borderWidth: 0.1,
-                            marginLeft: -0.1,
-                            marginRight: -0.1,
+                            marginLeft: ms(-0.1, 0.3),
                             borderTopRightRadius: ms(7, 0.3),
                             borderBottomRightRadius: ms(7, 0.3),
                           },
                     ]}>
-                    <MediumTextMemoization
+                    <Text
                       style={[
                         styles.days,
-                        { color: theme.textColor, fontWeight: 'bold' },
+                        {
+                          color: theme.textColor,
+                          fontFamily: 'Pretendard-Medium',
+                        },
                         { marginBottom: ms(3, 0.3) },
                         value.contain ? { color: theme.backgroundColor } : {},
                       ]}>
                       {days[index]}
-                    </MediumTextMemoization>
+                    </Text>
                     <Text
                       style={[
                         styles.days,

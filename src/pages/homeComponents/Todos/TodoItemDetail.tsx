@@ -87,29 +87,31 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
         </View>
         <View
           style={{
-            flex: ms(0.35, 0.3),
+            flex: ms(0.5, 0.3),
             flexDirection: 'row',
             alignItems: 'center',
           }}>
           <CalendarIcon name='calendar' color={theme.textColor} />
-          <Text
-            style={[
-              {
-                color: theme.textColor,
-                flex: 1,
-              },
-              fontStyle.itemSubTitle,
-            ]}>
-            {item.weekCycle
-              ? item.weekCycle.length == 7
-                ? ' 매일 '
-                : item.weekCycle.length != 0
-                  ? item.weekCycle.map(value => {
-                      return ' ' + days[value] + ' ';
-                    })
-                  : ' 오늘 '
-              : ''}
-          </Text>
+          <View>
+            <Text
+              style={[
+                {
+                  color: theme.textColor,
+                  flex: 1,
+                },
+                fontStyle.itemSubTitle,
+              ]}>
+              {item.weekCycle
+                ? item.weekCycle.length == 7
+                  ? ' 매일 '
+                  : item.weekCycle.length != 0
+                    ? item.weekCycle.map(value => {
+                        return ' ' + days[value] + ' ';
+                      })
+                    : ' 오늘 '
+                : ''}
+            </Text>
+          </View>
         </View>
       </View>
       <View style={styles.dateContainer}>
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 0.2,
   },
   infoContainer: {
-    marginVertical: ms(10, 0.3),
+    marginVertical: ms(9, 0),
     flex: 0.6,
     justifyContent: 'center',
     flexDirection: 'column',

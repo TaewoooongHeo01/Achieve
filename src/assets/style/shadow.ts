@@ -18,6 +18,6 @@ export const shadow =
         boxShadow: {
           borderColor: '#ccc',
           borderWidth: 0.3,
-          elevation: 1.5,
+          elevation: 1.2,
         },
       });

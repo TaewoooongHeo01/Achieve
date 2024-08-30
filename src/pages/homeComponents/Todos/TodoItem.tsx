@@ -1,5 +1,11 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import {
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { Goal, Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -17,7 +23,6 @@ import {
   BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetView,
-  TouchableOpacity,
 } from '@gorhom/bottom-sheet';
 import TodoInfo from './TodoInfoBottomSheet';
 
@@ -184,7 +189,9 @@ const TodoItem = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <TouchableOpacity activeOpacity={0.8} onPress={todoHandlePresentModal}>
+      <TouchableOpacity
+        activeOpacity={Platform.OS === 'ios' ? 0.8 : 1}
+        onPress={todoHandlePresentModal}>
         {taskDateFormat === todayFormat ? (
           !item.isComplete ? (
             <GestureDetector gesture={pan}>
