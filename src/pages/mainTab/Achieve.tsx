@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useColors } from '../../context/ThemeContext';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { ms } from 'react-native-size-matters';
-import { days, months, useDateContext } from '../../context/DateContext';
+import { days, months, TaskDate } from '../../context/DateContext';
 import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 import { FlatList } from 'react-native-gesture-handler';
 import { useQuery, useRealm } from '@realm/react';
@@ -12,37 +12,56 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import AcheiveTodos from '../AchieveComponents/AcheiveTodos';
 import { Results } from 'realm';
 import AnimatedBar from '../AchieveComponents/AnimatedBar';
+import { hitmapColorSet } from '../../assets/style/ThemeColor';
 
-type hitmapDateType = {
+type heapmapDataType = {
   dateKey: string;
   day: number;
 };
 
+//최적화전략
+//2. hitmapData 만들 때 하나하나 useMemo 사용 + React.memo 로 메모이제이션 이용
+//3. makeyearhitmap 을 useCallback 으로 감싸기.
+//자동 스크롤
+
+//성능최적화에서 고려해야 될 것
+//만약 useEffect, useMemo 같이 특정 값에 의존하는 경우에만 변경하는 경우 todos 를 넣을 수 밖에 없음
+//문제는 이 경우 저 많은 계산이 todo 변경마다 된다는 것임.
+//과연 사용자가 achieve page 에 들어오는 경우가 더 많을까 아니면 todo 를 변경시키는 경우가 더 많을까?
+//나는 후자라고 생각함. 따라서 저 함수 자체를 useCallback 해서 함수의 선언을 메모이제이션 하는 건 몰라도 의존성배열에 넣는 건 다시 고려해봐야 함.
+
 export default function Achieve() {
   const { theme, currentTheme } = useColors();
-  const { today } = useDateContext();
-  const [year, setYear] = useState<number>(today.year);
+  const now = new Date();
+  const nowYear = now.getFullYear();
+  const nowMonth = now.getMonth() + 1;
+  const nowDate = now.getDate();
+  const nowDay = now.getDay();
+  const today: TaskDate = {
+    year: nowYear,
+    month: nowMonth,
+    date: nowDate,
+    day: nowDay,
+  };
   const realm = useRealm();
   const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
 
   const todayTodos = useQuery(Todo)
     .filtered('date == $0', todayFormat)
-    .sorted([
-      ['isComplete', false], // false: isComplete가 false인 항목이 위로 정렬됨
-      ['priority', true], // true: priority가 높은 항목이 위로 정렬됨
-    ]);
+    .sorted([['isComplete', true]]);
+
+  const [year, setYear] = useState<number>(today.year);
   const [todos, setTodos] = useState<Results<Todo> | undefined>(todayTodos);
   const [dateKey, setDateKey] = useState<string>(todayFormat);
 
   let date = 1;
   let d = new Date(year, 0, date);
 
-  const yearArr: hitmapDateType[][] = [];
-  let weekArr: hitmapDateType[] = [];
+  const yearArr: heapmapDataType[][] = [];
+  let weekArr: heapmapDataType[] = [];
   const januaryDateStart = new Date(year, 0, 1).getDay();
   const addData = januaryDateStart;
 
-  //useMemo 나 useCallback 으로 최적화 + useEffect 로 home 에서 todo 변경 시 반영해야 함
   for (let i = 0; i < 7; i++) {
     weekArr.push({
       dateKey: days[i],
@@ -92,7 +111,8 @@ export default function Achieve() {
     }
   };
 
-  const renderItem = ({ item }: { item: hitmapDateType[] }) => {
+  //cell 정보 만드는 함수 최적화
+  const makeCell = useCallback((item: heapmapDataType[]) => {
     let monthStart = false;
     let month = 0;
     const map = new Map<string, number>();
@@ -106,12 +126,20 @@ export default function Achieve() {
         item[i].dateKey,
       );
       if (fullyDate) {
-        map.set(item[i].dateKey, fullyDate.fullness);
+        map.set(item[i].dateKey, Number((fullyDate.fullness / 0.2).toFixed(0)));
       }
     }
+    return {
+      map: map,
+      monthStart: monthStart,
+      month: month,
+    };
+  }, []);
 
+  const renderItem = ({ item }: { item: heapmapDataType[] }) => {
+    const { map, monthStart, month } = makeCell(item);
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{}}>
         <View style={{ flex: 0.1 }}>
           {monthStart ? (
             <View>
@@ -157,8 +185,8 @@ export default function Achieve() {
                       borderRadius: ms(5, 0.3),
                       borderColor:
                         currentTheme === 'light' ? '#B8B8B8' : '#121212',
-                      backgroundColor: theme.textColor,
-                      opacity: map.get(value.dateKey),
+                      backgroundColor:
+                        hitmapColorSet[map.get(value.dateKey) - 1] || 'blue',
                     }}
                   />
                 ) : (
@@ -203,17 +231,16 @@ export default function Achieve() {
           onPress={() => {
             setYear(year => year - 1);
           }}>
-          <Icon name='left' size={ms(15, 0.3)} />
+          <Icon name='left' size={ms(15, 0.3)} color={theme.textColor} />
         </TouchableOpacity>
-        <Text style={[fontStyle.fontSizeMain]}>
-          {dateKey.substring(0, 4)}.{dateKey.substring(4, 6)}.
-          {dateKey.substring(6, 8)}
+        <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+          {year}
         </Text>
         <TouchableOpacity
           onPress={() => {
             setYear(year => year + 1);
           }}>
-          <Icon name='right' size={ms(15, 0.3)} />
+          <Icon name='right' size={ms(15, 0.3)} color={theme.textColor} />
         </TouchableOpacity>
       </View>
       <View style={{ flex: ms(0.42, 0.3) }}>
@@ -222,6 +249,9 @@ export default function Achieve() {
           renderItem={renderItem}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
+          keyExtractor={item => {
+            return item[0].dateKey.toString();
+          }}
         />
       </View>
       <View style={{ flex: ms(0.48, 0.3) }}>

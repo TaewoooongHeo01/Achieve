@@ -1,5 +1,5 @@
 import { useRealm } from '@realm/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { FullyDate } from '../../../realm/models';
@@ -9,9 +9,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { useColors } from '../../context/ThemeContext';
 
 const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
   const realm = useRealm();
+  const { theme } = useColors();
   const fd = realm.objectForPrimaryKey<FullyDate>(
     'FullyDate',
     dateKey,
@@ -21,9 +23,7 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
   const progressBar = useSharedValue(0);
   const widthFd = Number(fd?.toFixed(2));
 
-  useEffect(() => {
-    progressBar.value = withTiming((barWidth / 100) * (widthFd * 100));
-  }, [dateKey]);
+  progressBar.value = withTiming((barWidth / 100) * (widthFd * 100));
 
   const progressAnimation = useAnimatedStyle(() => ({
     width: progressBar.value,
@@ -36,6 +36,7 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
         borderColor: '#ccc',
         borderWidth: 0.2,
         borderRadius: ms(5, 0.3),
+        backgroundColor: theme.appBackgroundColor,
       }}>
       <View
         style={{
@@ -43,7 +44,10 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
           justifyContent: 'flex-end',
           paddingLeft: ms(5, 10),
         }}>
-        <Text style={fontStyle.fontSizeSub}>얼마나 충만했나요?</Text>
+        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+          얼마나 충만했나요? - {dateKey.substring(0, 4)}.
+          {dateKey.substring(4, 6)}.{dateKey.substring(6, 8)}
+        </Text>
       </View>
       <View
         style={{
@@ -69,7 +73,7 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
               {
                 position: 'absolute',
                 zIndex: 10,
-                backgroundColor: 'lightgreen',
+                backgroundColor: '#50b458',
                 height: ms(10, 0.3),
                 borderRadius: ms(3, 0.3),
               },

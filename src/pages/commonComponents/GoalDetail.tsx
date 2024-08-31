@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 import Realm from 'realm';
-import { View, Text, Platform, StatusBar, Button } from 'react-native';
+import { View, Platform, StatusBar } from 'react-native';
 import { GoalDetailScreenProps } from '../../../App';
-import { useObject, useRealm } from '@realm/react';
-import { FullyDate, Goal, Todo } from '../../../realm/models';
+import { useObject } from '@realm/react';
+import { Goal, Todo } from '../../../realm/models';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -12,7 +12,9 @@ import { useColors } from '../../context/ThemeContext';
 import { ms } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { fontStyle } from '../../assets/style/fontStyle';
+import GoalDetailTodo from '../homeComponents/GoalDetailTodo';
+
+const MemorizedGoalDetailTodo = memo(GoalDetailTodo);
 
 const GoalDetail = ({
   route,
@@ -20,62 +22,35 @@ const GoalDetail = ({
 }: GoalDetailScreenProps): React.ReactElement => {
   const id = new Realm.BSON.ObjectId(route.params._id);
   const goal = useObject<Goal>('Goal', id);
-  const todos = goal?.todos.sorted('isComplete', false);
-  const realm = useRealm();
+  const todos = goal?.todos.sorted([
+    ['date', true],
+    ['isComplete', true],
+  ]);
 
   const { top } = useSafeAreaInsets();
   const { theme, currentTheme } = useColors();
 
-  const deleteGoal = () => {
-    navigation.goBack();
-    realm.write(() => {
-      realm.delete(todos);
-      realm.delete(goal);
-    });
-  };
+  const map = new Map<string, Todo[]>();
+  const dateArr: string[] = [];
+  useEffect(() => {
+    if (todos?.length) {
+      for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
+        if (todo.date !== undefined) {
+          if (map.has(todo.date)) {
+            map.get(todo.date)?.push(todo);
+          } else {
+            dateArr.push(todo.date);
+            map.set(todo.date, [todo]);
+          }
+        }
+      }
+    }
+  }, [todos]);
 
-  const renderItem = ({ item }: { item: Todo }) => {
-    const date = item.linkingObjects<FullyDate>('FullyDate', 'todos')[0];
-    return (
-      <View
-        style={[
-          {
-            flex: 1,
-            flexDirection: 'row',
-            backgroundColor: 'green',
-          },
-        ]}>
-        <View
-          style={{
-            backgroundColor: 'red',
-            flex: ms(0.1, 0.3),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text>hi</Text>
-        </View>
-        <View
-          style={{
-            padding: ms(5, 0.3),
-            backgroundColor: 'blue',
-            flex: ms(0.9, 0.3),
-          }}>
-          <Text style={[fontStyle.fontSizeMain, { marginBottom: ms(5, 0.3) }]}>
-            {item.title}
-          </Text>
-          <Text>
-            {date.dateKey.substring(0, 4)}.{date.dateKey.substring(4, 6)}.
-            {date.dateKey.substring(6, 8)}
-          </Text>
-        </View>
-        <Button
-          title='delete'
-          onPress={() => {
-            deleteGoal();
-          }}
-        />
-      </View>
-    );
+  const renderItem = ({ item }: { item: string }) => {
+    const todos = map.get(item);
+    return <MemorizedGoalDetailTodo theme={theme} todos={todos} item={item} />;
   };
 
   return (
@@ -87,7 +62,6 @@ const GoalDetail = ({
       {Platform.OS === 'ios' ? (
         <View
           style={{
-            backgroundColor: theme.backgroundColor,
             height: top,
           }}>
           <StatusBar
@@ -102,7 +76,7 @@ const GoalDetail = ({
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <View style={{ flex: 1, marginTop: ms(10, 0.3) }}>
+      <View style={{ flex: 1, paddingTop: ms(10, 0.3) }}>
         <View
           style={[
             currentTheme === 'light'
@@ -116,7 +90,6 @@ const GoalDetail = ({
                 }
               : {},
             {
-              backgroundColor: theme.backgroundColor,
               borderBottomLeftRadius: ms(20, 0.3),
               borderBottomRightRadius: ms(20, 0.3),
               flexDirection: 'column',
@@ -132,40 +105,33 @@ const GoalDetail = ({
               onPress={() => {
                 navigation.goBack();
               }}>
-              <Icon name='arrowleft' size={ms(23, 0.3)} />
+              <Icon
+                name='arrowleft'
+                size={ms(23, 0.3)}
+                color={theme.textColor}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
               }}
               style={{ marginLeft: ms(18, 0.3) }}>
-              <Icon name='setting' size={ms(23, 0.3)} />
+              <Icon name='setting' size={ms(23, 0.3)} color={theme.textColor} />
             </TouchableOpacity>
           </View>
-          <View style={{ padding: ms(20, 0.3) }}>
-            <Text
-              style={[
-                {
-                  color: theme.textColor,
-                  fontSize: ms(25, 0.3),
-                  fontFamily: 'Pretendard-Medium',
-                  marginBottom: ms(10, 0.3),
-                },
-              ]}>
-              {goal?.title}
-            </Text>
-            <Text
+          <View
+            style={{
+              padding: ms(20, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
               style={{
-                color: theme.textColor,
-                fontSize: ms(15, 0.3),
-                lineHeight: ms(20, 0.3),
-                fontFamily: 'Pretendard-Medium',
-              }}>
-              {goal?.description}
-            </Text>
-            <TouchableOpacity>
-              <Text>완료</Text>
-            </TouchableOpacity>
+                width: ms(300, 0.3),
+                height: ms(200, 0.3),
+                borderRadius: ms(5, 0.3),
+                backgroundColor: theme.textColor,
+              }}></View>
           </View>
         </View>
         <View
@@ -173,9 +139,13 @@ const GoalDetail = ({
             flex: 1,
             backgroundColor: theme.appBackgroundColor,
             flexDirection: 'row',
-            margin: ms(20, 0.3),
+            margin: ms(10, 0.3),
           }}>
-          <FlatList data={todos} renderItem={renderItem} />
+          <FlatList
+            data={dateArr}
+            renderItem={renderItem}
+            keyExtractor={value => value.toString()}
+          />
         </View>
       </View>
     </SafeAreaView>

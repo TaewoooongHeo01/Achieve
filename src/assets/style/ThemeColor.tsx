@@ -54,4 +54,12 @@ const Colors: ColorTheme = {
   },
 };
 
+export const hitmapColorSet = [
+  '#c2e5c5',
+  '#89cd8f',
+  '#50b458',
+  '#357e3b',
+  '#1d4420',
+];
+
 export default Colors;

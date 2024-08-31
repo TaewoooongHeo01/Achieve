@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import { useDateContext } from '../../../context/DateContext';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 import { useObject, useQuery, useRealm } from '@realm/react';
@@ -18,6 +18,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
   const { taskDate, today } = useDateContext();
   const [checkedValue, setCheckedValue] = useState<number>(0.6);
   const [dateFormatKey, setDateFormatKey] = useState<string>('');
+  const screenWidth = useWindowDimensions().width;
   useEffect(() => {
     setDateFormatKey(
       makeDateFormatKey(taskDate.year, taskDate.month, taskDate.date),
@@ -128,7 +129,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
             todos: [],
           });
           newNextDate.todos.push(item);
-          console.log(newNextDate);
         }
       });
     }
@@ -162,6 +162,8 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
               setChanged={setChanged}
               taskDateFormat={taskDateFormat}
               todayFormat={todayFormat}
+              theme={theme}
+              screenWidth={screenWidth}
             />
           );
         }}

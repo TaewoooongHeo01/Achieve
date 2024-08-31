@@ -1,11 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
-import {
-  StyleSheet,
-  useWindowDimensions,
-  View,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
 import { Goal, Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -16,7 +10,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import TodoItemDetail from './TodoItemDetail';
-import { useColors } from '../../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {
   BottomSheetBackdrop,
@@ -25,6 +18,7 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import TodoInfo from './TodoInfoBottomSheet';
+import { ColorSet } from '../../../assets/style/ThemeColor';
 
 export const MemorizedItemDetail = memo(TodoItemDetail);
 const MemorizedTodoInfoBottomSheet = memo(TodoInfo);
@@ -37,6 +31,8 @@ const TodoItem = ({
   setChanged,
   taskDateFormat,
   todayFormat,
+  theme,
+  screenWidth,
 }: {
   item: Todo;
   dateFormatKey: string;
@@ -45,10 +41,10 @@ const TodoItem = ({
   setChanged(changed: boolean): void;
   taskDateFormat: number;
   todayFormat: number;
+  theme: ColorSet;
+  screenWidth: number;
 }) => {
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
-  const { theme } = useColors();
-  const screenWidth = useWindowDimensions().width;
 
   // const [itemDelete, setItemDelete] = useState<boolean>(false);
 
@@ -159,28 +155,19 @@ const TodoItem = ({
     };
   });
 
-  const fontFadeOutLeft = useAnimatedStyle(() => {
-    'worklet';
-    return {
-      opacity: backFontOpacityLeft.value,
-    };
-  });
+  const fontFadeOutLeft = useAnimatedStyle(() => ({
+    opacity: backFontOpacityLeft.value,
+  }));
 
-  const fontFadeOutRight = useAnimatedStyle(() => {
-    'worklet';
-    return {
-      opacity: backFontOpacityRight.value,
-    };
-  });
+  const fontFadeOutRight = useAnimatedStyle(() => ({
+    opacity: backFontOpacityRight.value,
+  }));
 
-  const iconBackgroundColorAnime = useAnimatedStyle(() => {
-    'worklet';
-    return {
-      backgroundColor: withTiming(iconBackgroundColor.value, {
-        duration: 100,
-      }),
-    };
-  });
+  const iconBackgroundColorAnime = useAnimatedStyle(() => ({
+    backgroundColor: withTiming(iconBackgroundColor.value, {
+      duration: 100,
+    }),
+  }));
 
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
   const todoSnapPoints = useMemo(() => ['45%'], []);
