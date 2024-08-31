@@ -42,7 +42,7 @@ const TodoInfo = ({
   theme: ColorSet;
   goal: Goal;
   todoCompleteAnimation(isRemove: boolean): void;
-  setChanged(changed: boolean): void;
+  setChanged(changed: boolean | ((changed: boolean) => boolean)): void;
   taskDateFormat: number;
   todayFormat: number;
 }) => {
@@ -240,7 +240,7 @@ const TodoInfo = ({
                   marginLeft: ms(5, 0.3),
                 }}
                 onPress={() => {
-                  setChanged(true);
+                  setChanged(changed => !changed);
                   todoCompleteAnimation(true);
                   const fd = realm.objectForPrimaryKey<FullyDate>(
                     'FullyDate',

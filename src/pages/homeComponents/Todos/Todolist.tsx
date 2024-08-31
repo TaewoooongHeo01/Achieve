@@ -75,7 +75,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
         });
       }
     }
-  }, [checkedValue, taskDate, changed]);
+  }, [checkedValue, changed]);
 
   const delayTodo = (itemId: string) => {
     setChanged(changed => !changed);
