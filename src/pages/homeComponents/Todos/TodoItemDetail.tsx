@@ -8,8 +8,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import { shadow } from '../../../assets/style/shadow';
 import { days } from '../../../context/DateContext';
 import CalendarIcon from 'react-native-vector-icons/AntDesign';
+import CheckIcon from 'react-native-vector-icons/AntDesign';
 
-const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
+const TodoItemDetail = ({
+  item,
+  goal,
+  achieved,
+}: {
+  item: Todo;
+  goal: Goal;
+  achieved?: boolean;
+}) => {
   const { theme, currentTheme } = useColors();
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
   const [iconSize, setIconSize] = useState<number>(0);
@@ -20,10 +29,12 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
         styles.todoContainer,
         {
           borderRadius: ms(6, 0.3),
-          backgroundColor: item.isComplete
-            ? currentTheme === 'dark'
-              ? '#222222'
-              : '#F4F4F4'
+          backgroundColor: !achieved
+            ? item.isComplete
+              ? currentTheme === 'dark'
+                ? '#222222'
+                : '#F4F4F4'
+              : theme.backgroundColor
             : theme.backgroundColor,
         },
         currentTheme === 'light' ? shadow.boxShadow : {},
@@ -45,7 +56,7 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
             style={{
               flex: 1,
               borderRadius: ms(10, 0.3),
-              opacity: item.isComplete ? 0.5 : 1,
+              opacity: !achieved ? (item.isComplete ? 0.5 : 1) : 1,
             }}
             colors={theme.gradientColor[goal != undefined ? goal.color : 1]}>
             <View
@@ -79,7 +90,10 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
           }}>
           <Text
             style={[
-              { color: theme.textColor, opacity: item.isComplete ? 0.4 : 1 },
+              {
+                color: theme.textColor,
+                opacity: !achieved ? (item.isComplete ? 0.4 : 1) : 1,
+              },
               fontStyle.itemTitle,
             ]}>
             {item.title}
@@ -115,20 +129,31 @@ const TodoItemDetail = ({ item, goal }: { item: Todo; goal: Goal }) => {
         </View>
       </View>
       <View style={styles.dateContainer}>
-        <CalendarIcon
-          name='exclamationcircle'
-          color={
-            item.priority === 2
-              ? 'orange'
-              : item.priority === 1
-                ? 'green'
-                : 'red'
-          }
-          size={ms(15, 0.3)}
-          style={{
-            marginLeft: ms(5, 0.3),
-          }}
-        />
+        {!achieved ? (
+          <CalendarIcon
+            name='exclamationcircle'
+            color={
+              item.priority === 2
+                ? 'orange'
+                : item.priority === 1
+                  ? 'green'
+                  : 'red'
+            }
+            size={ms(15, 0.3)}
+            style={{
+              marginLeft: ms(5, 0.3),
+            }}
+          />
+        ) : item.isComplete ? (
+          <CheckIcon
+            name='check'
+            color='green'
+            size={ms(15, 0.3)}
+            style={{
+              marginLeft: ms(5, 0.3),
+            }}
+          />
+        ) : null}
       </View>
     </View>
   );

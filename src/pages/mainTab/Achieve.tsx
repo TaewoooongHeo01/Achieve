@@ -6,11 +6,12 @@ import { ms } from 'react-native-size-matters';
 import { days, months, useDateContext } from '../../context/DateContext';
 import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 import { FlatList } from 'react-native-gesture-handler';
-import { useRealm } from '@realm/react';
+import { useQuery, useRealm } from '@realm/react';
 import { FullyDate, Todo } from '../../../realm/models';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AcheiveTodos from '../AchieveComponents/AcheiveTodos';
-import { List } from 'realm';
+import { Results } from 'realm';
+import AnimatedBar from '../AchieveComponents/AnimatedBar';
 
 type hitmapDateType = {
   dateKey: string;
@@ -22,9 +23,16 @@ export default function Achieve() {
   const { today } = useDateContext();
   const [year, setYear] = useState<number>(today.year);
   const realm = useRealm();
-
   const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
-  const [todos, setTodos] = useState<List<Todo> | undefined>(undefined);
+
+  const todayTodos = useQuery(Todo)
+    .filtered('date == $0', todayFormat)
+    .sorted([
+      ['isComplete', false], // false: isComplete가 false인 항목이 위로 정렬됨
+      ['priority', true], // true: priority가 높은 항목이 위로 정렬됨
+    ]);
+  const [todos, setTodos] = useState<Results<Todo> | undefined>(todayTodos);
+  const [dateKey, setDateKey] = useState<string>(todayFormat);
 
   let date = 1;
   let d = new Date(year, 0, date);
@@ -78,6 +86,7 @@ export default function Achieve() {
 
   const changeDate = (dateKey: string) => {
     const fd = realm.objectForPrimaryKey<FullyDate>('FullyDate', dateKey);
+    setDateKey(dateKey);
     if (fd) {
       setTodos(fd.todos);
     }
@@ -183,17 +192,12 @@ export default function Achieve() {
         backgroundColor: theme.appBackgroundColor,
         paddingHorizontal: ms(20, 0.3),
       }}>
-      <View style={{ marginVertical: ms(20, 0.3) }}>
-        <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-          꾸준한 기록들
-        </Text>
-      </View>
       <View
         style={{
-          marginBottom: ms(15, 0.3),
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
+          flex: ms(0.1, 0.3),
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -201,7 +205,10 @@ export default function Achieve() {
           }}>
           <Icon name='left' size={ms(15, 0.3)} />
         </TouchableOpacity>
-        <Text style={[fontStyle.fontSizeMain]}>{year}</Text>
+        <Text style={[fontStyle.fontSizeMain]}>
+          {dateKey.substring(0, 4)}.{dateKey.substring(4, 6)}.
+          {dateKey.substring(6, 8)}
+        </Text>
         <TouchableOpacity
           onPress={() => {
             setYear(year => year + 1);
@@ -209,7 +216,7 @@ export default function Achieve() {
           <Icon name='right' size={ms(15, 0.3)} />
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 0.5 }}>
+      <View style={{ flex: ms(0.42, 0.3) }}>
         <FlatList
           data={yearArr}
           renderItem={renderItem}
@@ -217,8 +224,13 @@ export default function Achieve() {
           showsHorizontalScrollIndicator={false}
         />
       </View>
-      <View style={{ flex: 0.5 }}>
-        <AcheiveTodos todos={todos} />
+      <View style={{ flex: ms(0.48, 0.3) }}>
+        <View style={{ flex: ms(0.2, 0.3), marginBottom: ms(10, 0.3) }}>
+          <AnimatedBar dateKey={dateKey} />
+        </View>
+        <View style={{ flex: ms(0.8, 0.3) }}>
+          <AcheiveTodos todos={todos} />
+        </View>
       </View>
     </View>
   );
