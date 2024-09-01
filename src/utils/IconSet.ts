@@ -12,10 +12,10 @@ export const IconNames: string[] = [
   'pencil', //연필. 모서리 연필 -> "pen-sharp"
   'leaf', //잎
   'cash', //돈
-  'football-ball', //공 (풋볼)
+  'american-football', //공 (풋볼)
   'cog', //공구
   'paper-plane', //종이 비행기
-  'plane', //비행기
+  'airplane', //비행기
   'earth', //글로벌
   'rocket', //로켓
   'flame', //불

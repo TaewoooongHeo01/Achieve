@@ -133,6 +133,17 @@ const GoalDetail = ({
                 backgroundColor: theme.textColor,
               }}></View>
           </View>
+          {/* <Text
+            style={[
+              {
+                fontFamily: 'Pretendard-SemiBold',
+                fontSize: ms(16, 0.3),
+                color: theme.textColor,
+                marginLeft: ms(15, 0.3),
+              },
+            ]}>
+            기록들
+          </Text> */}
         </View>
         <View
           style={{

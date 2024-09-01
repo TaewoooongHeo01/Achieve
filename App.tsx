@@ -18,6 +18,8 @@ import HowToUse from './src/pages/profileComponents/HowToUse';
 import LateTodo from './src/pages/profileComponents/LateTodo';
 import Notes from './src/pages/profileComponents/Notes';
 import Options from './src/pages/profileComponents/Options';
+import GoalAddDescription from './src/pages/goalAdd/GoalAddDescription';
+import GoalAddIconAndColor from './src/pages/goalAdd/GoalAddIconAndColor';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -27,11 +29,23 @@ export type RootStackParamList = {
   LateTodo: undefined;
   Notes: undefined;
   Options: undefined;
+  GoalAddDescription: { title: string };
+  GoalAddIconAndColor: { title: string; description: string };
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'GoalDetail'
+>;
+
+export type GoalAddDescriptionProps = NativeStackScreenProps<
+  RootStackParamList,
+  'GoalAddDescription'
+>;
+
+export type GoalAddIconAndColorProps = NativeStackScreenProps<
+  RootStackParamList,
+  'GoalAddIconAndColor'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -56,11 +70,26 @@ function App(): React.JSX.Element {
                   component={GoalDetail}
                   options={{ headerShown: false }}
                 />
-                <Stack.Screen name='GoalAdd' component={GoalAdd} />
+                <Stack.Screen
+                  name='GoalAdd'
+                  component={GoalAdd}
+                  options={{ headerShown: false }}
+                />
                 <Stack.Screen name='HowToUse' component={HowToUse} />
                 <Stack.Screen name='LateTodo' component={LateTodo} />
                 <Stack.Screen name='Notes' component={Notes} />
                 <Stack.Screen name='Options' component={Options} />
+                {/* GoalAdd Stack Nav */}
+                <Stack.Screen
+                  name='GoalAddDescription'
+                  component={GoalAddDescription}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name='GoalAddIconAndColor'
+                  component={GoalAddIconAndColor}
+                  options={{ headerShown: false }}
+                />
               </Stack.Navigator>
             </ThemeContextProvider>
           </NavigationContainer>

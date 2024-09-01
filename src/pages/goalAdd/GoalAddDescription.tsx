@@ -16,28 +16,25 @@ import {
 } from 'react-native-safe-area-context';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { ms } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../../App';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Circle from 'react-native-vector-icons/MaterialCommunityIcons';
+import { GoalAddDescriptionProps } from '../../../App';
 
-const GoalAdd = () => {
+const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
   const { theme, currentTheme } = useColors();
   const { top } = useSafeAreaInsets();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const [title, setTitle] = useState<string>('');
+  const title = route.params.title;
+  const [description, setDescription] = useState<string>('');
 
   const tips = ['팁~~~~~~~~~~~', '탭~~~~~~~~~~~', '톡~~~~~~~~~~~~'];
 
   const inputValid = (): boolean => {
-    if (title.trim() === '') {
-      Alert.alert('제목을 입력해주세요');
+    if (description.trim() === '') {
+      Alert.alert('설명을 입력해주세요');
       return false;
     }
-    if (title.trim().length > 20) {
-      Alert.alert('제목길이는 20자 이하로 설정해주세요');
+    if (description.trim().length > 50) {
+      Alert.alert('설명은 50 자 이하로 해주세요');
       return false;
     }
     return true;
@@ -116,9 +113,16 @@ const GoalAdd = () => {
           <Text
             style={[
               fontStyle.fontSizeMain,
+              { color: theme.textColor, marginBottom: ms(5, 0.3) },
+            ]}>
+            왜 {title} 을 이루고 싶나요?
+          </Text>
+          <Text
+            style={[
+              fontStyle.fontSizeMain,
               { color: theme.textColor, marginBottom: ms(10, 0.3) },
             ]}>
-            어떤 목표를 이루고 싶나요?
+            추가적인 설명을 해주세요
           </Text>
           <TextInput
             style={{
@@ -129,8 +133,8 @@ const GoalAdd = () => {
               marginBottom: ms(5, 0.3),
               color: theme.textColor,
             }}
-            value={title}
-            onChangeText={setTitle}
+            value={description}
+            onChangeText={setDescription}
           />
           {tips.map((value, index) => {
             return (
@@ -165,7 +169,10 @@ const GoalAdd = () => {
             activeOpacity={0.8}
             onPress={() => {
               if (inputValid()) {
-                navigation.navigate('GoalAddDescription', { title: title });
+                navigation.navigate('GoalAddIconAndColor', {
+                  title: title,
+                  description: description,
+                });
               }
             }}
             style={{
@@ -187,4 +194,4 @@ const GoalAdd = () => {
   );
 };
 
-export default GoalAdd;
+export default GoalAddDescription;

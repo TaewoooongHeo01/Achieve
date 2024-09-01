@@ -62,7 +62,7 @@ const TodoAdd = () => {
       return false;
     }
     if (title.trim().length > 20) {
-      Alert.alert('제목길이는 30자 이하로 설정해주세요');
+      Alert.alert('제목길이는 20자 이하로 설정해주세요');
       return false;
     }
     return true;

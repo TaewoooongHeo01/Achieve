@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { ms } from 'react-native-size-matters';
-import Circle from 'react-native-vector-icons/Feather';
+import CheckIcon from 'react-native-vector-icons/Feather';
 import { Todo } from '../../../realm/models';
 import { ColorSet } from '../../assets/style/ThemeColor';
 
@@ -18,9 +18,9 @@ export type GoalDetailTodoType = {
 };
 
 const GoalDetailTodo = ({ theme, todos, item }: GoalDetailTodoType) => {
-  const animatedOpacity = useSharedValue(0.8);
+  const animatedOpacity = useSharedValue(0.6);
   const initialFontSize = ms(15, 0.3);
-  const largerFontSize = ms(22, 0.3);
+  const largerFontSize = ms(20, 0.3);
   const animatedFontSize = useSharedValue(initialFontSize);
 
   const animatedOpacityStyle = useAnimatedStyle(() => {
@@ -36,14 +36,15 @@ const GoalDetailTodo = ({ theme, todos, item }: GoalDetailTodoType) => {
   });
 
   const longPress = Gesture.LongPress()
-    .onTouchesDown(() => {
+    .minDuration(200)
+    .onStart(() => {
       'worklet';
       animatedOpacity.value = withTiming(1);
       animatedFontSize.value = withTiming(largerFontSize);
     })
     .onFinalize(() => {
       'worklet';
-      animatedOpacity.value = withTiming(0.8);
+      animatedOpacity.value = withTiming(0.6);
       animatedFontSize.value = withTiming(initialFontSize);
     });
 
@@ -79,26 +80,33 @@ const GoalDetailTodo = ({ theme, todos, item }: GoalDetailTodoType) => {
             return (
               <View
                 key={value._id.toString()}
-                style={{
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  marginVertical: ms(2, 0.3),
-                }}>
-                <Animated.Text
-                  style={[
-                    {
-                      color: theme.textColor,
-                      fontFamily: 'Pretendard-SemiBold',
-                      marginRight: ms(5, 0.3),
-                    },
-                    animatedOpacityStyle,
-                    animatedFontSizeStyle,
-                  ]}>
-                  {value.title}
-                </Animated.Text>
-                {value.isComplete ? (
-                  <Circle name='check' color={theme.textColor} />
-                ) : null}
+                style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <View
+                  key={value._id.toString()}
+                  style={{
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    marginVertical: ms(2, 0.3),
+                    flex: 0.8,
+                  }}>
+                  <Animated.Text
+                    style={[
+                      {
+                        color: theme.textColor,
+                        fontFamily: 'Pretendard-SemiBold',
+                        marginRight: ms(5, 0.3),
+                      },
+                      animatedOpacityStyle,
+                      animatedFontSizeStyle,
+                    ]}>
+                    {value.title}
+                  </Animated.Text>
+                </View>
+                <Animated.View style={[animatedOpacityStyle, { flex: 0.2 }]}>
+                  {value.isComplete ? (
+                    <CheckIcon name='check' color={theme.textColor} />
+                  ) : null}
+                </Animated.View>
               </View>
             );
           })}
