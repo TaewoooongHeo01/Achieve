@@ -44,7 +44,7 @@ const Goals = (): React.ReactElement => {
             </View>
             <View style={[{ flex: ms(0.9, 0.3) }, GoalStyle.titleContainer]}>
               <Text style={GoalStyle.todoText}>
-                {item.todos ? item.todos.length : 0}개의 해야 할 일
+                {item.todos ? item.todos.length : 0}개의 투 두
               </Text>
               <Text style={GoalStyle.titleText}>{item.title}</Text>
             </View>

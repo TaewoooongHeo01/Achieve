@@ -124,13 +124,17 @@ const GoalAdd = () => {
             style={{
               width: '100%',
               height: ms(40, 0.3),
-              backgroundColor: theme.backgroundColor,
+              backgroundColor:
+                currentTheme === 'light' ? '#F4F4F4' : theme.backgroundColor,
+              borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               borderRadius: ms(5, 0.3),
               marginBottom: ms(5, 0.3),
               color: theme.textColor,
+              padding: ms(7, 0.3),
             }}
             value={title}
             onChangeText={setTitle}
+            onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
           />
           {tips.map((value, index) => {
             return (
@@ -171,12 +175,16 @@ const GoalAdd = () => {
             style={{
               width: '100%',
               height: ms(45, 0.3),
-              backgroundColor: theme.backgroundColor,
+
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: ms(5, 0.3),
+              backgroundColor: theme.textColor,
+              borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+              borderWidth: 0.2,
             }}>
-            <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+            <Text
+              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
               다음
             </Text>
           </TouchableOpacity>

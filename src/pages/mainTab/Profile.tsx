@@ -84,10 +84,10 @@ const Profile = (): React.JSX.Element => {
                 { color: theme.textColor, marginBottom: ms(5, 0.3) },
                 fontStyle.fontSizeMain,
               ]}>
-              목적 설정하기
+              목표 설정하기
             </Text>
             <Text style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
-              해야 할 일들의 대략적인 목적을 설정해보세요
+              해야 할 일들의 대략적인 목표를 설정해보세요
             </Text>
           </View>
         </TouchableOpacity>

@@ -21,6 +21,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { IconNames } from '../../utils/IconSet';
 import { FlatList } from 'react-native-gesture-handler';
 import { useRealm } from '@realm/react';
+import { showAlert } from 'react-native-customisable-alert';
+import GoalAddCompleteAlert from '../Alert/GoalAddCompleteAlert';
 
 const GoalAddIconAndColor = ({
   route,
@@ -64,6 +66,8 @@ const GoalAddIconAndColor = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: ms(5, 0.3),
+          borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+          borderWidth: 0.2,
         }}>
         <Ionicons name={item} size={ms(25, 0.3)} />
       </TouchableOpacity>
@@ -71,7 +75,6 @@ const GoalAddIconAndColor = ({
   };
 
   const colorRenderItem = ({ index }: { index: number }) => {
-    console.log(index);
     if (index === 0) {
       return null;
     }
@@ -86,6 +89,8 @@ const GoalAddIconAndColor = ({
           aspectRatio: 1,
           marginRight: ms(5, 0.3),
           borderRadius: ms(5, 0.3),
+          borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+          borderWidth: 0.2,
         }}>
         <LinearGradient
           style={{ flex: 1, borderRadius: ms(5, 0.3) }}
@@ -174,6 +179,8 @@ const GoalAddIconAndColor = ({
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: ms(11, 0.3),
+                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                borderWidth: 0.2,
               }}>
               <View
                 onLayout={e => {
@@ -208,10 +215,14 @@ const GoalAddIconAndColor = ({
               renderItem={iconRenderItem}
               horizontal={true}
               style={{ flex: 1 }}
+              showsHorizontalScrollIndicator={false}
               contentContainerStyle={{
                 justifyContent: 'center',
                 alignItems: 'center',
                 paddingLeft: ms(10, 0.3),
+                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                borderWidth: 0.2,
+                borderRadius: ms(5, 0.3),
               }}
               keyExtractor={value => value.toString()}
             />
@@ -227,11 +238,15 @@ const GoalAddIconAndColor = ({
               data={theme.gradientColor}
               renderItem={colorRenderItem}
               horizontal={true}
+              showsHorizontalScrollIndicator={false}
               style={{ flex: 1 }}
               contentContainerStyle={{
                 justifyContent: 'center',
                 alignItems: 'center',
                 paddingLeft: ms(10, 0.3),
+                borderRadius: ms(5, 0.3),
+                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                borderWidth: 0.2,
               }}
               keyExtractor={value => value.toString()}
             />
@@ -249,7 +264,7 @@ const GoalAddIconAndColor = ({
             onPress={() => {
               if (inputValid()) {
                 realm.write(() => {
-                  const Goal = realm.create('Goal', {
+                  realm.create('Goal', {
                     title: title,
                     isComplete: false,
                     icon: icon,
@@ -259,17 +274,31 @@ const GoalAddIconAndColor = ({
                   });
                 });
                 navigation.navigate('Main');
+                showAlert({
+                  alertType: 'custom',
+                  dismissable: true,
+                  customAlert: (
+                    <GoalAddCompleteAlert
+                      theme={theme}
+                      color={color}
+                      icon={icon}
+                    />
+                  ),
+                });
               }
             }}
             style={{
               width: '100%',
               height: ms(45, 0.3),
-              backgroundColor: theme.backgroundColor,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: ms(5, 0.3),
+              borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+              borderWidth: 0.2,
+              backgroundColor: theme.textColor,
             }}>
-            <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+            <Text
+              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
               다음
             </Text>
           </TouchableOpacity>

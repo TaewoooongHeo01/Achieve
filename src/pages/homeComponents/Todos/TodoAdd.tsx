@@ -164,6 +164,7 @@ const TodoAdd = () => {
         <BottomSheetTextInput
           value={title}
           onChangeText={setTitle}
+          onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
           style={{
             marginHorizontal: ms(10, 0.3),
             marginVertical: ms(5, 0.3),
@@ -172,7 +173,7 @@ const TodoAdd = () => {
             padding: ms(10, 0.3),
             borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
             backgroundColor:
-              currentTheme === 'dark' ? theme.appBackgroundColor : '#F4F4F4',
+              currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
             color: theme.textColor,
           }}
         />
@@ -204,7 +205,7 @@ const TodoAdd = () => {
                     ? theme.textColor
                     : currentTheme === 'dark'
                       ? theme.appBackgroundColor
-                      : '#F4F4F4',
+                      : '#F8F8F8',
                 borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               },
             ]}>
@@ -223,7 +224,7 @@ const TodoAdd = () => {
                     ? theme.textColor
                     : currentTheme === 'dark'
                       ? theme.appBackgroundColor
-                      : '#F4F4F4',
+                      : '#F8F8F8',
                 borderRadius: 1,
                 borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
                 marginLeft: ms(-0.1, 0.3),
@@ -247,7 +248,7 @@ const TodoAdd = () => {
                     ? theme.textColor
                     : currentTheme === 'dark'
                       ? theme.appBackgroundColor
-                      : '#F4F4F4',
+                      : '#F8F8F8',
                 borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               },
             ]}>
@@ -283,7 +284,7 @@ const TodoAdd = () => {
                         ? theme.textColor
                         : currentTheme === 'dark'
                           ? theme.appBackgroundColor
-                          : '#F4F4F4',
+                          : '#F8F8F8',
                       borderTopLeftRadius: ms(5, 0.3),
                       borderBottomLeftRadius: ms(5, 0.3),
                       borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
@@ -315,7 +316,7 @@ const TodoAdd = () => {
                         ? theme.textColor
                         : currentTheme === 'dark'
                           ? theme.appBackgroundColor
-                          : '#F4F4F4',
+                          : '#F8F8F8',
                       borderTopRightRadius: ms(5, 0.3),
                       borderBottomRightRadius: ms(5, 0.3),
                       borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
@@ -347,7 +348,7 @@ const TodoAdd = () => {
                         ? theme.textColor
                         : currentTheme === 'dark'
                           ? theme.appBackgroundColor
-                          : '#F4F4F4',
+                          : '#F8F8F8',
                       borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
                       borderRadius: Platform.OS === 'ios' ? 0 : ms(0.01, 0.1),
                       marginLeft: ms(-1, 0.3),
