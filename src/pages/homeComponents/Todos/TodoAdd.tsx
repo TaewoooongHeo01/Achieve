@@ -151,6 +151,7 @@ const TodoAdd = () => {
           data={goals}
           horizontal={true}
           renderItem={renderItem}
+          showsHorizontalScrollIndicator={false}
         />
       </View>
       <View style={{ flex: ms(0.15, 0.3) }}>

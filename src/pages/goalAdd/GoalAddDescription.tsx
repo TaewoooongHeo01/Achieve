@@ -113,17 +113,19 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
           <Text
             style={[
               fontStyle.fontSizeMain,
-              { color: theme.textColor, marginBottom: ms(5, 0.3) },
+              { color: theme.textColor, marginBottom: ms(10, 0.3) },
             ]}>
-            왜 {title} 을 이루고 싶나요?
+            {title} 을 통해 얻고자 하는 건 무엇인가요?
           </Text>
-          <Text
+          {/* <Text
             style={[
               fontStyle.fontSizeMain,
               { color: theme.textColor, marginBottom: ms(10, 0.3) },
             ]}>
-            추가적인 설명을 해주세요
-          </Text>
+            얻고자 하는 건 무엇인가요?
+            (무엇을, 어떻게 - '왜' 라고 직접적으로
+            묻는 대신)
+          </Text> */}
           <TextInput
             style={{
               width: '100%',

@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import Realm from 'realm';
-import { View, Platform, StatusBar } from 'react-native';
+import { View, Platform, StatusBar, Text } from 'react-native';
 import { GoalDetailScreenProps } from '../../../App';
 import { useObject } from '@realm/react';
 import { Goal, Todo } from '../../../realm/models';
@@ -13,6 +13,9 @@ import { ms } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import GoalDetailTodo from '../homeComponents/GoalDetailTodo';
+import { fontStyle } from '../../assets/style/fontStyle';
+import { showAlert } from 'react-native-customisable-alert';
+import DeleteGoalAlert from '../Alert/DeleteGoalAlert';
 
 const MemorizedGoalDetailTodo = memo(GoalDetailTodo);
 
@@ -100,6 +103,7 @@ const GoalDetail = ({
               marginHorizontal: ms(18, 0.3),
               flexDirection: 'row',
               justifyContent: 'space-between',
+              alignItems: 'center',
             }}>
             <TouchableOpacity
               onPress={() => {
@@ -113,10 +117,22 @@ const GoalDetail = ({
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.goBack();
+                navigation.navigate('Main');
+                showAlert({
+                  alertType: 'custom',
+                  dismissable: true,
+                  customAlert: <DeleteGoalAlert goal={goal} todos={todos} />,
+                });
               }}
-              style={{ marginLeft: ms(18, 0.3) }}>
-              <Icon name='setting' size={ms(23, 0.3)} color={theme.textColor} />
+              style={{
+                marginLeft: ms(18, 0.3),
+                backgroundColor: 'red',
+                padding: ms(5, 0.3),
+                borderRadius: ms(5, 0.3),
+              }}>
+              <Text style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
+                목표 삭제
+              </Text>
             </TouchableOpacity>
           </View>
           <View
