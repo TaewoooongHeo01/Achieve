@@ -16,10 +16,10 @@ import { ThemeContextProvider } from './src/context/ThemeContext';
 import GoalAdd from './src/pages/commonComponents/GoalAdd';
 import HowToUse from './src/pages/profileComponents/HowToUse';
 import LateTodo from './src/pages/profileComponents/LateTodo';
-import Notes from './src/pages/profileComponents/Notes';
 import Options from './src/pages/profileComponents/Options';
 import GoalAddDescription from './src/pages/goalAdd/GoalAddDescription';
 import GoalAddIconAndColor from './src/pages/goalAdd/GoalAddIconAndColor';
+import Cards from './src/pages/profileComponents/Cards';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -27,7 +27,7 @@ export type RootStackParamList = {
   GoalAdd: undefined;
   HowToUse: undefined;
   LateTodo: undefined;
-  Notes: undefined;
+  Cards: undefined;
   Options: undefined;
   GoalAddDescription: { title: string };
   GoalAddIconAndColor: { title: string; description: string };
@@ -77,7 +77,7 @@ function App(): React.JSX.Element {
                 />
                 <Stack.Screen name='HowToUse' component={HowToUse} />
                 <Stack.Screen name='LateTodo' component={LateTodo} />
-                <Stack.Screen name='Notes' component={Notes} />
+                <Stack.Screen name='Cards' component={Cards} />
                 <Stack.Screen name='Options' component={Options} />
                 {/* GoalAdd Stack Nav */}
                 <Stack.Screen

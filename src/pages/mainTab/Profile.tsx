@@ -109,7 +109,6 @@ const Profile = (): React.JSX.Element => {
                   width: itemWidth - ms(7.5, 0.3),
                   aspectRatio: 1.7,
                 },
-                currentTheme === 'light' ? shadow.boxShadow : {},
               ]}>
               <View
                 style={[
@@ -117,6 +116,7 @@ const Profile = (): React.JSX.Element => {
                     backgroundColor: theme.backgroundColor,
                   },
                   styles.profileTabContainer,
+                  currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
                 <Text
                   style={[
@@ -134,15 +134,13 @@ const Profile = (): React.JSX.Element => {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
-                navigation.navigate('LateTodo');
+                navigation.navigate('Cards');
               }}
               style={[
                 {
                   width: itemWidth - ms(7.5, 0.3),
                   aspectRatio: 1.7,
-                  borderRightWidth: 0.9,
                 },
-                currentTheme === 'light' ? shadow.boxShadow : {},
               ]}>
               <View
                 style={[
@@ -150,10 +148,11 @@ const Profile = (): React.JSX.Element => {
                     backgroundColor: theme.backgroundColor,
                   },
                   styles.profileTabContainer,
+                  currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
                 <Text
                   style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-                  나중에 할 일
+                  달성한 목표들
                 </Text>
               </View>
             </TouchableOpacity>
@@ -167,14 +166,13 @@ const Profile = (): React.JSX.Element => {
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
-                navigation.navigate('Notes');
+                navigation.navigate('LateTodo');
               }}
               style={[
                 {
                   width: itemWidth - ms(7.4, 0.3),
                   aspectRatio: 1.7,
                 },
-                currentTheme === 'light' ? shadow.boxShadow : {},
               ]}>
               <View
                 style={[
@@ -182,10 +180,11 @@ const Profile = (): React.JSX.Element => {
                     backgroundColor: theme.backgroundColor,
                   },
                   styles.profileTabContainer,
+                  currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
                 <Text
                   style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-                  노트
+                  나중에 할 일
                 </Text>
               </View>
             </TouchableOpacity>
@@ -198,9 +197,7 @@ const Profile = (): React.JSX.Element => {
                 {
                   width: itemWidth - ms(7.5, 0.3),
                   aspectRatio: 1.7,
-                  borderRightWidth: 0.9,
                 },
-                currentTheme === 'light' ? shadow.boxShadow : {},
               ]}>
               <View
                 style={[
@@ -208,6 +205,7 @@ const Profile = (): React.JSX.Element => {
                     backgroundColor: theme.backgroundColor,
                   },
                   styles.profileTabContainer,
+                  currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
                 <Text
                   style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>

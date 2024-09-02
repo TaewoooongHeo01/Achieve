@@ -115,7 +115,7 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
               fontStyle.fontSizeMain,
               { color: theme.textColor, marginBottom: ms(10, 0.3) },
             ]}>
-            {title} 을 통해 얻고자 하는 건 무엇인가요?
+            {title} 을/를 통해 얻고자 하는 건 무엇인가요?
           </Text>
           {/* <Text
             style={[

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Goal, Todo } from '../../../../realm/models';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useColors } from '../../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,10 +13,12 @@ import CheckIcon from 'react-native-vector-icons/AntDesign';
 const TodoItemDetail = ({
   item,
   goal,
+  todoEditHandlePresentModal,
   achieved,
 }: {
   item: Todo;
   goal: Goal;
+  todoEditHandlePresentModal?(): void;
   achieved?: boolean;
 }) => {
   const { theme, currentTheme } = useColors();
@@ -45,12 +47,15 @@ const TodoItemDetail = ({
       <View
         style={[
           styles.iconContainer,
-          { aspectRatio: 1, height: iconContainerSize },
+          {
+            aspectRatio: 1,
+            height: iconContainerSize,
+          },
         ]}>
         <View
           style={{
             flex: 1,
-            margin: ms(13, 0.3),
+            margin: ms(11, 0.3),
           }}>
           <LinearGradient
             style={{
@@ -87,6 +92,8 @@ const TodoItemDetail = ({
         <View
           style={{
             flex: ms(0.5, 0.3),
+            flexDirection: 'row',
+            alignItems: 'center',
           }}>
           <Text
             style={[
@@ -98,6 +105,31 @@ const TodoItemDetail = ({
             ]}>
             {item.title}
           </Text>
+          {!achieved ? (
+            <CalendarIcon
+              name='exclamationcircle'
+              color={
+                item.priority === 2
+                  ? 'orange'
+                  : item.priority === 1
+                    ? 'green'
+                    : 'red'
+              }
+              size={ms(10, 0.3)}
+              style={{
+                marginLeft: ms(5, 0.3),
+              }}
+            />
+          ) : item.isComplete ? (
+            <CheckIcon
+              name='check'
+              color='green'
+              size={ms(10, 0.3)}
+              style={{
+                marginLeft: ms(5, 0.3),
+              }}
+            />
+          ) : null}
         </View>
         <View
           style={{
@@ -105,54 +137,40 @@ const TodoItemDetail = ({
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <CalendarIcon name='calendar' color={theme.textColor} />
-          <View>
-            <Text
-              style={[
-                {
-                  color: theme.textColor,
-                  flex: 1,
-                },
-                fontStyle.itemSubTitle,
-              ]}>
-              {item.weekCycle
-                ? item.weekCycle.length == 7
-                  ? ' 매일 '
-                  : item.weekCycle.length != 0
-                    ? item.weekCycle.map(value => {
-                        return ' ' + days[value] + ' ';
-                      })
-                    : ' 오늘 '
-                : ''}
-            </Text>
-          </View>
+          <Icon name='calendar-outline' color={theme.textColor} />
+          <Text
+            style={[
+              {
+                color: theme.textColor,
+                flex: 1,
+              },
+              fontStyle.itemSubTitle,
+            ]}>
+            {item.weekCycle
+              ? item.weekCycle.length == 7
+                ? ' 매일 '
+                : item.weekCycle.length != 0
+                  ? item.weekCycle.map(value => {
+                      return ' ' + days[value];
+                    })
+                  : ' 오늘 '
+              : ''}
+          </Text>
         </View>
       </View>
       <View style={styles.dateContainer}>
-        {!achieved ? (
-          <CalendarIcon
-            name='exclamationcircle'
-            color={
-              item.priority === 2
-                ? 'orange'
-                : item.priority === 1
-                  ? 'green'
-                  : 'red'
-            }
-            size={ms(15, 0.3)}
+        {todoEditHandlePresentModal ? (
+          <TouchableOpacity
             style={{
-              marginLeft: ms(5, 0.3),
+              paddingLeft: ms(15, 0.3),
+              paddingBottom: ms(15, 0.3),
+              paddingTop: ms(15, 0.3),
             }}
-          />
-        ) : item.isComplete ? (
-          <CheckIcon
-            name='check'
-            color='green'
-            size={ms(15, 0.3)}
-            style={{
-              marginLeft: ms(5, 0.3),
-            }}
-          />
+            onPress={() => {
+              todoEditHandlePresentModal();
+            }}>
+            <Icon name='pencil' size={ms(20, 0.3)} color={theme.textColor} />
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>

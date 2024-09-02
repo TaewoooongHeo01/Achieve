@@ -43,7 +43,7 @@ const Goals = (): React.ReactElement => {
               <Icon name={item.icon} size={iconSize}></Icon>
             </View>
             <View style={[{ flex: ms(0.9, 0.3) }, GoalStyle.titleContainer]}>
-              <Text style={GoalStyle.todoText}>
+              <Text style={[fontStyle.fontSizeSub, GoalStyle.todoText]}>
                 {item.todos ? item.todos.length : 0}개의 투 두
               </Text>
               <Text style={GoalStyle.titleText}>{item.title}</Text>
@@ -76,12 +76,14 @@ const Goals = (): React.ReactElement => {
             {goalData.length}개의 목표
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('GoalAdd');
-          }}>
-          <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
-        </TouchableOpacity>
+        {goalData.length !== 0 ? (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('GoalAdd');
+            }}>
+            <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
+          </TouchableOpacity>
+        ) : null}
       </View>
       {goalData.length != 0 ? (
         <FlatList

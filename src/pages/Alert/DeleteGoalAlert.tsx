@@ -1,9 +1,8 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { closeAlert } from 'react-native-customisable-alert';
 import { useRealm } from '@realm/react';
 import { Goal, Todo } from '../../../realm/models';

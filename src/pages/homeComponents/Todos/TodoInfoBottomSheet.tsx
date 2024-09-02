@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FullyDate, Goal, Todo } from '../../../../realm/models';
+import { Goal, Todo } from '../../../../realm/models';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { ColorSet } from '../../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
@@ -16,7 +16,6 @@ import { RootStackParamList } from '../../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useColors } from '../../../context/ThemeContext';
 import { shadow } from '../../../assets/style/shadow';
-import { useRealm } from '@realm/react';
 import { calculateStartAndEndDayOfMonth } from '../../../utils/calStartEndWeek';
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -33,7 +32,6 @@ const TodoInfo = ({
   theme,
   goal,
   todoCompleteAnimation,
-  setChanged,
   taskDateFormat,
   todayFormat,
 }: {
@@ -42,11 +40,9 @@ const TodoInfo = ({
   theme: ColorSet;
   goal: Goal;
   todoCompleteAnimation(isRemove: boolean): void;
-  setChanged(changed: boolean | ((changed: boolean) => boolean)): void;
   taskDateFormat: number;
   todayFormat: number;
 }) => {
-  const realm = useRealm();
   const { currentTheme } = useColors();
   const { taskDate } = useDateContext();
   const weekCycle: number[] = item.weekCycle;
@@ -230,67 +226,6 @@ const TodoInfo = ({
                   {date}
                 </Text>
               </View>
-            </View>
-            <View style={{ flexDirection: 'row', flex: 0.3 }}>
-              <TouchableOpacity
-                style={{
-                  padding: ms(8, 0.3),
-                  backgroundColor: '#DD0000',
-                  borderRadius: ms(5, 0.3),
-                  marginLeft: ms(5, 0.3),
-                }}
-                onPress={() => {
-                  setChanged(changed => !changed);
-                  todoCompleteAnimation(true);
-                  const fd = realm.objectForPrimaryKey<FullyDate>(
-                    'FullyDate',
-                    dateFormatKey,
-                  );
-                  realm.write(() => {
-                    realm.delete(item);
-                  });
-                  if (fd?.todos.length == 0) {
-                    realm.write(() => {
-                      realm.delete(fd);
-                    });
-                  }
-                  dismiss();
-                }}>
-                <MediumTextMemoization style={{ color: theme.backgroundColor }}>
-                  삭제
-                </MediumTextMemoization>
-              </TouchableOpacity>
-              {!item.isComplete ? (
-                <TouchableOpacity
-                  style={{
-                    padding: ms(8, 0.3),
-                    backgroundColor: theme.textColor,
-                    borderRadius: ms(5, 0.3),
-                    marginLeft: ms(5, 0.3),
-                  }}
-                  onPress={() => {
-                    console.log('설정');
-                  }}>
-                  <MediumTextMemoization
-                    style={{ color: theme.backgroundColor }}>
-                    설정
-                  </MediumTextMemoization>
-                </TouchableOpacity>
-              ) : (
-                <View
-                  style={{
-                    padding: ms(8, 0.3),
-                    backgroundColor: theme.textColor,
-                    borderRadius: ms(5, 0.3),
-                    opacity: 0.3,
-                    marginLeft: ms(5, 0.3),
-                  }}>
-                  <MediumTextMemoization
-                    style={{ color: theme.backgroundColor }}>
-                    설정
-                  </MediumTextMemoization>
-                </View>
-              )}
             </View>
           </View>
         </View>

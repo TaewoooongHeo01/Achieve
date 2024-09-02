@@ -67,7 +67,7 @@ const GoalAddIconAndColor = ({
           alignItems: 'center',
           borderRadius: ms(5, 0.3),
           borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-          borderWidth: 0.2,
+          borderWidth: Platform.OS === 'ios' ? ms(0.2, 0.3) : ms(0.5, 0.3),
         }}>
         <Ionicons name={item} size={ms(25, 0.3)} />
       </TouchableOpacity>
@@ -90,7 +90,7 @@ const GoalAddIconAndColor = ({
           marginRight: ms(5, 0.3),
           borderRadius: ms(5, 0.3),
           borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-          borderWidth: 0.2,
+          borderWidth: Platform.OS === 'ios' ? ms(0.2, 0.3) : 0,
         }}>
         <LinearGradient
           style={{ flex: 1, borderRadius: ms(5, 0.3) }}
@@ -180,7 +180,7 @@ const GoalAddIconAndColor = ({
                 alignItems: 'center',
                 padding: ms(11, 0.3),
                 borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-                borderWidth: 0.2,
+                borderWidth: Platform.OS === 'ios' ? ms(0.2, 0.3) : 0,
               }}>
               <View
                 onLayout={e => {

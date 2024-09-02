@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { useColors } from '../../context/ThemeContext';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { ms } from 'react-native-size-matters';
@@ -243,7 +243,10 @@ export default function Achieve() {
           <Icon name='right' size={ms(15, 0.3)} color={theme.textColor} />
         </TouchableOpacity>
       </View>
-      <View style={{ flex: ms(0.42, 0.3) }}>
+      <View
+        style={{
+          flex: Platform.OS === 'ios' ? ms(0.45, 0.3) : ms(0.4, 0.3),
+        }}>
         <FlatList
           data={yearArr}
           renderItem={renderItem}

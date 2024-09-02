@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { ColorSet } from '../../assets/style/ThemeColor';
 import { fontStyle } from '../../assets/style/fontStyle';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { closeAlert } from 'react-native-customisable-alert';
 
 const GoalAddCompleteAlert = ({

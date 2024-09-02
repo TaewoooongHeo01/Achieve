@@ -75,7 +75,7 @@ export class Todo extends Realm.Object {
   goal?: Goal;
   date?: string;
   weekCycle!: number[];
-  priority?: number;
+  priority!: number;
   isComplete!: boolean;
 
   static schema: Realm.ObjectSchema = {

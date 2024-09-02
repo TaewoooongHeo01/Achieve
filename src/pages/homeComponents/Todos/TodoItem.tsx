@@ -1,5 +1,18 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Platform,
+  Keyboard,
+} from 'react-native';
 import { Goal, Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -19,6 +32,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import TodoInfo from './TodoInfoBottomSheet';
 import { ColorSet } from '../../../assets/style/ThemeColor';
+import TodoEditBottomSheet from './TodoEditBottomSheet';
 
 export const MemorizedItemDetail = memo(TodoItemDetail);
 const MemorizedTodoInfoBottomSheet = memo(TodoInfo);
@@ -46,8 +60,6 @@ const TodoItem = ({
 }) => {
   const goal = item.linkingObjects<Goal>('Goal', 'todos')[0];
 
-  // const [itemDelete, setItemDelete] = useState<boolean>(false);
-
   const translateX = useSharedValue(0);
   const startX = useSharedValue(0);
 
@@ -65,6 +77,68 @@ const TodoItem = ({
   const itemId = item._id.toString();
 
   const todoItemOpacity = useSharedValue(1);
+
+  const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const todoSnapPoints = useMemo(() => ['45%'], []);
+  const todoHandlePresentModal = useCallback(() => {
+    todoBottomSheetModalRef.current?.present();
+  }, []);
+  const todoRenderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior={'close'}
+        opacity={0.8}
+      />
+    ),
+    [],
+  );
+
+  const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
+    useState<string>('55%');
+  const todoEditBottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const todoEditSnapPoints = useMemo(
+    () => [todoBottomSheetSnapPoint],
+    [todoBottomSheetSnapPoint],
+  );
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setTodoBottomSheetSnapPoint('90%');
+        },
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setTodoBottomSheetSnapPoint('60%');
+        },
+      );
+
+      return () => {
+        keyboardDidShowListener.remove();
+        keyboardDidHideListener.remove();
+      };
+    }
+  }, []);
+  const todoEditHandlePresentModal = useCallback(() => {
+    todoEditBottomSheetModalRef.current?.present();
+  }, []);
+  const todoEditRenderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior={'close'}
+        opacity={0.8}
+      />
+    ),
+    [],
+  );
 
   const completeTodoAnimation = useAnimatedStyle(() => {
     'worklet';
@@ -169,26 +243,6 @@ const TodoItem = ({
     }),
   }));
 
-  const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const todoSnapPoints = useMemo(() => ['45%'], []);
-
-  const todoHandlePresentModal = useCallback(() => {
-    todoBottomSheetModalRef.current?.present();
-  }, []);
-
-  const todoRenderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        pressBehavior={'close'}
-        opacity={0.8}
-      />
-    ),
-    [],
-  );
-
   return (
     <View style={{ flex: 1 }}>
       <TouchableOpacity
@@ -208,7 +262,11 @@ const TodoItem = ({
                     scrollableListSize,
                     animatedStyle,
                   ]}>
-                  <MemorizedItemDetail item={item} goal={goal} />
+                  <MemorizedItemDetail
+                    item={item}
+                    goal={goal}
+                    todoEditHandlePresentModal={todoEditHandlePresentModal}
+                  />
                 </Animated.View>
                 <Animated.View
                   style={[
@@ -242,7 +300,11 @@ const TodoItem = ({
                 },
                 completeTodoAnimation,
               ]}>
-              <MemorizedItemDetail item={item} goal={goal} />
+              <MemorizedItemDetail
+                item={item}
+                goal={goal}
+                todoEditHandlePresentModal={todoEditHandlePresentModal}
+              />
             </Animated.View>
           )
         ) : (
@@ -256,10 +318,51 @@ const TodoItem = ({
                 height: ms(60, 0.3),
               },
             ]}>
-            <MemorizedItemDetail item={item} goal={goal} />
+            <MemorizedItemDetail
+              item={item}
+              goal={goal}
+              todoEditHandlePresentModal={todoEditHandlePresentModal}
+            />
           </View>
         )}
       </TouchableOpacity>
+
+      {/* edit bottom sheet */}
+      <BottomSheetModal
+        ref={todoEditBottomSheetModalRef}
+        index={0}
+        snapPoints={todoEditSnapPoints}
+        backdropComponent={todoEditRenderBackdrop}
+        keyboardBehavior='interactive'
+        keyboardBlurBehavior='restore'
+        android_keyboardInputMode='adjustResize'
+        handleStyle={{
+          backgroundColor: theme.backgroundColor,
+          borderTopRightRadius: 15,
+          borderTopLeftRadius: 15,
+          marginHorizontal: ms(10, 0.3),
+          height: 0,
+        }}
+        handleIndicatorStyle={{ backgroundColor: theme.textColor }}
+        backgroundStyle={{
+          marginHorizontal: ms(10, 0.3),
+          flex: 1,
+        }}>
+        <BottomSheetView
+          style={[
+            styles.bottomSheetContainer,
+            { backgroundColor: theme.backgroundColor },
+          ]}>
+          <TodoEditBottomSheet
+            todo={item}
+            setChanged={setChanged}
+            dateFormatKey={dateFormatKey}
+            todayFormat={todayFormat}
+          />
+        </BottomSheetView>
+      </BottomSheetModal>
+
+      {/* todo info bottom sheet */}
       <BottomSheetModal
         ref={todoBottomSheetModalRef}
         index={0}
@@ -269,8 +372,8 @@ const TodoItem = ({
         bottomInset={50}
         handleStyle={{
           backgroundColor: theme.backgroundColor,
-          borderTopRightRadius: ms(15, 0.3),
-          borderTopLeftRadius: ms(15, 0.3),
+          borderTopRightRadius: 15,
+          borderTopLeftRadius: 15,
           marginHorizontal: ms(10, 0.3),
           height: 0,
         }}
@@ -290,7 +393,6 @@ const TodoItem = ({
             theme={theme}
             goal={goal}
             todoCompleteAnimation={todoCompleteAnimation}
-            setChanged={setChanged}
             taskDateFormat={taskDateFormat}
             todayFormat={todayFormat}
           />

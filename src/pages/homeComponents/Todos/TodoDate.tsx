@@ -214,10 +214,12 @@ const TodoDate = (): React.ReactElement => {
         android_keyboardInputMode='adjustResize'
         handleStyle={{
           backgroundColor: theme.backgroundColor,
-          borderTopRightRadius: ms(15, 0.3),
-          borderTopLeftRadius: ms(15, 0.3),
+          borderTopRightRadius: 15,
+          borderTopLeftRadius: 15,
           marginHorizontal: ms(10, 0.3),
           height: 0,
+          borderColor: 'transparent',
+          borderBottomWidth: 0,
         }}
         handleIndicatorStyle={{ backgroundColor: theme.textColor }}
         backgroundStyle={{
