@@ -70,6 +70,7 @@ const GoalAdd = () => {
         style={{
           flex: 1,
           justifyContent: 'center',
+          paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
         }}>
         <View
           style={{

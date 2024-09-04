@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ms } from 'react-native-size-matters';
-import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -10,47 +9,22 @@ import { useQuery } from '@realm/react';
 import { Goal } from '../../../realm/models';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
-import Icon from 'react-native-vector-icons/Ionicons';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
 import { shadow } from '../../assets/style/shadow';
+import GoalComponentDetail from '../commonComponents/GoalComponentDetail';
 
 const Goals = (): React.ReactElement => {
   const { theme, currentTheme } = useColors();
-  const [iconSize, setIconSize] = useState<number>(0);
+  // const [iconSize, setIconSize] = useState<number>(0);
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const goalData = useQuery(Goal);
+  const goalData = useQuery(Goal).filtered('isComplete == false');
 
   const renderItem = ({ item }: { item: Goal }) => {
     return (
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('GoalDetail', { _id: item._id.toString() });
-        }}>
-        <LinearGradient
-          colors={theme.gradientColor[item.color]}
-          style={[GoalStyle.layout]}
-          useAngle={true}
-          angle={35}>
-          <View style={{ flex: 1 }}>
-            <View
-              style={[GoalStyle.iconD_day, { flex: ms(0.2, 0.3) }]}
-              onLayout={e => {
-                setIconSize(e.nativeEvent.layout.height);
-              }}>
-              <Icon name={item.icon} size={iconSize}></Icon>
-            </View>
-            <View style={[{ flex: ms(0.9, 0.3) }, GoalStyle.titleContainer]}>
-              <Text style={[fontStyle.fontSizeSub, GoalStyle.todoText]}>
-                {item.todos ? item.todos.length : 0}개의 투 두
-              </Text>
-              <Text style={GoalStyle.titleText}>{item.title}</Text>
-            </View>
-          </View>
-        </LinearGradient>
-      </TouchableOpacity>
+      <GoalComponentDetail item={item} theme={theme} navigation={navigation} />
     );
   };
 

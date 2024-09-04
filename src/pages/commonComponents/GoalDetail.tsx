@@ -16,6 +16,8 @@ import GoalDetailTodo from '../homeComponents/GoalDetailTodo';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { showAlert } from 'react-native-customisable-alert';
 import DeleteGoalAlert from '../Alert/DeleteGoalAlert';
+import LinearGradient from 'react-native-linear-gradient';
+import GoalIcon from 'react-native-vector-icons/Ionicons';
 
 const MemorizedGoalDetailTodo = memo(GoalDetailTodo);
 
@@ -141,13 +143,34 @@ const GoalDetail = ({
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <View
-              style={{
-                width: ms(300, 0.3),
-                height: ms(200, 0.3),
-                borderRadius: ms(5, 0.3),
-                backgroundColor: theme.textColor,
-              }}></View>
+            {goal ? (
+              <LinearGradient
+                colors={theme.gradientColor[goal?.color]}
+                style={{
+                  width: ms(300, 0.3),
+                  height: ms(189, 0.3),
+                  borderRadius: ms(5, 0.3),
+                  justifyContent: 'space-between',
+                  padding: ms(30, 0.3),
+                }}>
+                <Text
+                  style={{
+                    fontSize: ms(20, 0.3),
+                    fontFamily: 'Pretendard-SemiBold',
+                  }}>
+                  {goal.title}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={fontStyle.fontSizeSub}> {goal.startDate}-</Text>
+                  <GoalIcon name={goal.icon} size={ms(18, 0.3)} />
+                </View>
+              </LinearGradient>
+            ) : null}
           </View>
           {/* <Text
             style={[

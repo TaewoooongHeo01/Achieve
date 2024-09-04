@@ -23,6 +23,8 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useRealm } from '@realm/react';
 import { showAlert } from 'react-native-customisable-alert';
 import GoalAddCompleteAlert from '../Alert/GoalAddCompleteAlert';
+import { useDateContext } from '../../context/DateContext';
+import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 
 const GoalAddIconAndColor = ({
   route,
@@ -30,14 +32,16 @@ const GoalAddIconAndColor = ({
 }: GoalAddIconAndColorProps) => {
   const { theme, currentTheme } = useColors();
   const { top } = useSafeAreaInsets();
+  const { today } = useDateContext();
   const realm = useRealm();
   const title = route.params.title;
   const description = route.params.description;
 
   const [icon, setIcon] = useState<string>('help');
   const [color, setColor] = useState<number>(0);
+  const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
 
-  const [iconSize, setIconSize] = useState<number>(0);
+  // const [iconSize, setIconSize] = useState<number>(0);
 
   const inputValid = (): boolean => {
     if (icon === 'help') {
@@ -127,6 +131,7 @@ const GoalAddIconAndColor = ({
         style={{
           flex: 1,
           justifyContent: 'center',
+          paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
         }}>
         <View
           style={{
@@ -183,16 +188,16 @@ const GoalAddIconAndColor = ({
                 borderWidth: Platform.OS === 'ios' ? ms(0.2, 0.3) : 0,
               }}>
               <View
-                onLayout={e => {
-                  setIconSize(e.nativeEvent.layout.height);
-                }}
+                // onLayout={e => {
+                //   setIconSize(e.nativeEvent.layout.height);
+                // }}
                 style={{
                   flex: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
                   aspectRatio: 1,
                 }}>
-                <Ionicons name={icon} size={iconSize} />
+                <Ionicons name={icon} size={ms(34, 0.3)} />
               </View>
             </LinearGradient>
           </View>
@@ -271,6 +276,8 @@ const GoalAddIconAndColor = ({
                     color: color,
                     todos: [],
                     description: description,
+                    startDate: todayFormat,
+                    todoCnt: 0,
                   });
                 });
                 navigation.navigate('Main');

@@ -2,6 +2,20 @@ import { FullyDate } from './../../realm/models';
 //개발 단계에서 넣는 테스트 데이터
 import { useRealm } from '@realm/react';
 
+const now = new Date();
+const year = String(now.getFullYear());
+const month = String(now.getMonth() + 1).padStart(2, '0');
+
+// const yesterday = String(now.getDate() - 1).padStart(2, '0');
+const today = String(now.getDate()).padStart(2, '0');
+// const tomorrow = String(now.getDate() + 1).padStart(2, '0');
+
+// const yesterdayDate: string = year + month + yesterday;
+const yesterdayDate = '20240827';
+const todayDate: string = year + month + today;
+const tomorrowDate = '20240830';
+// const tomorrowDate: string = year + month + tomorrow;
+
 export const initialize = () => {
   const realm = useRealm();
   console.log(realm.path);
@@ -28,6 +42,8 @@ export const initialize = () => {
         color: g.color,
         todos: [],
         description: g.description,
+        startDate: g.startDate,
+        todoCnt: g.todoCnt,
       });
       for (let i = 0; i < t.length; i++) {
         const td = t[i];
@@ -78,19 +94,23 @@ const UserData = {
 const GoalsData = [
   {
     title: '독서 30분 하기',
-    isComplete: false,
+    isComplete: true,
     icon: 'book',
     color: 3,
     todo: [],
     description: '매일 30분씩 독서하기',
+    startDate: todayDate,
+    todoCnt: 0,
   },
   {
     title: '새로운 프로그래밍 언어 배우기',
     isComplete: false,
     icon: 'code',
-    color: 11,
+    color: 10,
     todo: [],
     description: '매일 30분씩 독서하기',
+    startDate: todayDate,
+    todoCnt: 0,
   },
   // {
   //   title: '매일 10,000보 걷기',
@@ -109,20 +129,6 @@ const GoalsData = [
   //   description: '매일 자기 전 명상으로 하루를 마무리',
   // },
 ];
-
-const now = new Date();
-const year = String(now.getFullYear());
-const month = String(now.getMonth() + 1).padStart(2, '0');
-
-// const yesterday = String(now.getDate() - 1).padStart(2, '0');
-const today = String(now.getDate()).padStart(2, '0');
-// const tomorrow = String(now.getDate() + 1).padStart(2, '0');
-
-// const yesterdayDate: string = year + month + yesterday;
-const yesterdayDate = '20240827';
-const todayDate: string = year + month + today;
-const tomorrowDate = '20240830';
-// const tomorrowDate: string = year + month + tomorrow;
 
 const todos = [
   // [

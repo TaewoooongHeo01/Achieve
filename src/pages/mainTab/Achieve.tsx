@@ -245,7 +245,7 @@ export default function Achieve() {
       </View>
       <View
         style={{
-          flex: Platform.OS === 'ios' ? ms(0.45, 0.3) : ms(0.4, 0.3),
+          flex: Platform.OS === 'ios' ? ms(0.4, 0.3) : ms(0.4, 0.3),
         }}>
         <FlatList
           data={yearArr}

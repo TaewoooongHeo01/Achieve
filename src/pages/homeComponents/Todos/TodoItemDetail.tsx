@@ -23,7 +23,7 @@ const TodoItemDetail = ({
 }) => {
   const { theme, currentTheme } = useColors();
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
-  const [iconSize, setIconSize] = useState<number>(0);
+  // const [iconSize, setIconSize] = useState<number>(0);
 
   return (
     <View
@@ -71,16 +71,17 @@ const TodoItemDetail = ({
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onLayout={e => {
-                setIconSize(e.nativeEvent.layout.height);
-              }}>
+              // onLayout={e => {
+              //   setIconSize(e.nativeEvent.layout.height);
+              // }}
+            >
               {goal != undefined ? (
                 <Icon
                   name={goal.icon}
                   style={{
                     textAlign: 'center',
                   }}
-                  size={iconSize}></Icon>
+                  size={ms(20, 0.3)}></Icon>
               ) : (
                 <Text>no icon</Text>
               )}

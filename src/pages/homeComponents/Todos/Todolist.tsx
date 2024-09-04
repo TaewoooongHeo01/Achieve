@@ -3,7 +3,7 @@ import { useWindowDimensions, View } from 'react-native';
 import { useDateContext } from '../../../context/DateContext';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 import { useObject, useQuery, useRealm } from '@realm/react';
-import { FullyDate, Todo } from '../../../../realm/models';
+import { FullyDate, Goal, Todo } from '../../../../realm/models';
 import TodoItem from './TodoItem';
 import { FlatList } from 'react-native-gesture-handler';
 import { Realm } from '@realm/react';
@@ -140,8 +140,10 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
       'Todo',
       new Realm.BSON.ObjectId(itemId),
     );
-    if (item) {
+    const goal = item?.linkingObjects<Goal>('Goal', 'todos')[0];
+    if (item && goal) {
       realm.write(() => {
+        goal.todoCnt += 1;
         item.isComplete = true;
       });
     }

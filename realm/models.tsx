@@ -32,6 +32,9 @@ export class Goal extends Realm.Object {
   color!: number;
   todos!: Realm.List<Todo>;
   description?: string;
+  startDate!: string;
+  endDate?: string;
+  todoCnt!: number;
 
   static schema: Realm.ObjectSchema = {
     name: 'Goal',
@@ -47,6 +50,9 @@ export class Goal extends Realm.Object {
       color: 'int',
       todos: 'Todo[]',
       description: 'string?',
+      startDate: 'string',
+      endDate: 'string?',
+      todoCnt: 'int',
     },
   };
 }

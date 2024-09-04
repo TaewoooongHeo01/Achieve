@@ -20,6 +20,8 @@ import Options from './src/pages/profileComponents/Options';
 import GoalAddDescription from './src/pages/goalAdd/GoalAddDescription';
 import GoalAddIconAndColor from './src/pages/goalAdd/GoalAddIconAndColor';
 import Cards from './src/pages/profileComponents/Cards';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { DateContextProvider } from './src/context/DateContext';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -55,46 +57,36 @@ function App(): React.JSX.Element {
     <RealmProvider
       schema={[Goal, Todo, User, FullyDate]}
       deleteRealmIfMigrationNeeded={true}>
-      <SafeAreaProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <NavigationContainer>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <DateContextProvider>
             <ThemeContextProvider>
-              <Stack.Navigator>
-                <Stack.Screen
-                  options={{ headerShown: false }}
-                  name='Main'
-                  component={Main}
-                />
-                <Stack.Screen
-                  name='GoalDetail'
-                  component={GoalDetail}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name='GoalAdd'
-                  component={GoalAdd}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen name='HowToUse' component={HowToUse} />
-                <Stack.Screen name='LateTodo' component={LateTodo} />
-                <Stack.Screen name='Cards' component={Cards} />
-                <Stack.Screen name='Options' component={Options} />
-                {/* GoalAdd Stack Nav */}
-                <Stack.Screen
-                  name='GoalAddDescription'
-                  component={GoalAddDescription}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name='GoalAddIconAndColor'
-                  component={GoalAddIconAndColor}
-                  options={{ headerShown: false }}
-                />
-              </Stack.Navigator>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <BottomSheetModalProvider>
+                  <Stack.Navigator screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name='Main' component={Main} />
+                    <Stack.Screen name='GoalDetail' component={GoalDetail} />
+                    <Stack.Screen name='GoalAdd' component={GoalAdd} />
+                    <Stack.Screen name='HowToUse' component={HowToUse} />
+                    <Stack.Screen name='LateTodo' component={LateTodo} />
+                    <Stack.Screen name='Cards' component={Cards} />
+                    <Stack.Screen name='Options' component={Options} />
+                    {/* GoalAdd Stack Nav */}
+                    <Stack.Screen
+                      name='GoalAddDescription'
+                      component={GoalAddDescription}
+                    />
+                    <Stack.Screen
+                      name='GoalAddIconAndColor'
+                      component={GoalAddIconAndColor}
+                    />
+                  </Stack.Navigator>
+                </BottomSheetModalProvider>
+              </GestureHandlerRootView>
             </ThemeContextProvider>
-          </NavigationContainer>
-        </GestureHandlerRootView>
-      </SafeAreaProvider>
+          </DateContextProvider>
+        </SafeAreaProvider>
+      </NavigationContainer>
     </RealmProvider>
   );
 }

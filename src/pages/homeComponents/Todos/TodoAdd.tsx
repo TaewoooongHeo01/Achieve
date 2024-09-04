@@ -23,8 +23,13 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import GoalIcon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../../App';
 
 const TodoAdd = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const goals = useQuery(Goal);
   const { taskDate } = useDateContext();
   const { theme, currentTheme } = useColors();
@@ -135,16 +140,30 @@ const TodoAdd = () => {
           에 할 일 추가하기
         </Text>
       </View>
-      <View style={{ flex: ms(0.15, 0.3), marginBottom: ms(3, 0.3) }}>
+      <View style={{ flex: ms(0.2, 0.3), marginBottom: ms(3, 0.3) }}>
         <Text
           style={[
             fontStyle.fontSizeSub,
             {
-              marginBottom: ms(2, 0.3),
               color: theme.textColor,
             },
           ]}>
           {goal === undefined ? '목표선택' : goal.title}
+        </Text>
+        <Text
+          onPress={() => {
+            navigation.navigate('GoalAdd');
+            dismiss();
+          }}
+          style={[
+            {
+              fontFamily: 'Pretendard-Bold',
+              fontSize: ms(15, 0.3),
+              marginVertical: ms(5, 0.3),
+              color: 'green',
+            },
+          ]}>
+          또는 목표 만들러가기
         </Text>
         <FlatList
           style={{ marginVertical: ms(5, 0.3), marginHorizontal: ms(10, 0.3) }}
@@ -261,7 +280,7 @@ const TodoAdd = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flex: ms(0.15, 0.3) }}>
+      <View style={{ flex: ms(0.12, 0.3) }}>
         <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
           반복일
         </Text>

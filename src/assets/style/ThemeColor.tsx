@@ -20,6 +20,14 @@ const gradientColorset: string[][] = [
   ['#E3FDF5', '#FFE6FA'], //Perfect White
 ];
 
+export const hitmapColorSet = [
+  '#c2e5c5',
+  '#89cd8f',
+  '#50b458',
+  '#357e3b',
+  '#1d4420',
+];
+
 export const fullnessCheckColor: string[] = [
   'tomato',
   'dodgerblue',
@@ -33,6 +41,7 @@ export type ColorSet = {
   backgroundColor: string;
   appBackgroundColor: string;
   gradientColor: string[][];
+  hitmapColor: string[];
 };
 
 type ColorTheme = {
@@ -46,21 +55,15 @@ const Colors: ColorTheme = {
     backgroundColor: '#FFFFFF',
     appBackgroundColor: '#FDFDFD',
     gradientColor: gradientColorset,
+    hitmapColor: hitmapColorSet,
   },
   dark: {
     textColor: '#FFFFFF',
     backgroundColor: '#282828',
     appBackgroundColor: '#121212',
     gradientColor: gradientColorset,
+    hitmapColor: hitmapColorSet,
   },
 };
-
-export const hitmapColorSet = [
-  '#c2e5c5',
-  '#89cd8f',
-  '#50b458',
-  '#357e3b',
-  '#1d4420',
-];
 
 export default Colors;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { ColorSet } from '../../assets/style/ThemeColor';
@@ -16,7 +16,7 @@ const GoalAddCompleteAlert = ({
   color: number;
   icon: string;
 }) => {
-  const [iconSize, setIconSize] = useState(0);
+  // const [iconSize, setIconSize] = useState(0);
   return (
     <View
       style={[
@@ -35,19 +35,19 @@ const GoalAddCompleteAlert = ({
           borderRadius: ms(5, 0.3),
           justifyContent: 'center',
           alignItems: 'center',
-          padding: ms(11, 0.3),
+          // padding: ms(11, 0.3),
         }}>
         <View
-          onLayout={e => {
-            setIconSize(e.nativeEvent.layout.height);
-          }}
+          // onLayout={e => {
+          //   setIconSize(e.nativeEvent.layout.height);
+          // }}
           style={{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             aspectRatio: 1,
           }}>
-          <Ionicons name={icon} size={iconSize} />
+          <Ionicons name={icon} size={ms(22, 0.3)} />
         </View>
       </LinearGradient>
       <Text
