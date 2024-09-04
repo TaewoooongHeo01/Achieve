@@ -15,7 +15,7 @@ type cellType = {
 
 const CardDetail = ({ item, theme }: { item: Goal; theme: ColorSet }) => {
   const { dismiss } = useBottomSheetModal();
-  let todoCnt = 21;
+  let todoCnt = item.todoCnt;
 
   const heatmap: cellType[][] = [];
   for (let i = 0; i < 5; i++) {
@@ -85,13 +85,13 @@ const CardDetail = ({ item, theme }: { item: Goal; theme: ColorSet }) => {
             backgroundColor: theme.backgroundColor,
             justifyContent: 'center',
             alignItems: 'center',
-            padding: ms(13, 0.3),
+            padding: ms(20, 0.3),
+            borderRadius: ms(5, 0.3),
           }}>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: theme.backgroundColor,
             }}>
             <LinearGradient
               colors={theme.gradientColor[item.color]}
@@ -131,9 +131,15 @@ const CardDetail = ({ item, theme }: { item: Goal; theme: ColorSet }) => {
           <View
             style={{
               width: ms(300, 0.3),
-              height: ms(189, 0.3),
-              marginTop: ms(15, 0.3),
+              height: ms(245, 0.3),
             }}>
+            <Text
+              style={[
+                { color: theme.textColor, marginVertical: ms(15, 0.3) },
+                fontStyle.fontSizeSub,
+              ]}>
+              몰입도
+            </Text>
             <FlatList data={heatmap} renderItem={renderItem} />
           </View>
           <View style={{ flexDirection: 'row' }}>
@@ -152,14 +158,12 @@ const CardDetail = ({ item, theme }: { item: Goal; theme: ColorSet }) => {
                   <Text
                     style={[
                       {
-                        paddingHorizontal: ms(10, 0.3),
+                        paddingHorizontal: ms(12, 0.3),
                         marginVertical: ms(3, 0.3),
                         color: theme.textColor,
                       },
                       fontStyle.fontSizeSub,
-                    ]}>
-                    {index + 1}
-                  </Text>
+                    ]}></Text>
                 </View>
               );
             })}

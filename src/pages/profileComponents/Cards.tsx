@@ -1,5 +1,11 @@
 import React from 'react';
-import { Platform, StatusBar, TouchableOpacity, View } from 'react-native';
+import {
+  Platform,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -14,32 +20,65 @@ import { useQuery } from '@realm/react';
 import { Goal } from '../../../realm/models';
 import { FlatList } from 'react-native-gesture-handler';
 import GoalComponentDetail from '../commonComponents/GoalComponentDetail';
+import { fontStyle } from '../../assets/style/fontStyle';
 
 const Cards = () => {
   const { theme, currentTheme } = useColors();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { top } = useSafeAreaInsets();
-  const goals = useQuery(Goal).filtered('isComplete == true');
+  const goals = useQuery(Goal)
+    .filtered('isComplete == true')
+    .sorted('todoCnt', true);
 
-  const renderItem = ({ item }: { item: Goal }) => {
+  const renderItem = ({ item }: { item: Goal[] }) => {
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: theme.backgroundColor,
-          margin: ms(8, 0.3),
-          padding: ms(10, 0.3),
-          borderRadius: ms(5, 0.3),
+          flexDirection: 'row',
         }}>
-        <GoalComponentDetail
-          item={item}
-          theme={theme}
-          navigation={navigation}
-        />
+        {item[0] ? (
+          <View style={{ margin: ms(5, 0.3) }}>
+            <GoalComponentDetail
+              item={item[0]}
+              theme={theme}
+              navigation={navigation}
+            />
+          </View>
+        ) : null}
+        {item[1] ? (
+          <View style={{ margin: ms(5, 0.3) }}>
+            <GoalComponentDetail
+              item={item[1]}
+              theme={theme}
+              navigation={navigation}
+            />
+          </View>
+        ) : null}
       </View>
     );
   };
+
+  const goalArr: Goal[][] = [];
+  let idx = 0;
+  const t = true;
+  while (t) {
+    let flag;
+    const gArr: Goal[] = [];
+    for (let i = 0; i < 2; i++) {
+      gArr[i] = goals[idx];
+      if (idx == goals.length) {
+        flag = true;
+        break;
+      }
+      idx += 1;
+    }
+    goalArr.push(gArr);
+    if (flag) {
+      break;
+    }
+  }
 
   return (
     <SafeAreaView
@@ -77,14 +116,20 @@ const Cards = () => {
           backgroundColor: theme.appBackgroundColor,
           justifyContent: 'center',
           paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
-          marginHorizontal: ms(5, 0.3),
-          marginTop: ms(30, 0.3),
+          marginHorizontal: ms(18, 0.3),
         }}>
-        <View>
+        <Text
+          style={[
+            fontStyle.fontSizeMain,
+            { color: theme.textColor, marginVertical: ms(20, 0.3) },
+          ]}>
+          완료한 목표들
+        </Text>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <FlatList
-            data={goals}
+            data={goalArr}
             renderItem={renderItem}
-            keyExtractor={value => value._id.toString()}
+            style={{ marginHorizontal: ms(20, 0.3) }}
           />
         </View>
       </View>

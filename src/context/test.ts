@@ -100,7 +100,27 @@ const GoalsData = [
     todo: [],
     description: '매일 30분씩 독서하기',
     startDate: todayDate,
-    todoCnt: 0,
+    todoCnt: 30,
+  },
+  {
+    title: '운동운동운동운동운동운동',
+    isComplete: true,
+    icon: 'rocket',
+    color: 4,
+    todo: [],
+    description: '운동하고 싶다',
+    startDate: todayDate,
+    todoCnt: 10,
+  },
+  {
+    title: '음악음악음악음악음악음악',
+    isComplete: true,
+    icon: 'flame',
+    color: 8,
+    todo: [],
+    description: '음악 듣고 싶다',
+    startDate: todayDate,
+    todoCnt: 20,
   },
   {
     title: '새로운 프로그래밍 언어 배우기',
@@ -110,7 +130,7 @@ const GoalsData = [
     todo: [],
     description: '매일 30분씩 독서하기',
     startDate: todayDate,
-    todoCnt: 0,
+    todoCnt: 5,
   },
   // {
   //   title: '매일 10,000보 걷기',
@@ -170,6 +190,8 @@ const todos = [
       isComplete: true,
     },
   ],
+  [],
+  [],
   [
     {
       title: '기초 문법 공부하기',
