@@ -9,7 +9,12 @@ import { fontStyle } from '../../assets/style/fontStyle';
 import { StyleSheet, Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import CardDetail from '../profileComponents/CardDetail';
 
 const GoalComponentDetail = ({
@@ -22,10 +27,22 @@ const GoalComponentDetail = ({
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
   const cardRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['100%'], []);
+  const snapPoints = useMemo(() => ['80%'], []);
   const cardRefPresent = useCallback(() => {
     cardRef.current?.present();
   }, []);
+  const todoRenderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior={'close'}
+        opacity={0.8}
+      />
+    ),
+    [],
+  );
   return (
     <>
       <TouchableOpacity
@@ -68,8 +85,11 @@ const GoalComponentDetail = ({
         snapPoints={snapPoints}
         enablePanDownToClose={false}
         enableContentPanningGesture={false}
-        backgroundStyle={{ backgroundColor: 'black', opacity: 0.8 }}
-        handleIndicatorStyle={{ backgroundColor: 'transparent' }}
+        backdropComponent={todoRenderBackdrop}
+        detached={true}
+        bottomInset={ms(130, 0.3)}
+        backgroundStyle={{ backgroundColor: 'transparent' }}
+        handleIndicatorStyle={{ height: 0 }}
         style={{
           backgroundColor: 'transparent',
           alignItems: 'center',
