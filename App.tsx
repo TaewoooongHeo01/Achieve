@@ -22,6 +22,9 @@ import GoalAddIconAndColor from './src/pages/goalAdd/GoalAddIconAndColor';
 import Cards from './src/pages/profileComponents/Cards';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { DateContextProvider } from './src/context/DateContext';
+import SettingUser from './src/pages/profileComponents/SettingPages/SettingUser';
+import SettingPhrase from './src/pages/profileComponents/SettingPages/SettingPhrase';
+import SettingScreen from './src/pages/profileComponents/SettingPages/SettingScreen';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -33,6 +36,9 @@ export type RootStackParamList = {
   Options: undefined;
   GoalAddDescription: { title: string };
   GoalAddIconAndColor: { title: string; description: string };
+  SettingScreen: undefined;
+  SettingPhrase: undefined;
+  SettingUser: undefined;
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<
@@ -79,6 +85,16 @@ function App(): React.JSX.Element {
                     <Stack.Screen
                       name='GoalAddIconAndColor'
                       component={GoalAddIconAndColor}
+                    />
+                    {/* Settomg Stack Nav */}
+                    <Stack.Screen name='SettingUser' component={SettingUser} />
+                    <Stack.Screen
+                      name='SettingPhrase'
+                      component={SettingPhrase}
+                    />
+                    <Stack.Screen
+                      name='SettingScreen'
+                      component={SettingScreen}
                     />
                   </Stack.Navigator>
                 </BottomSheetModalProvider>
