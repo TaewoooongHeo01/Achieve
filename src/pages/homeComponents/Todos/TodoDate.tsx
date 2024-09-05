@@ -29,8 +29,8 @@ import { fontStyle } from '../../../assets/style/fontStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
-import TodoAdd from './TodoAdd';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
+import MonthCalendar from '../../commonComponents/MonthCalendar';
 
 const TodoDate = (): React.ReactElement => {
   const { theme } = useColors();
@@ -75,7 +75,7 @@ const TodoDate = (): React.ReactElement => {
       const keyboardDidHideListener = Keyboard.addListener(
         'keyboardDidHide',
         () => {
-          setTodoBottomSheetSnapPoint('60%');
+          setTodoBottomSheetSnapPoint('70%');
         },
       );
 
@@ -162,7 +162,11 @@ const TodoDate = (): React.ReactElement => {
           </Pressable>
         </View>
         {taskDateFormat >= todayFormat ? (
-          <TouchableOpacity onPress={todoHandlePresentModal}>
+          <TouchableOpacity
+            onPress={() => {
+              setTodoBottomSheetSnapPoint('60%');
+              todoHandlePresentModal();
+            }}>
             <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />
           </TouchableOpacity>
         ) : (
@@ -224,7 +228,6 @@ const TodoDate = (): React.ReactElement => {
         handleIndicatorStyle={{ backgroundColor: theme.textColor }}
         backgroundStyle={{
           backgroundColor: 'transparent',
-          marginHorizontal: ms(10, 0.3),
           flex: 1,
         }}>
         <BottomSheetView
@@ -232,7 +235,10 @@ const TodoDate = (): React.ReactElement => {
             styles.bottomSheetContainer,
             { backgroundColor: theme.backgroundColor },
           ]}>
-          <TodoAdd />
+          <MonthCalendar
+            itemAdd={true}
+            setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
+          />
         </BottomSheetView>
       </BottomSheetModal>
     </View>
@@ -249,7 +255,6 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     flex: 1,
-    paddingHorizontal: ms(20, 0.3),
     marginHorizontal: ms(10, 0.3),
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,

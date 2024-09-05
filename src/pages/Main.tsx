@@ -21,7 +21,7 @@ const Main = (): React.JSX.Element => {
   const { theme, currentTheme } = useColors();
 
   //test code
-  initialize();
+  // initialize();
 
   return (
     <SafeAreaView

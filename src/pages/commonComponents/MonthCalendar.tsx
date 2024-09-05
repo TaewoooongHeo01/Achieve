@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SetStateAction } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ListRenderItem,
   Pressable,
+  useWindowDimensions,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ms } from 'react-native-size-matters';
@@ -14,16 +15,40 @@ import { calculateStartAndEndDayOfMonth } from '../../utils/calStartEndWeek';
 import { days } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/AntDesign';
+import TodoAdd from '../homeComponents/Todos/TodoAdd';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
+import { fontStyle } from '../../assets/style/fontStyle';
+import { Todo } from '../../../realm/models';
 
-const MonthCalendar = (): React.ReactElement => {
+const MonthCalendar = ({
+  itemAdd,
+  setTodoBottomSheetSnapPoint,
+  item,
+}: {
+  itemAdd: boolean;
+  setTodoBottomSheetSnapPoint?(
+    snapPoint?: SetStateAction<string> | undefined,
+  ): void;
+  item?: Todo;
+}): React.ReactElement => {
   const { theme } = useColors();
 
-  const dateContext = useDateContext();
+  const { taskDate, today, setTaskDate } = useDateContext();
 
   const { dismiss } = useBottomSheetModal();
-  const [curYear, setCurYear] = useState(dateContext.taskDate.year);
-  const [curMonth, setCurMonth] = useState(dateContext.taskDate.month);
+  const [curYear, setCurYear] = useState(taskDate.year);
+  const [curMonth, setCurMonth] = useState(taskDate.month);
   const [monthDays, setMonthDays] = useState<TaskDate[]>([]);
+  const bottomSheetWidth = useWindowDimensions().width - ms(20, 0.3);
+  const bottomSheetHeight = useWindowDimensions().height / 2;
+  const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
+
+  const layoutX = useSharedValue<number>(0);
 
   useEffect(() => {
     handleMoveMonth(0);
@@ -104,49 +129,52 @@ const MonthCalendar = (): React.ReactElement => {
   const pressHandler = (item: TaskDate, index: number) => {
     if (item.isActive) {
       index = index % 7;
-      dateContext.setTaskDate({
+      setTaskDate({
         year: item.year,
         month: item.month,
         date: item.date,
         day: index,
       });
-      dismiss();
+      if (!itemAdd) {
+        dismiss();
+      }
       return;
     }
   };
 
-  const todayCheck = (taskDate: TaskDate) => {
-    const today: TaskDate = dateContext.today;
-    if (!taskDate.isInclude) {
+  const todayCheck = (item: TaskDate) => {
+    const td: TaskDate = today;
+    if (!item.isActive) {
       return false;
     }
     return (
-      today.year == taskDate.year &&
-      today.month == taskDate.month &&
-      today.date == taskDate.date
+      td.year == item.year && td.month == item.month && td.date == item.date
     );
   };
 
-  const selectedCheck = (taskDate: TaskDate) => {
-    const today = dateContext.taskDate;
-    if (!taskDate.isActive) {
-      //이전 달 혹은 다음 달이 포함된 경우, 요일이 같으면 동시에 체크되는 버그.
-      //TaskDate 의 day 변수를 만들 때 useEffect 가 아닌, flatlist 에서 만들어 리턴하기 때문임.
+  const selectedCheck = (item: TaskDate) => {
+    const td = taskDate;
+    if (!item.isActive) {
       return false;
     }
     return (
-      today.year == taskDate.year &&
-      today.month == taskDate.month &&
-      today.date == taskDate.date
+      td.year == item.year && td.month == item.month && td.date == item.date
     );
   };
 
   const renderItem: ListRenderItem<TaskDate> = ({ item, index }) => {
     const isToday = todayCheck(item);
     const isSelectedDate = selectedCheck(item);
+    const itemFormat = makeDateFormatKey(item.year, item.month, item.date);
     return (
       <Pressable
         onPress={() => {
+          if (itemAdd) {
+            if (itemFormat >= todayFormat) {
+              pressHandler(item, index);
+            }
+            return;
+          }
           pressHandler(item, index);
         }}
         key={index}
@@ -163,7 +191,7 @@ const MonthCalendar = (): React.ReactElement => {
           style={[
             styles.cell,
             isToday ? [styles.todayBtn, { borderColor: theme.textColor }] : {},
-            isSelectedDate ? { backgroundColor: theme.textColor } : {},
+            isSelectedDate ? [{ backgroundColor: theme.textColor }] : {},
           ]}>
           {isSelectedDate ? (
             <Text
@@ -177,7 +205,13 @@ const MonthCalendar = (): React.ReactElement => {
             <Text
               style={[
                 {
-                  color: item.isActive ? theme.textColor : '#949494',
+                  color: item.isActive
+                    ? itemAdd
+                      ? itemFormat >= todayFormat
+                        ? theme.textColor
+                        : '#949494'
+                      : theme.textColor
+                    : '#949494',
                   fontSize: ms(15, 0.3),
                 },
               ]}>
@@ -189,92 +223,174 @@ const MonthCalendar = (): React.ReactElement => {
     );
   };
 
+  const transformXAnime = useAnimatedStyle(() => ({
+    transform: [{ translateX: withTiming(layoutX.value) }],
+  }));
+
   return (
-    <View
-      style={{
-        backgroundColor: theme.backgroundColor,
-        flex: 1,
-        padding: ms(8, 0.3),
-      }}>
+    <Animated.View
+      style={[
+        {
+          width: bottomSheetWidth * 2,
+          height: bottomSheetHeight + ms(150, 0.3),
+          flexDirection: 'row',
+          overflow: 'hidden',
+        },
+        transformXAnime,
+      ]}>
       <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: ms(5, 0.3),
+          width: bottomSheetWidth,
+          height: bottomSheetHeight,
+          paddingHorizontal: ms(28, 0.3),
+          paddingVertical: itemAdd ? 0 : ms(8, 0.3),
         }}>
-        <TouchableOpacity
-          style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
-          onPress={() => {
-            handleMoveMonth(-1);
-          }}>
-          <Icon name='left' color={theme.textColor}></Icon>
-        </TouchableOpacity>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={[styles.ym, { color: theme.textColor }]}>
-            {curYear}년 {curMonth}월
+        {itemAdd ? (
+          <Text
+            style={[
+              fontStyle.fontSizeMain,
+              {
+                color: theme.textColor,
+                paddingVertical: ms(20, 0.3),
+              },
+            ]}>
+            날짜를 선택하세요
           </Text>
-        </View>
-        <TouchableOpacity
-          style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
-          onPress={() => {
-            handleMoveMonth(1);
-          }}>
-          <Icon name='right' color={theme.textColor}></Icon>
-        </TouchableOpacity>
-      </View>
-      <View style={{ flex: 1 }}>
+        ) : null}
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: ms(4, 0.3),
+            marginBottom: ms(5, 0.3),
           }}>
-          {days.map(value => {
-            return (
-              <View key={value.toString()} style={[styles.cell]}>
-                <Text style={[styles.daysfont, { color: theme.textColor }]}>
-                  {value}
-                </Text>
-              </View>
-            );
-          })}
+          {!itemAdd ? (
+            <TouchableOpacity
+              style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
+              onPress={() => {
+                handleMoveMonth(-1);
+              }}>
+              <Icon name='left' color={theme.textColor}></Icon>
+            </TouchableOpacity>
+          ) : (
+            <View
+              style={[
+                styles.btn,
+                { backgroundColor: theme.backgroundColor, opacity: 0.3 },
+              ]}>
+              <Icon name='left' color={theme.textColor}></Icon>
+            </View>
+          )}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={[
+                styles.ym,
+                { color: theme.textColor, fontFamily: 'Pretendard-Medium' },
+              ]}>
+              {curYear}년 {curMonth}월
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
+            onPress={() => {
+              handleMoveMonth(1);
+            }}>
+            <Icon name='right' color={theme.textColor}></Icon>
+          </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-          }}>
-          <BottomSheetFlatList
-            style={{ flex: 1 }}
-            data={monthDays}
-            numColumns={7}
-            renderItem={renderItem}
-          />
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            {days.map(value => {
+              return (
+                <View key={value.toString()} style={[styles.cell]}>
+                  <Text
+                    style={[
+                      styles.daysfont,
+                      {
+                        color: theme.textColor,
+                        fontFamily: 'Pretendard-Medium',
+                      },
+                    ]}>
+                    {value}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              marginHorizontal: ms(-8, 0.3),
+            }}>
+            <BottomSheetFlatList
+              style={{ flex: 1 }}
+              data={monthDays}
+              numColumns={7}
+              renderItem={renderItem}
+            />
+          </View>
         </View>
+        {itemAdd && setTodoBottomSheetSnapPoint ? (
+          <TouchableOpacity
+            onPress={() => {
+              layoutX.value = -bottomSheetWidth;
+              setTodoBottomSheetSnapPoint('70%');
+            }}
+            style={{
+              backgroundColor: theme.textColor,
+              padding: ms(13, 0.3),
+              marginHorizontal: ms(8, 0.3),
+              borderRadius: ms(5, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Pretendard-Medium',
+                backgroundColor: theme.textColor,
+              }}>
+              다음
+            </Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
-    </View>
+      <View
+        style={{
+          width: bottomSheetWidth,
+          height: bottomSheetHeight + ms(100, 0.3),
+          padding: ms(10, 0.3),
+        }}>
+        <TodoAdd item={item} />
+      </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   btn: {
-    padding: ms(10, 0.3), //좌우 버튼크기
+    padding: ms(6, 0.3), //좌우 버튼크기
   },
   ym: {
     fontFamily: 'Pretendard-Medium',
     fontSize: ms(18, 0.3),
   },
   cell: {
-    padding: ms(11, 0.3), //요일 박스 크기
-    flex: 1,
+    padding: ms(10, 0.3), //요일 박스 크기
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(5, 0.3),
+    paddingVertical: ms(11, 0.3),
   },
   daysfont: {
     fontSize: ms(15, 0.3),
@@ -282,13 +398,20 @@ const styles = StyleSheet.create({
     opacity: 0.87,
   },
   todayBtn: {
-    borderWidth: 1,
+    backgroundColor: 'grey',
   },
   todayText: {
     fontFamily: 'Pretendard-Regular',
   },
   pressedBtn: {
     backgroundColor: 'white',
+  },
+  bottomSheetContainer: {
+    flex: 1,
+    paddingHorizontal: ms(20, 0.3),
+    marginHorizontal: ms(10, 0.3),
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
   },
 });
 

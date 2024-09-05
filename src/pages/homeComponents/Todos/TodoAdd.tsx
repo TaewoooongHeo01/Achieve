@@ -9,7 +9,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import { FullyDate, Goal } from '../../../../realm/models';
+import { FullyDate, Goal, Todo } from '../../../../realm/models';
 import { ms } from 'react-native-size-matters';
 import { days, useDateContext } from '../../../context/DateContext';
 import { useColors } from '../../../context/ThemeContext';
@@ -26,21 +26,22 @@ import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../../App';
+import { UpdateMode } from 'realm';
 
-const TodoAdd = () => {
+const TodoAdd = ({ item }: { item?: Todo }) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const goals = useQuery(Goal);
+  const goals = useQuery(Goal).filtered('isComplete == false');
   const { taskDate } = useDateContext();
   const { theme, currentTheme } = useColors();
   const realm = useRealm();
   const { dismiss } = useBottomSheetModal();
 
-  const [goal, setGoal] = useState<Goal | undefined>(undefined);
+  const [todosGoal, setTodosGoal] = useState<Goal | undefined>(undefined);
   const [title, setTitle] = useState<string>('');
   const [weekCycle, setWeekCycle] = useState<number[]>([]);
   const [priority, setPriority] = useState<number>(2);
-
+  console.log(todosGoal);
   const year = String(taskDate.year);
   const month = String(taskDate.month).padStart(2, '0');
   const date = String(taskDate.date).padStart(2, '0');
@@ -58,7 +59,7 @@ const TodoAdd = () => {
   };
 
   const inputValid = (): boolean => {
-    if (goal === undefined) {
+    if (todosGoal === undefined) {
       Alert.alert('목표를 선택해주세요');
       return false;
     }
@@ -78,7 +79,7 @@ const TodoAdd = () => {
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() => {
-          setGoal(item);
+          setTodosGoal(item);
         }}
         style={{
           flex: 1,
@@ -90,7 +91,8 @@ const TodoAdd = () => {
           style={{
             padding: ms(10, 0.3),
             borderRadius: ms(7, 0.3),
-            opacity: item._id.toString() === goal?._id.toString() ? 0.4 : 1,
+            opacity:
+              item._id.toString() === todosGoal?._id.toString() ? 0.4 : 1,
           }}
           colors={theme.gradientColor[item.color]}>
           <GoalIcon name={item.icon} size={ms(18, 0.3)} />
@@ -110,7 +112,7 @@ const TodoAdd = () => {
         flexDirection: 'column',
         marginTop: ms(7, 0.3),
         marginBottom: ms(-40, 0.3),
-        marginHorizontal: ms(5, 0.3),
+        marginHorizontal: ms(10, 0.3),
         height: 100,
       }}>
       <View
@@ -148,7 +150,7 @@ const TodoAdd = () => {
               color: theme.textColor,
             },
           ]}>
-          {goal === undefined ? '목표선택' : goal.title}
+          {todosGoal === undefined ? '목표선택' : todosGoal.title}
         </Text>
         <Text
           onPress={() => {
@@ -185,6 +187,8 @@ const TodoAdd = () => {
           value={title}
           onChangeText={setTitle}
           onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
+          placeholder={item ? item.title : ''}
+          placeholderTextColor={'grey'}
           style={{
             marginHorizontal: ms(10, 0.3),
             marginTop: ms(5, 0.3),
@@ -415,18 +419,23 @@ const TodoAdd = () => {
             onPress={() => {
               if (inputValid()) {
                 realm.write(() => {
-                  const todo = realm.create('Todo', {
-                    title: title,
-                    date: makeDateFormatKey(
-                      taskDate.year,
-                      taskDate.month,
-                      taskDate.date,
-                    ),
-                    goal: goal,
-                    weekCycle: weekCycle,
-                    priority: priority,
-                    isComplete: false,
-                  });
+                  const todo = realm.create(
+                    'Todo',
+                    {
+                      _id: item?._id,
+                      title: title,
+                      date: makeDateFormatKey(
+                        taskDate.year,
+                        taskDate.month,
+                        taskDate.date,
+                      ),
+                      goal: todosGoal,
+                      weekCycle: weekCycle,
+                      priority: priority,
+                      isComplete: false,
+                    },
+                    UpdateMode.Modified,
+                  );
                   const date = realm.objectForPrimaryKey<FullyDate>(
                     'FullyDate',
                     todo.date,
@@ -441,9 +450,9 @@ const TodoAdd = () => {
                     });
                     newDate.todos.push(todo);
                   }
-                  goal?.todos.push(todo);
-                  dismiss();
+                  todosGoal?.todos.push(todo);
                 });
+                dismiss();
               }
             }}>
             <Text

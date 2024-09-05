@@ -10,7 +10,7 @@ const CalendarBottomSheet = (): React.ReactElement => {
   return (
     <BottomSheetView
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-      <MonthCalendar></MonthCalendar>
+      <MonthCalendar itemAdd={false}></MonthCalendar>
     </BottomSheetView>
   );
 };

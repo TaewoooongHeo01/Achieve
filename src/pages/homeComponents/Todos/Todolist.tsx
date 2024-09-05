@@ -39,6 +39,12 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
 
   //completeTodo 나 delayTodo 같이 특정 기능이 실행되면 트리거 -> changed state
 
+  // for (let i = 0; i < todos.length; i++) {
+  //   console.log(todos[i].title);
+  //   console.log(todos[i].linkingObjects<Goal>('Goal', 'todos')[0]);
+  //   console.log('--------------------');
+  // }
+
   const [changed, setChanged] = useState(false);
 
   const taskDateFormat = Number(

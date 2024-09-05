@@ -1,7 +1,13 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import TodoItemDetail from '../homeComponents/Todos/TodoItemDetail';
 import { Todo } from '../../../realm/models';
-import { Text, TouchableOpacity } from 'react-native';
+import { Keyboard, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -10,14 +16,45 @@ import {
 } from '@gorhom/bottom-sheet';
 import { ms } from 'react-native-size-matters';
 import { useColors } from '../../context/ThemeContext';
+import MonthCalendar from '../commonComponents/MonthCalendar';
 
 const LateTodoBSContainer = ({ item }: { item: Todo }) => {
   const { theme } = useColors();
+
+  const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
+    useState<string>('60%');
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const todoSnapPoints = useMemo(() => ['45%'], []);
+  const todoSnapPoints = useMemo(
+    () => [todoBottomSheetSnapPoint],
+    [todoBottomSheetSnapPoint],
+  );
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setTodoBottomSheetSnapPoint('90%');
+        },
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setTodoBottomSheetSnapPoint('70%');
+        },
+      );
+
+      return () => {
+        keyboardDidShowListener.remove();
+        keyboardDidHideListener.remove();
+      };
+    }
+  }, []);
+
   const todoHandlePresentModal = useCallback(() => {
     todoBottomSheetModalRef.current?.present();
   }, []);
+
   const todoRenderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop
@@ -30,6 +67,7 @@ const LateTodoBSContainer = ({ item }: { item: Todo }) => {
     ),
     [],
   );
+
   return (
     <>
       <TouchableOpacity
@@ -45,26 +83,46 @@ const LateTodoBSContainer = ({ item }: { item: Todo }) => {
         index={0}
         snapPoints={todoSnapPoints}
         backdropComponent={todoRenderBackdrop}
-        detached={true}
-        bottomInset={50}
+        keyboardBehavior='interactive'
+        keyboardBlurBehavior='restore'
+        android_keyboardInputMode='adjustResize'
         handleStyle={{
-          backgroundColor: theme.textColor,
+          backgroundColor: theme.backgroundColor,
           borderTopRightRadius: 15,
           borderTopLeftRadius: 15,
           marginHorizontal: ms(10, 0.3),
           height: 0,
+          borderColor: 'transparent',
+          borderBottomWidth: 0,
         }}
-        handleIndicatorStyle={{ backgroundColor: theme.backgroundColor }}
+        handleIndicatorStyle={{ backgroundColor: theme.textColor }}
         backgroundStyle={{
-          marginHorizontal: ms(10, 0.3),
+          backgroundColor: 'transparent',
           flex: 1,
         }}>
-        <BottomSheetView>
-          <Text>{item.title}</Text>
+        <BottomSheetView
+          style={[
+            styles.bottomSheetContainer,
+            { backgroundColor: theme.backgroundColor },
+          ]}>
+          <MonthCalendar
+            itemAdd={true}
+            setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
+            item={item}
+          />
         </BottomSheetView>
       </BottomSheetModal>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  bottomSheetContainer: {
+    flex: 1,
+    marginHorizontal: ms(10, 0.3),
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
+  },
+});
 
 export default LateTodoBSContainer;
