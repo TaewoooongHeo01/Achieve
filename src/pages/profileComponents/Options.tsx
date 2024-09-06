@@ -74,7 +74,6 @@ const Options = () => {
       <View style={{ paddingHorizontal: ms(18, 0.3) }}>
         <TouchableOpacity
           activeOpacity={1}
-          style={{ marginBottom: ms(7, 0.3) }}
           onPress={() => {
             navigation.goBack();
           }}>
@@ -83,7 +82,7 @@ const Options = () => {
         <Text
           style={[
             fontStyle.fontSizeMain,
-            { color: theme.textColor, marginTop: ms(20, 0.3) },
+            { color: theme.textColor, marginTop: ms(27, 0.3) },
           ]}>
           계정
         </Text>

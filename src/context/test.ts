@@ -5,11 +5,9 @@ import { useRealm } from '@realm/react';
 const now = new Date();
 const year = String(now.getFullYear());
 const month = String(now.getMonth() + 1).padStart(2, '0');
-
 // const yesterday = String(now.getDate() - 1).padStart(2, '0');
 const today = String(now.getDate()).padStart(2, '0');
 // const tomorrow = String(now.getDate() + 1).padStart(2, '0');
-
 // const yesterdayDate: string = year + month + yesterday;
 const yesterdayDate = '20240827';
 const todayDate: string = year + month + today;
@@ -24,11 +22,17 @@ export const initialize = () => {
   });
 
   realm.write(() => {
-    realm.create('User', {
+    const user = realm.create('User', {
       username: UserData.username,
-      phrase: UserData.phrase,
-      fullnessCheck: UserData.fullnessCheck,
+      phrase: [],
     });
+    for (let i = 0; i < phrase.length; i++) {
+      const ph = realm.create('Phrase', {
+        content: phrase[i],
+      });
+      user.phrase.push(ph);
+      console.log(ph);
+    }
   });
 
   for (let i = 0; i < GoalsData.length; i++) {
@@ -75,14 +79,15 @@ export const initialize = () => {
   }
 };
 
+const phrase = [
+  '여전할 것인가, 역전할 것인가',
+  '길을 걷다가 돌을 보면 약자는 그것을 걸림돌이라고 하고 강자는 그것을 디딤돌이라고 한다.',
+  '먹는 칼로리보다 에너지 소모가 적으면 살이 찌듯이, 걱정만 하고 행동하지 않으면 걱정이 찐다.',
+  '이미 끝나버린 일을 후회하기 보다는 하고 싶었던 일을 하지 못한 것을 후회하라.',
+];
+
 const UserData = {
   username: 'username',
-  phrase: [
-    '여전할 것인가, 역전할 것인가',
-    '길을 걷다가 돌을 보면 약자는 그것을 걸림돌이라고 하고 강자는 그것을 디딤돌이라고 한다.',
-    '먹는 칼로리보다 에너지 소모가 적으면 살이 찌듯이, 걱정만 하고 행동하지 않으면 걱정이 찐다.',
-    '이미 끝나버린 일을 후회하기 보다는 하고 싶었던 일을 하지 못한 것을 후회하라.',
-  ],
   fullnessCheck: [
     '진짜 후회가 없는가?',
     '완전한 몰입을 경험했는가?',

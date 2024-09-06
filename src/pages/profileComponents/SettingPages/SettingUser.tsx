@@ -136,7 +136,7 @@ const SettingUser = () => {
                   fontStyle.fontSizeSub,
                   { color: theme.backgroundColor },
                 ]}>
-                다음
+                변경
               </Text>
             </TouchableOpacity>
           </View>

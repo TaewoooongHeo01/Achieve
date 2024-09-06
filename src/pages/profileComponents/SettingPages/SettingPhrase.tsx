@@ -1,4 +1,13 @@
-import { Platform, StatusBar, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,
+  Keyboard,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -9,12 +18,122 @@ import { RootStackParamList } from '../../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { ms } from 'react-native-size-matters';
+import { fontStyle } from '../../../assets/style/fontStyle';
+import { useQuery, useRealm } from '@realm/react';
+import { Phrase } from '../../../../realm/models';
+import { shadow } from '../../../assets/style/shadow';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+  BottomSheetTextInput,
+  BottomSheetView,
+  useBottomSheetModal,
+} from '@gorhom/bottom-sheet';
 
 const SettingPhrase = (): React.ReactElement => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { theme, currentTheme } = useColors();
   const { top } = useSafeAreaInsets();
+  const phrases = useQuery(Phrase);
+  const [title, setTitle] = useState<string>('');
+  const realm = useRealm();
+  const { dismiss } = useBottomSheetModal();
+
+  const data: Phrase[] = [];
+  for (let i = 0; i < phrases.length; i++) {
+    data.push(phrases[i]);
+  }
+
+  const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
+    useState<string>('25%');
+  const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const todoSnapPoints = useMemo(
+    () => [todoBottomSheetSnapPoint],
+    [todoBottomSheetSnapPoint],
+  );
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setTodoBottomSheetSnapPoint('40%');
+        },
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setTodoBottomSheetSnapPoint('25%');
+        },
+      );
+
+      return () => {
+        keyboardDidShowListener.remove();
+        keyboardDidHideListener.remove();
+      };
+    }
+  }, []);
+
+  const todoHandlePresentModal = useCallback(() => {
+    todoBottomSheetModalRef.current?.present();
+  }, []);
+
+  const todoRenderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior={'close'}
+        opacity={0.8}
+        onPress={() => {
+          setTitle('');
+        }}
+      />
+    ),
+    [],
+  );
+
+  const renderItem = ({ item }: { item: Phrase }) => {
+    return (
+      <View
+        style={[
+          styles.pharseLayout,
+          currentTheme === 'light' ? shadow.boxShadow : {},
+          {
+            backgroundColor: theme.backgroundColor,
+            flexDirection: 'row',
+            alignItems: 'center',
+          },
+        ]}>
+        <Text
+          style={[
+            { color: theme.textColor, lineHeight: ms(23, 0.3), flex: ms(0.9) },
+            styles.font,
+          ]}>
+          {item.content}
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            realm.write(() => {
+              realm.delete(item);
+            });
+          }}
+          activeOpacity={1}
+          style={{
+            flex: ms(0.1),
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Icon name='delete' color={theme.textColor} size={ms(13, 0.3)} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView
       edges={
@@ -38,18 +157,146 @@ const SettingPhrase = (): React.ReactElement => {
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <View style={{ paddingHorizontal: ms(18, 0.3) }}>
+      <View
+        style={{
+          paddingHorizontal: ms(18, 0.3),
+          flex: 1,
+        }}>
         <TouchableOpacity
           activeOpacity={1}
-          style={{ marginBottom: ms(7, 0.3) }}
           onPress={() => {
             navigation.goBack();
           }}>
           <Icon name='arrowleft' color={theme.textColor} size={ms(23, 0.3)} />
         </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: ms(13, 0.3),
+            marginBottom: ms(6, 0.3),
+          }}>
+          <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+            문구 설정하기
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              todoHandlePresentModal();
+            }}>
+            <Icon name='plus' color={theme.textColor} size={ms(23, 0.3)} />
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          style={{ flex: ms(0.9) }}
+          data={data}
+          renderItem={renderItem}
+        />
       </View>
+      <BottomSheetModal
+        ref={todoBottomSheetModalRef}
+        index={0}
+        snapPoints={todoSnapPoints}
+        backdropComponent={todoRenderBackdrop}
+        keyboardBehavior='interactive'
+        keyboardBlurBehavior='restore'
+        android_keyboardInputMode='adjustResize'
+        detached={true}
+        bottomInset={ms(50, 0.3)}
+        handleStyle={{
+          backgroundColor: theme.backgroundColor,
+          borderTopRightRadius: 15,
+          borderTopLeftRadius: 15,
+          marginHorizontal: ms(10, 0.3),
+          height: 0,
+          borderColor: 'transparent',
+          borderBottomWidth: 0,
+        }}
+        handleIndicatorStyle={{ backgroundColor: theme.textColor }}
+        backgroundStyle={{
+          backgroundColor: 'transparent',
+          flex: 1,
+        }}>
+        <BottomSheetView
+          style={[
+            styles.bottomSheetContainer,
+            { backgroundColor: theme.backgroundColor },
+          ]}>
+          <Text
+            style={[
+              fontStyle.fontSizeSub,
+              { marginVertical: ms(8, 0.3), color: theme.textColor },
+            ]}>
+            제목
+          </Text>
+          <BottomSheetTextInput
+            value={title}
+            onChangeText={setTitle}
+            onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
+            placeholderTextColor={'grey'}
+            style={{
+              // marginHorizontal: ms(10, 0.3),
+              // marginTop: ms(5, 0.3),
+              borderWidth: currentTheme === 'light' ? 0.2 : 0,
+              borderRadius: Platform.OS === 'android' ? ms(5, 0.3) : ms(7, 0.5),
+              padding: Platform.OS === 'android' ? ms(5, 0.3) : ms(10, 0.3),
+              paddingLeft: Platform.OS === 'android' ? ms(10, 0.3) : null,
+              borderColor: Platform.OS === 'ios' ? '#ccc' : '#737373',
+              backgroundColor:
+                currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
+              color: theme.textColor,
+            }}
+          />
+          <TouchableOpacity
+            style={{
+              padding: ms(14, 0.3),
+              backgroundColor: theme.textColor,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: ms(20, 0.3),
+              marginBottom: ms(30, 0.3),
+              borderRadius: ms(5, 0.3),
+            }}
+            onPress={() => {
+              if (title !== '') {
+                realm.write(() => {
+                  realm.create('Phrase', {
+                    content: title,
+                  });
+                });
+              }
+              setTitle('');
+              dismiss();
+            }}>
+            <Text
+              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
+              완료
+            </Text>
+          </TouchableOpacity>
+        </BottomSheetView>
+      </BottomSheetModal>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  pharseLayout: {
+    marginTop: ms(7, 0.3),
+    padding: ms(15, 0.3),
+    borderRadius: ms(5, 0.3),
+  },
+  font: {
+    fontFamily: 'Pretendard-Medium',
+    fontSize: ms(16, 0.3),
+  },
+  bottomSheetContainer: {
+    flex: 1,
+    marginHorizontal: ms(10, 0.3),
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    paddingHorizontal: ms(20, 0.3),
+    justifyContent: 'center',
+  },
+});
 
 export default SettingPhrase;

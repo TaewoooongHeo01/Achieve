@@ -3,18 +3,19 @@ import { Text, View, StyleSheet, Platform } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useColors } from '../../context/ThemeContext';
 import { useQuery } from '@realm/react';
-import { User } from '../../../realm/models';
+import { Phrase, User } from '../../../realm/models';
 import { shadow } from '../../assets/style/shadow';
 
 const Intro = (): React.JSX.Element => {
   const { theme, currentTheme } = useColors();
 
-  const user = useQuery(User)[0];
+  const ph = useQuery(Phrase);
+  const username = useQuery(User)[0].username;
   let phrase = '';
 
-  for (let i = 0; i < user.phrase.length; i++) {
-    const idx = Math.floor(Math.random() * user.phrase.length);
-    phrase = user.phrase[idx];
+  for (let i = 0; i < ph.length; i++) {
+    const idx = Math.floor(Math.random() * ph.length);
+    phrase = ph[idx].content;
   }
 
   return (
@@ -32,7 +33,7 @@ const Intro = (): React.JSX.Element => {
             { color: theme.textColor, lineHeight: ms(23, 0.3) },
             styles.font,
           ]}>
-          {phrase}
+          {phrase === '' ? `${username} 님 오늘도 파이팅하세요` : `${phrase}`}
         </Text>
       </View>
     </View>

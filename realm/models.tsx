@@ -8,7 +8,7 @@ import Realm from 'realm';
 export class User extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   username!: string;
-  phrase!: string[];
+  phrase!: Realm.List<Phrase>;
 
   static schema: Realm.ObjectSchema = {
     name: 'User',
@@ -19,7 +19,24 @@ export class User extends Realm.Object {
         default: () => new Realm.BSON.ObjectId(),
       },
       username: 'string',
-      phrase: 'string[]',
+      phrase: { type: 'list', objectType: 'Phrase' },
+    },
+  };
+}
+
+export class Phrase extends Realm.Object {
+  _id!: Realm.BSON.ObjectId;
+  content!: string;
+
+  static schema: Realm.ObjectSchema = {
+    name: 'Phrase',
+    primaryKey: '_id',
+    properties: {
+      _id: {
+        type: 'objectId',
+        default: () => new Realm.BSON.ObjectId(),
+      },
+      content: 'string',
     },
   };
 }
@@ -48,7 +65,10 @@ export class Goal extends Realm.Object {
       isComplete: 'bool',
       icon: 'string',
       color: 'int',
-      todos: 'Todo[]',
+      todos: {
+        type: 'list',
+        objectType: 'Todo',
+      },
       description: 'string?',
       startDate: 'string',
       endDate: 'string?',
