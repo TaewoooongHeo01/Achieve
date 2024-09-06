@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { useQuery } from '@realm/react';
 import { User } from '../../../realm/models';
 import { fontStyle } from '../../assets/style/fontStyle';
+import { shadow } from '../../assets/style/shadow';
 
 type Setting = {
   title: string;
@@ -97,6 +98,7 @@ const Options = () => {
               marginBottom: ms(20, 0.3),
             },
             styles.container,
+            currentTheme === 'light' ? shadow.boxShadow : {},
           ]}>
           <View>
             <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
@@ -128,6 +130,7 @@ const Options = () => {
               backgroundColor: theme.backgroundColor,
             },
             styles.container,
+            currentTheme === 'light' ? shadow.boxShadow : {},
           ]}>
           <View>
             <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
@@ -156,6 +159,7 @@ const Options = () => {
               backgroundColor: theme.backgroundColor,
             },
             styles.container,
+            currentTheme === 'light' ? shadow.boxShadow : {},
           ]}>
           <View>
             <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
