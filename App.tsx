@@ -25,6 +25,7 @@ import { DateContextProvider } from './src/context/DateContext';
 import SettingUser from './src/pages/profileComponents/SettingPages/SettingUser';
 import SettingPhrase from './src/pages/profileComponents/SettingPages/SettingPhrase';
 import SettingScreen from './src/pages/profileComponents/SettingPages/SettingScreen';
+import GoalEdit from './src/pages/commonComponents/GoalEdit';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -39,6 +40,7 @@ export type RootStackParamList = {
   SettingScreen: undefined;
   SettingPhrase: undefined;
   SettingUser: undefined;
+  GoalEdit: { goal: Goal | undefined };
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<
@@ -54,6 +56,11 @@ export type GoalAddDescriptionProps = NativeStackScreenProps<
 export type GoalAddIconAndColorProps = NativeStackScreenProps<
   RootStackParamList,
   'GoalAddIconAndColor'
+>;
+
+export type GoalEditProps = NativeStackScreenProps<
+  RootStackParamList,
+  'GoalEdit'
 >;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -86,6 +93,8 @@ function App(): React.JSX.Element {
                       name='GoalAddIconAndColor'
                       component={GoalAddIconAndColor}
                     />
+                    {/* Goal Edit Stack Nav */}
+                    <Stack.Screen name='GoalEdit' component={GoalEdit} />
                     {/* Settomg Stack Nav */}
                     <Stack.Screen name='SettingUser' component={SettingUser} />
                     <Stack.Screen

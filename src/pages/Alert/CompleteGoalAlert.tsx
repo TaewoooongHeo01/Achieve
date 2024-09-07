@@ -3,18 +3,12 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { useColors } from '../../context/ThemeContext';
-import { closeAlert } from 'react-native-customisable-alert';
+import { closeAlert, showAlert } from 'react-native-customisable-alert';
 import { useRealm } from '@realm/react';
-import { Goal, Todo } from '../../../realm/models';
-import { List, Results } from 'realm';
+import { Goal } from '../../../realm/models';
+import CelebrationAlert from './CelebrationAlert';
 
-const DeleteGoalAlert = ({
-  goal,
-  todos,
-}: {
-  goal: Goal | null;
-  todos: Results<Todo> | List<Todo> | undefined;
-}) => {
+const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
   const { theme } = useColors();
   const realm = useRealm();
 
@@ -30,38 +24,44 @@ const DeleteGoalAlert = ({
       }}>
       <View>
         <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-          {goal?.title} 을/를 삭제할까요?
+          {goal?.title} 을/를 달성했나요?
         </Text>
         <Text
           style={[
             fontStyle.fontSizeSub,
             { color: theme.textColor, marginVertical: ms(15, 0.3) },
           ]}>
-          목표를 삭제하면 지금까지 완료했던 모든 할 일들도 삭제됩니다
+          목표를 완료하면 투두 생성 시 더이상 이 목표를 사용할 수 없어요
         </Text>
       </View>
       <TouchableOpacity
         onPress={() => {
-          realm.write(() => {
-            realm.delete(todos);
-            realm.delete(goal);
-          });
+          if (goal) {
+            realm.write(() => {
+              goal.isComplete = true;
+            });
+          }
           closeAlert();
+          showAlert({
+            alertType: 'custom',
+            dismissable: true,
+            customAlert: <CelebrationAlert />,
+          });
         }}
         activeOpacity={0.8}
         style={{
-          backgroundColor: 'red',
+          backgroundColor: 'green',
           justifyContent: 'center',
           alignItems: 'center',
           padding: ms(8, 0.3),
           borderRadius: ms(5, 0.3),
         }}>
         <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
-          목표 삭제
+          목표 완료
         </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default DeleteGoalAlert;
+export default CompleteGoalAlert;

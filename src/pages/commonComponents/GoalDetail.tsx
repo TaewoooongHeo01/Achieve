@@ -14,10 +14,9 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import GoalDetailTodo from '../homeComponents/GoalDetailTodo';
 import { fontStyle } from '../../assets/style/fontStyle';
-import { showAlert } from 'react-native-customisable-alert';
-import DeleteGoalAlert from '../Alert/DeleteGoalAlert';
 import LinearGradient from 'react-native-linear-gradient';
 import GoalIcon from 'react-native-vector-icons/Ionicons';
+import { shadow } from '../../assets/style/shadow';
 
 const MemorizedGoalDetailTodo = memo(GoalDetailTodo);
 
@@ -81,98 +80,104 @@ const GoalDetail = ({
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <View style={{ flex: 1, paddingTop: ms(10, 0.3) }}>
-        <View
-          style={[
-            currentTheme === 'light'
-              ? {
-                  borderBottomWidth: 0.5,
-                  borderLeftWidth: 0.5,
-                  borderRightWidth: 0.5,
-                  borderColor: '#ccc',
-                  shadowRadius: 1,
-                  borderRadius: ms(5, 0.3),
-                }
-              : {},
-            {
-              borderBottomLeftRadius: ms(20, 0.3),
-              borderBottomRightRadius: ms(20, 0.3),
-              flexDirection: 'column',
-            },
-          ]}>
-          <View
-            style={{
-              marginHorizontal: ms(18, 0.3),
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <Icon
-                name='arrowleft'
-                size={ms(23, 0.3)}
-                color={theme.textColor}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Main');
-                showAlert({
-                  alertType: 'custom',
-                  dismissable: true,
-                  customAlert: <DeleteGoalAlert goal={goal} todos={todos} />,
-                });
-              }}
-              style={{
-                marginLeft: ms(18, 0.3),
-                backgroundColor: 'red',
-                padding: ms(5, 0.3),
+      <View
+        style={[
+          currentTheme === 'light'
+            ? {
+                borderBottomWidth: 0.5,
+                borderLeftWidth: 0.5,
+                borderRightWidth: 0.5,
+                borderColor: '#ccc',
+                shadowRadius: 1,
                 borderRadius: ms(5, 0.3),
-              }}>
-              <Text style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
-                목표 삭제
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              padding: ms(20, 0.3),
-              justifyContent: 'center',
-              alignItems: 'center',
+              }
+            : {},
+          {
+            borderBottomLeftRadius: ms(20, 0.3),
+            borderBottomRightRadius: ms(20, 0.3),
+            flexDirection: 'column',
+          },
+        ]}>
+        <View
+          style={{
+            marginHorizontal: ms(18, 0.3),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
             }}>
-            {goal ? (
-              <LinearGradient
-                colors={theme.gradientColor[goal?.color]}
+            <Icon name='arrowleft' size={ms(23, 0.3)} color={theme.textColor} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (goal) {
+                navigation.navigate('GoalEdit', { goal: goal });
+              }
+            }}
+            style={{
+              marginLeft: ms(18, 0.3),
+              backgroundColor: theme.textColor,
+              padding: ms(5, 0.3),
+              borderRadius: ms(5, 0.3),
+            }}>
+            <Text
+              style={[{ color: theme.backgroundColor }, fontStyle.fontSizeSub]}>
+              목표 설정
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            padding: ms(20, 0.3),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {goal ? (
+            <LinearGradient
+              colors={theme.gradientColor[goal?.color]}
+              style={{
+                width: ms(300, 0.3),
+                height: ms(189, 0.3),
+                borderRadius: ms(5, 0.3),
+                justifyContent: 'space-between',
+                padding: ms(30, 0.3),
+              }}>
+              <Text
                 style={{
-                  width: ms(300, 0.3),
-                  height: ms(189, 0.3),
-                  borderRadius: ms(5, 0.3),
-                  justifyContent: 'space-between',
-                  padding: ms(30, 0.3),
+                  fontSize: ms(20, 0.3),
+                  fontFamily: 'Pretendard-SemiBold',
                 }}>
-                <Text
-                  style={{
-                    fontSize: ms(20, 0.3),
-                    fontFamily: 'Pretendard-SemiBold',
-                  }}>
-                  {goal.title}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text style={fontStyle.fontSizeSub}> {goal.startDate}-</Text>
-                  <GoalIcon name={goal.icon} size={ms(18, 0.3)} />
-                </View>
-              </LinearGradient>
-            ) : null}
+                {goal.title}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}>
+                <Text style={fontStyle.fontSizeSub}> {goal.startDate}-</Text>
+                <GoalIcon name={goal.icon} size={ms(18, 0.3)} />
+              </View>
+            </LinearGradient>
+          ) : null}
+          <View
+            style={[
+              {
+                padding: ms(10, 0.3),
+                marginTop: ms(20, 0.3),
+                width: '100%',
+                borderRadius: ms(5, 0.3),
+                backgroundColor: theme.backgroundColor,
+              },
+              currentTheme === 'light' ? shadow.boxShadow : {},
+            ]}>
+            <Text style={{ color: theme.textColor }}>{goal?.description}</Text>
           </View>
-          {/* <Text
+        </View>
+        {/* <Text
             style={[
               {
                 fontFamily: 'Pretendard-SemiBold',
@@ -183,20 +188,19 @@ const GoalDetail = ({
             ]}>
             기록들
           </Text> */}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: theme.appBackgroundColor,
-            flexDirection: 'row',
-            margin: ms(10, 0.3),
-          }}>
-          <FlatList
-            data={dateArr}
-            renderItem={renderItem}
-            keyExtractor={value => value.toString()}
-          />
-        </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: theme.appBackgroundColor,
+          flexDirection: 'row',
+          margin: ms(10, 0.3),
+        }}>
+        <FlatList
+          data={dateArr}
+          renderItem={renderItem}
+          keyExtractor={value => value.toString()}
+        />
       </View>
     </SafeAreaView>
   );
