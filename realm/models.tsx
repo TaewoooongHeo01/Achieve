@@ -80,6 +80,7 @@ export class Goal extends Realm.Object {
 export class FullyDate extends Realm.Object {
   dateKey!: string;
   fullness!: number;
+  dayIdx!: number;
   todos!: Realm.List<Todo>;
 
   static schema: Realm.ObjectSchema = {
@@ -90,6 +91,7 @@ export class FullyDate extends Realm.Object {
         type: 'string',
       },
       fullness: 'float',
+      dayIdx: 'int',
       todos: 'Todo[]',
     },
   };
@@ -103,6 +105,8 @@ export class Todo extends Realm.Object {
   weekCycle!: number[];
   priority!: number;
   isComplete!: boolean;
+  originDate!: number;
+  isClone!: boolean;
 
   static schema: Realm.ObjectSchema = {
     name: 'Todo',
@@ -122,6 +126,8 @@ export class Todo extends Realm.Object {
       weekCycle: 'int[]',
       priority: 'int',
       isComplete: 'bool',
+      originDate: 'int',
+      isClone: 'bool',
     },
   };
 }

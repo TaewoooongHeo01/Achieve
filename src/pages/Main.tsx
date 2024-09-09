@@ -14,6 +14,7 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { useRealm } from '@realm/react';
 
 const Main = (): React.JSX.Element => {
   const { top } = useSafeAreaInsets();
@@ -21,7 +22,9 @@ const Main = (): React.JSX.Element => {
   const { theme, currentTheme } = useColors();
 
   //test code
-  // initialize();
+  initialize();
+  const realm = useRealm();
+  console.log(realm.path);
 
   return (
     <SafeAreaView

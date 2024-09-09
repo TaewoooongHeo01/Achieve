@@ -1,8 +1,8 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { useDateContext } from '../../../context/DateContext';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
-import { useObject, useQuery, useRealm } from '@realm/react';
+import { useObject, useRealm } from '@realm/react';
 import { FullyDate, Goal, Todo } from '../../../../realm/models';
 import TodoItem from './TodoItem';
 import { FlatList } from 'react-native-gesture-handler';
@@ -26,24 +26,76 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
   }, [taskDate]);
 
   const fullyDate = useObject(FullyDate, dateFormatKey);
+  const [todos, setTodos] = useState<
+    Realm.Results<Todo & Realm.Object> | Todo[]
+  >([]);
 
-  const todos = useQuery(Todo)
-    .filtered('date == $0', dateFormatKey)
-    .sorted([
-      ['isComplete', false], // false: isComplete가 false인 항목이 위로 정렬됨
-      ['priority', true], // true: priority가 높은 항목이 위로 정렬됨
-    ]);
+  const fetchTodos = useCallback(async () => {
+    try {
+      if (fullyDate) {
+        setTodos(fullyDate.todos);
+      } else {
+        // console.log('date 없음. 생성필요. cycleTodos: ');
+        const cycleTodos = realm
+          .objects<Todo>('Todo')
+          .filtered('ANY weekCycle == $0 AND isClone == false', taskDate.day);
+        console.log(cycleTodos);
 
-  //현재 date 와 today 가 같고, 현재 todos 들이 모두 완료된 상태라면 모달 띄우기
-  //하지만 처음부터 완료된 상태면 모달 x.
+        if (cycleTodos.length === 0 || dateFormatKey === '') {
+          setTodos([]);
+          // console.log('사이클이 없으면 생성하지 않음');
+          return;
+        }
 
-  //completeTodo 나 delayTodo 같이 특정 기능이 실행되면 트리거 -> changed state
+        realm.write(() => {
+          const date = realm.create('FullyDate', {
+            dateKey: dateFormatKey,
+            fullness: 0.2,
+            dayIdx: taskDate.day,
+            todos: [],
+          });
+          let notAdded = true;
+          cycleTodos.forEach(td => {
+            if (taskDateFormat > Number(td.originDate)) {
+              // console.log('새로 생성중...');
+              const Goal = td.linkingObjects<Goal>('Goal', 'todos')[0];
+              const todo = realm.create('Todo', {
+                title: td.title,
+                date: dateFormatKey,
+                goal: Goal,
+                weekCycle: td.weekCycle,
+                priority: td.priority,
+                isComplete: false,
+                originDate: td.originDate,
+                isClone: true,
+              });
 
-  // for (let i = 0; i < todos.length; i++) {
-  //   console.log(todos[i].title);
-  //   console.log(todos[i].linkingObjects<Goal>('Goal', 'todos')[0]);
-  //   console.log('--------------------');
-  // }
+              date.todos.push(todo);
+              Goal.todos.push(todo);
+              notAdded = false;
+            }
+          });
+          if (notAdded) {
+            // console.log('추가되지 않음. date 다시 삭제');
+            setTodos([]);
+            realm.delete(date);
+          } else {
+            // console.log('todos 업데이트');
+            console.log(date.todos);
+            setTodos(date.todos);
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      //에러 알림?
+      setTodos([]);
+    }
+  }, [dateFormatKey, fullyDate, realm, taskDate.day]);
+
+  useEffect(() => {
+    fetchTodos();
+  }, [fetchTodos]);
 
   const [changed, setChanged] = useState(false);
 

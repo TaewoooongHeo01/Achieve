@@ -1,6 +1,6 @@
 import { FullyDate } from './../../realm/models';
 //개발 단계에서 넣는 테스트 데이터
-import { useRealm } from '@realm/react';
+import { useQuery, useRealm } from '@realm/react';
 
 const now = new Date();
 const year = String(now.getFullYear());
@@ -9,75 +9,10 @@ const month = String(now.getMonth() + 1).padStart(2, '0');
 const today = String(now.getDate()).padStart(2, '0');
 // const tomorrow = String(now.getDate() + 1).padStart(2, '0');
 // const yesterdayDate: string = year + month + yesterday;
-const yesterdayDate = '20240827';
+const yesterdayDate = '20240908';
 const todayDate: string = year + month + today;
-const tomorrowDate = '20240830';
+const tomorrowDate = '20240912';
 // const tomorrowDate: string = year + month + tomorrow;
-
-export const initialize = () => {
-  const realm = useRealm();
-  console.log(realm.path);
-  realm.write(() => {
-    realm.deleteAll();
-  });
-
-  realm.write(() => {
-    const user = realm.create('User', {
-      username: UserData.username,
-      phrase: [],
-    });
-    for (let i = 0; i < phrase.length; i++) {
-      const ph = realm.create('Phrase', {
-        content: phrase[i],
-      });
-      user.phrase.push(ph);
-      console.log(ph);
-    }
-  });
-
-  for (let i = 0; i < GoalsData.length; i++) {
-    const g = GoalsData[i];
-    const t = todos[i];
-    realm.write(() => {
-      const Goal = realm.create('Goal', {
-        title: g.title,
-        isComplete: g.isComplete,
-        icon: g.icon,
-        color: g.color,
-        todos: [],
-        description: g.description,
-        startDate: g.startDate,
-        todoCnt: g.todoCnt,
-      });
-      for (let i = 0; i < t.length; i++) {
-        const td = t[i];
-        const todoItem = realm.create('Todo', {
-          title: td.title,
-          date: td.date,
-          Goal: Goal,
-          weekCycle: td.weekCycle,
-          priority: td.priority,
-          isComplete: td.isComplete,
-        });
-        const date = realm.objectForPrimaryKey<FullyDate>(
-          'FullyDate',
-          todoItem.date,
-        );
-        if (date) {
-          date.todos.push(todoItem);
-        } else {
-          const newDate = realm.create('FullyDate', {
-            dateKey: todoItem.date,
-            fullness: 0.2,
-            todos: [],
-          });
-          newDate.todos.push(todoItem);
-        }
-        Goal.todos.push(todoItem);
-      }
-    });
-  }
-};
 
 const phrase = [
   '여전할 것인가, 역전할 것인가',
@@ -181,65 +116,65 @@ const todos = [
   // ],
   [
     {
-      title: '아침에 책 읽기',
-      date: yesterdayDate,
-      weekCycle: [0, 1, 2, 3, 4, 5, 6],
+      title: '어제 그리고 매일',
+      date: todayDate,
+      weekCycle: [0, 1, 2, 4, 6],
       priority: 3,
       isComplete: false,
     },
-    {
-      title: '점심 시간에 책 읽기',
-      date: todayDate,
-      weekCycle: [0, 1, 2, 3, 4, 5],
-      priority: 2,
-      isComplete: true,
-    },
-    {
-      title: '점심 책',
-      date: 'none',
-      weekCycle: [0, 1, 2, 3, 4, 5],
-      priority: 2,
-      isComplete: false,
-    },
-    {
-      title: '책 아침 점심 ',
-      date: 'none',
-      weekCycle: [0, 1, 2, 3, 4, 5],
-      priority: 2,
-      isComplete: false,
-    },
+    // {
+    //   title: '오늘',
+    //   date: todayDate,
+    //   weekCycle: [0, 1, 2, 3, 4, 5],
+    //   priority: 2,
+    //   isComplete: true,
+    // },
+    // {
+    //   title: '점심 책',
+    //   date: 'none',
+    //   weekCycle: [0, 1, 2, 3, 4, 5],
+    //   priority: 2,
+    //   isComplete: false,
+    // },
+    // {
+    //   title: '책 아침 점심 ',
+    //   date: 'none',
+    //   weekCycle: [0, 1, 2, 3, 4, 5],
+    //   priority: 2,
+    //   isComplete: false,
+    // },
   ],
   [],
   [],
   [
-    {
-      title: '기초 문법 공부하기',
-      date: todayDate,
-      weekCycle: [1, 3, 5],
-      priority: 1,
-      isComplete: false,
-    },
-    {
-      title: '토이프로젝트 기획',
-      date: todayDate,
-      weekCycle: [3],
-      priority: 3,
-      isComplete: false,
-    },
-    {
-      title: '작은 프로젝트 시작하기',
-      date: tomorrowDate,
-      weekCycle: [2, 4, 6],
-      priority: 2,
-      isComplete: false,
-    },
-    {
-      title: '작프시',
-      date: 'none',
-      weekCycle: [2, 4, 6],
-      priority: 2,
-      isComplete: false,
-    },
+    // {
+    //   title: '기초 문법 공부하기',
+    //   date: todayDate,
+    //   weekCycle: [1, 3, 5],
+    //   priority: 1,
+    //   isComplete: false,
+    // },
+    // {
+    //   title: '토이프로젝트 기획',
+    //   date: todayDate,
+    //   weekCycle: [3],
+    //   priority: 3,
+    //   isComplete: false,
+    // },
+    // {
+    //   title: '작은 프로젝트 시작하기',
+    //   date: tomorrowDate,
+    //   weekCycle: [2, 4, 6],
+    //   priority: 2,
+    //   isComplete: false,
+    // },
+    // {
+    //   title: '작프시',
+    //   date: 'none',
+    //   weekCycle: [2, 4, 6],
+    //   priority: 2,
+    //   isComplete: false,
+    // },
   ],
   // [
   //   {
@@ -267,3 +202,143 @@ const todos = [
   //   },
   // ],
 ];
+
+export const initialize = () => {
+  const realm = useRealm();
+  console.log(realm.path);
+  realm.write(() => {
+    realm.deleteAll();
+  });
+
+  realm.write(() => {
+    const user = realm.create('User', {
+      username: UserData.username,
+      phrase: [],
+    });
+    for (let i = 0; i < phrase.length; i++) {
+      const ph = realm.create('Phrase', {
+        content: phrase[i],
+      });
+      user.phrase.push(ph);
+    }
+  });
+
+  const g = GoalsData[0];
+  let Goal;
+  realm.write(() => {
+    Goal = realm.create('Goal', {
+      title: g.title,
+      isComplete: false,
+      icon: g.icon,
+      color: g.color,
+      todos: [],
+      description: g.description,
+      startDate: g.startDate,
+      todoCnt: g.todoCnt,
+    });
+  });
+
+  const G = GoalsData[3];
+  realm.write(() => {
+    Goal = realm.create('Goal', {
+      title: G.title,
+      isComplete: false,
+      icon: G.icon,
+      color: G.color,
+      todos: [],
+      description: G.description,
+      startDate: G.startDate,
+      todoCnt: G.todoCnt,
+    });
+  });
+};
+
+//yesterday
+// realm.write(() => {
+//   //yesterday
+//   realm.create('FullyDate', {
+//     dateKey: yesterdayDate,
+//     fullness: 0.2,
+//     dayIdx: 0,
+//     todos: [],
+//   });
+
+//   //today
+//   realm.create('FullyDate', {
+//     dateKey: todayDate,
+//     fullness: 0.2,
+//     dayIdx: 1,
+//     todos: [],
+//   });
+
+//   //tomorrrow
+//   realm.create('FullyDate', {
+//     dateKey: tomorrowDate,
+//     fullness: 0.2,
+//     dayIdx: 2,
+//     todos: [],
+//   });
+// });
+
+// const taskDateDay = 1;
+// const nextDates = useQuery(FullyDate).filtered(
+//   'dateKey > $0 AND ANY todos.weekCycle == $1',
+//   tomorrowDate,
+//   taskDateDay,
+// );
+// console.log(nextDates);
+
+// //Todo 추가 로직
+// const td = todos[0][0];
+// realm.write(() => {
+//   realm.create('Todo', {
+//     title: td.title,
+//     date: tomorrowDate,
+//     Goal: Goal,
+//     weekCycle: td.weekCycle,
+//     priority: td.priority,
+//     isComplete: td.isComplete,
+//   });
+// });
+
+// for (let i = 0; i < GoalsData.length; i++) {
+//   const g = GoalsData[i];
+//   const t = todos[i];
+//   let Goal;
+//   realm.write(() => {
+//     Goal = realm.create('Goal', {
+//       title: g.title,
+//       isComplete: g.isComplete,
+//       icon: g.icon,
+//       color: g.color,
+//       todos: [],
+//       description: g.description,
+//       startDate: g.startDate,
+//       todoCnt: g.todoCnt,
+//     });
+
+//     for (let i = 0; i < t.length; i++) {
+//       const td = t[i];
+//       const todoItem = realm.create('Todo', {
+//         title: td.title,
+//         date: td.date,
+//         Goal: Goal,
+//         weekCycle: td.weekCycle,
+//         priority: td.priority,
+//         isComplete: td.isComplete,
+//       });
+//       const date = realm.objectForPrimaryKey<FullyDate>(
+//         'FullyDate',
+//         todoItem.date,
+//       );
+//       if (date) {
+//         date.todos.push(todoItem);
+//       } else {
+//         const newDate = realm.create('FullyDate', {
+//           dateKey: todoItem.date,
+//           fullness: 0.2,
+//           todos: [],
+//         });
+//         newDate.todos.push(todoItem);
+//       }
+//       Goal.todos.push(todoItem);
