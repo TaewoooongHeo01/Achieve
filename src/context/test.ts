@@ -116,7 +116,7 @@ const todos = [
   // ],
   [
     {
-      title: '어제 그리고 매일',
+      title: '치열',
       date: todayDate,
       weekCycle: [0, 1, 2, 4, 6],
       priority: 3,
@@ -224,7 +224,6 @@ export const initialize = () => {
   });
 
   const g = GoalsData[0];
-  let Goal;
   realm.write(() => {
     Goal = realm.create('Goal', {
       title: g.title,
@@ -239,6 +238,7 @@ export const initialize = () => {
   });
 
   const G = GoalsData[3];
+  let Goal;
   realm.write(() => {
     Goal = realm.create('Goal', {
       title: G.title,
@@ -250,6 +250,34 @@ export const initialize = () => {
       startDate: G.startDate,
       todoCnt: G.todoCnt,
     });
+  });
+
+  const td = {
+    title: '치열',
+    date: todayDate,
+    weekCycle: [1, 2, 3],
+    priority: 3,
+    isComplete: false,
+  };
+
+  realm.write(() => {
+    const date = realm.create('FullyDate', {
+      dateKey: yesterdayDate,
+      fullness: 0.2,
+      dayIdx: 0,
+      todos: [],
+    });
+    const todo = realm.create('Todo', {
+      title: td.title,
+      date: yesterdayDate,
+      weekCycle: [],
+      priority: 3,
+      isComplete: false,
+      originDate: Number(yesterdayDate),
+      isClone: false,
+    });
+    Goal.todos.push(todo);
+    date.todos.push(todo);
   });
 };
 

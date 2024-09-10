@@ -29,12 +29,14 @@ const MonthCalendar = ({
   itemAdd,
   setTodoBottomSheetSnapPoint,
   item,
+  completeDelete,
 }: {
   itemAdd: boolean;
   setTodoBottomSheetSnapPoint?(
     snapPoint?: SetStateAction<string> | undefined,
   ): void;
   item?: Todo;
+  completeDelete?(itemId: Realm.BSON.ObjectId): void;
 }): React.ReactElement => {
   const { theme } = useColors();
 
@@ -371,7 +373,11 @@ const MonthCalendar = ({
           height: bottomSheetHeight + ms(100, 0.3),
           padding: ms(10, 0.3),
         }}>
-        <TodoAdd item={item} />
+        <TodoAdd
+          item={item}
+          setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
+          completeDelete={completeDelete}
+        />
       </View>
     </Animated.View>
   );

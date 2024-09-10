@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { calculateStartAndEndDayOfMonth } from './calStartEndWeek';
 import { TaskDate, useDateContext } from '../context/DateContext';
-import { useQuery } from '@realm/react';
-import { FullyDate, Todo } from '../../realm/models';
 
 export const selectedCheck = (taskDate: TaskDate, today: TaskDate) => {
   return (
@@ -16,23 +14,6 @@ export const makeWeekCalendar = () => {
   const { taskDate } = useDateContext();
 
   const [week, setWeek] = useState<TaskDate[]>([]);
-  const todos = useQuery(Todo);
-
-  const weekInclude: boolean[] = [];
-
-  for (let i = 0; i < 7; i++) {
-    weekInclude[i] = false;
-  }
-  for (let i = 0; i < todos.length; i++) {
-    for (let j = 0; j < todos[i].weekCycle.length; j++) {
-      weekInclude[todos[i].weekCycle[j]] = true;
-      const taskDateDay = todos[i].linkingObjects<FullyDate>(
-        'FullyDate',
-        'todos',
-      )[0].dayIdx;
-      weekInclude[taskDateDay] = true;
-    }
-  }
 
   useEffect(() => {
     const printWeek = [];
@@ -55,8 +36,6 @@ export const makeWeekCalendar = () => {
     leftDayCntOfPrevMonth =
       leftDayCntOfPrevMonth == lastDayOfPrevMonth ? 0 : leftDayCntOfPrevMonth;
 
-    let isInclude: boolean = false;
-
     if (7 - leftDayCntOfPrevMonth >= curDate) {
       //선택된 날짜가 첫번째 주에 포함
       dateOfWeek = startWeekDateOfMonth;
@@ -67,21 +46,17 @@ export const makeWeekCalendar = () => {
         yearOfWeek -= 1;
       }
       for (let i = 0; i < 7; i++) {
-        isInclude = false;
         if (dateOfWeek > lastDayOfPrevMonth) {
           dateOfWeek = 1;
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
-        if (weekInclude[i]) {
-          isInclude = true;
-        }
+
         const dateData: TaskDate = {
           year: yearOfWeek,
           month: monthOfWeek,
           date: dateOfWeek,
           day: i,
-          isInclude: isInclude,
         };
 
         printWeek[i] = dateData;
@@ -91,21 +66,17 @@ export const makeWeekCalendar = () => {
       //선택된 날짜가 마지막 주에 포함
       dateOfWeek = lastWeekDateOfMonth;
       for (let i = 0; i < 7; i++) {
-        isInclude = false;
         if (dateOfWeek > lastDayOfMonth) {
           dateOfWeek = 1;
           monthOfWeek = monthOfWeek + 1 > 12 ? 1 : monthOfWeek + 1;
           yearOfWeek = monthOfWeek == 1 ? (yearOfWeek += 1) : yearOfWeek;
         }
-        if (weekInclude[i]) {
-          isInclude = true;
-        }
+
         const dateData: TaskDate = {
           year: yearOfWeek,
           month: monthOfWeek,
           date: dateOfWeek,
           day: i,
-          isInclude: isInclude,
         };
         printWeek[i] = dateData;
         dateOfWeek += 1;
@@ -114,16 +85,11 @@ export const makeWeekCalendar = () => {
       if (curDay !== undefined) {
         dateOfWeek = curDate - curDay;
         for (let i = 0; i < 7; i++) {
-          isInclude = false;
-          if (weekInclude[i]) {
-            isInclude = true;
-          }
           const dateData: TaskDate = {
             year: yearOfWeek,
             month: monthOfWeek,
             date: dateOfWeek,
             day: i,
-            isInclude: isInclude,
           };
           printWeek[i] = dateData;
           dateOfWeek += 1;
@@ -131,7 +97,7 @@ export const makeWeekCalendar = () => {
       }
     }
     setWeek(printWeek);
-  }, [taskDate, todos]);
+  }, [taskDate]);
 
   return week;
 };

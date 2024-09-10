@@ -9,7 +9,6 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useQuery, useRealm } from '@realm/react';
 import { FullyDate, Todo } from '../../../realm/models';
 import Icon from 'react-native-vector-icons/AntDesign';
-import AcheiveTodos from '../AchieveComponents/AcheiveTodos';
 import { Results } from 'realm';
 import AnimatedBar from '../AchieveComponents/AnimatedBar';
 import { hitmapColorSet } from '../../assets/style/ThemeColor';
@@ -261,9 +260,9 @@ export default function Achieve() {
         <View style={{ flex: ms(0.2, 0.3), marginBottom: ms(10, 0.3) }}>
           <AnimatedBar dateKey={dateKey} />
         </View>
-        <View style={{ flex: ms(0.8, 0.3) }}>
+        {/* <View style={{ flex: ms(0.8, 0.3) }}>
           <AcheiveTodos todos={todos} />
-        </View>
+        </View> */}
       </View>
     </View>
   );

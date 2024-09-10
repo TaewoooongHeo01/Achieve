@@ -1,5 +1,5 @@
 import { useQuery, useRealm } from '@realm/react';
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import {
   View,
   Text,
@@ -27,7 +27,17 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../../App';
 
-const TodoAdd = ({ item }: { item?: Todo }) => {
+const TodoAdd = ({
+  item,
+  setTodoBottomSheetSnapPoint,
+  completeDelete,
+}: {
+  item?: Todo;
+  setTodoBottomSheetSnapPoint?(
+    snapPoint?: SetStateAction<string> | undefined,
+  ): void;
+  completeDelete?(itemId: Realm.BSON.ObjectID): void;
+}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const goals = useQuery(Goal).filtered('isComplete == false');
@@ -437,52 +447,44 @@ const TodoAdd = ({ item }: { item?: Todo }) => {
             onPress={() => {
               if (inputValid()) {
                 realm.write(() => {
-                  if (item) {
-                    //update - isClone 유지
-                    item.title = title;
-                    item.goal = todosGoal;
-                    item.weekCycle = weekCycle;
-                    item.priority = priority;
+                  //create
+
+                  //Todo 생성
+                  const todo = realm.create('Todo', {
+                    title: title,
+                    date: dateKeyFormat,
+                    goal: todosGoal,
+                    weekCycle: weekCycle,
+                    priority: item ? item.priority : priority,
+                    isComplete: false,
+                    originDate: Number(dateKeyFormat),
+                    isClone: false,
+                  });
+
+                  //오늘 날짜를 키로 가진 fullyDate 가 있는 지 탐색
+                  const date = realm.objectForPrimaryKey<FullyDate>(
+                    'FullyDate',
+                    dateKeyFormat,
+                  );
+
+                  if (date) {
+                    //만약 있다면 기존 FullyDate.todos 에 현재 Todo 추가
+                    date.todos.push(todo);
                   } else {
-                    //create
-
-                    //Todo 생성
-                    const todo = realm.create('Todo', {
-                      title: title,
-                      date: dateKeyFormat,
-                      goal: todosGoal,
-                      weekCycle: weekCycle,
-                      priority: priority,
-                      isComplete: false,
-                      originDate: Number(dateKeyFormat),
-                      isClone: false,
+                    //만약 없다면 FullyDate 를 새로 만듦
+                    const newDate = realm.create('FullyDate', {
+                      dateKey: dateKeyFormat,
+                      fullness: 0.2,
+                      dayIdx: taskDate.day,
+                      todos: [],
                     });
-
-                    //오늘 날짜를 키로 가진 fullyDate 가 있는 지 탐색
-                    const date = realm.objectForPrimaryKey<FullyDate>(
-                      'FullyDate',
-                      dateKeyFormat,
-                    );
-
-                    if (date) {
-                      //만약 있다면 기존 FullyDate.todos 에 현재 Todo 추가
-                      date.todos.push(todo);
-                    } else {
-                      //만약 없다면 FullyDate 를 새로 만듦
-                      const newDate = realm.create('FullyDate', {
-                        dateKey: dateKeyFormat,
-                        fullness: 0.2,
-                        dayIdx: taskDate.day,
-                        todos: [],
-                      });
-                      newDate.todos.push(todo);
-                    }
-                    //목표에 현재 Todo 추가
-                    todosGoal?.todos.push(todo);
+                    newDate.todos.push(todo);
                   }
+                  //목표에 현재 Todo 추가
+                  todosGoal?.todos.push(todo);
 
                   //dayIdx 가 일치하고, dateKey 가 dateKeyFormat 보다 큰 FullyDate 들의 todos 에도 현재 Todo 추가
-                  for (let i = 0; i < weekCycle.length; i++) {
+                  for (let i = 0; i < todo.weekCycle.length; i++) {
                     const key = weekCycle[i];
                     const fullyDates = weekFullyDatesMap.get(key);
                     if (fullyDates) {
@@ -502,9 +504,15 @@ const TodoAdd = ({ item }: { item?: Todo }) => {
                       });
                     }
                   }
-
                   dismiss();
+                  if (setTodoBottomSheetSnapPoint) {
+                    setTodoBottomSheetSnapPoint('45%');
+                  }
                 });
+              }
+              navigation.navigate('Home');
+              if (item && completeDelete) {
+                completeDelete(item._id);
               }
             }}>
             <Text

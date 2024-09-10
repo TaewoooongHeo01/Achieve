@@ -1,39 +1,32 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-} from 'react-native-reanimated';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { ms } from 'react-native-size-matters';
-import CheckIcon from 'react-native-vector-icons/Feather';
-import { Todo } from '../../../realm/models';
-import { ColorSet } from '../../assets/style/ThemeColor';
 
-export type GoalDetailTodoType = {
-  theme: ColorSet;
-  todos: Todo[] | undefined;
-  item: string;
-};
+// export type GoalDetailTodoType = {
+//   theme: ColorSet;
+//   todos: Todo[] | undefined;
+//   item: string;
+// };
 
-const GoalDetailTodo = ({ theme, todos, item }: GoalDetailTodoType) => {
+const GoalDetailTodo = () => {
   const animatedOpacity = useSharedValue(0.6);
   const initialFontSize = ms(15, 0.3);
   const largerFontSize = ms(20, 0.3);
   const animatedFontSize = useSharedValue(initialFontSize);
 
-  const animatedOpacityStyle = useAnimatedStyle(() => {
-    return {
-      opacity: animatedOpacity.value,
-    };
-  });
+  // const animatedOpacityStyle = useAnimatedStyle(() => {
+  //   return {
+  //     opacity: animatedOpacity.value,
+  //   };
+  // });
 
-  const animatedFontSizeStyle = useAnimatedStyle(() => {
-    return {
-      fontSize: animatedFontSize.value,
-    };
-  });
+  // const animatedFontSizeStyle = useAnimatedStyle(() => {
+  //   return {
+  //     fontSize: animatedFontSize.value,
+  //   };
+  // });
 
   const longPress = Gesture.LongPress()
     .minDuration(200)
@@ -58,8 +51,8 @@ const GoalDetailTodo = ({ theme, todos, item }: GoalDetailTodoType) => {
           marginHorizontal: ms(25, 0.3),
           marginVertical: ms(3, 0.3),
         }}>
-        <View style={{ flex: 0.3, justifyContent: 'center' }}>
-          <Animated.Text
+        {/* <View style={{ flex: 0.3, justifyContent: 'center' }}> */}
+        {/* <Animated.Text
             style={[
               {
                 fontFamily: 'Pretendard-Medium',
@@ -69,14 +62,14 @@ const GoalDetailTodo = ({ theme, todos, item }: GoalDetailTodoType) => {
               animatedOpacityStyle,
             ]}>
             {item.substring(2, 4)}.{item.substring(4, 6)}.{item.substring(6, 8)}
-          </Animated.Text>
-        </View>
+          </Animated.Text> */}
+        {/* </View>
         <View
           style={{
             flexDirection: 'column',
             flex: 0.8,
-          }}>
-          {todos?.map(value => {
+          }}> */}
+        {/* {todos?.map(value => {
             return (
               <View
                 key={value._id.toString()}
@@ -109,8 +102,8 @@ const GoalDetailTodo = ({ theme, todos, item }: GoalDetailTodoType) => {
                 </Animated.View>
               </View>
             );
-          })}
-        </View>
+          })} */}
+        {/* </View> */}
       </View>
     </GestureDetector>
   );

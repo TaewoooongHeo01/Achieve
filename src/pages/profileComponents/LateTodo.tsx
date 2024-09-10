@@ -47,14 +47,50 @@ const LateTodo = () => {
   const { dismiss } = useBottomSheetModal();
   const realm = useRealm();
 
-  const todos = useQuery(Todo).filtered('date == "none"');
+  const [todos, setTodos] = useState<
+    Realm.Results<Todo & Realm.Object> | Todo[]
+  >([]);
+
+  console.log(todos);
+
+  useEffect(() => {
+    const todosResults = realm.objects('Todo').filtered('date == "none"');
+    const onChange = newTodos => {
+      setTodos([...newTodos]);
+    };
+    todosResults.addListener(onChange);
+    return () => {
+      todosResults.removeListener(onChange);
+    };
+  }, []);
 
   const renderItem = ({ item }: { item: Todo }) => {
     return (
       <View style={{ marginVertical: ms(5, 0.3) }}>
-        <LateTodoBSContainer item={item} />
+        <LateTodoBSContainer
+          item={item}
+          itemDelete={itemDelete}
+          completeDelete={completeDelete}
+        />
       </View>
     );
+  };
+
+  const completeDelete = (itemId: Realm.BSON.ObjectId) => {
+    realm.write(() => {
+      const itemToDelete = realm.objectForPrimaryKey<Todo>('Todo', itemId);
+      console.log(itemToDelete);
+      if (itemToDelete) {
+        setTodos(todos.filter(todo => todo._id !== itemId));
+        realm.delete(itemToDelete);
+      }
+    });
+  };
+
+  const itemDelete = (item: Todo) => {
+    realm.write(() => {
+      realm.delete(item);
+    });
   };
 
   const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
@@ -267,6 +303,8 @@ const LateTodo = () => {
                     date: 'none',
                     priority: 2,
                     isComplete: false,
+                    originDate: -1,
+                    isClone: true,
                   });
                 });
               }

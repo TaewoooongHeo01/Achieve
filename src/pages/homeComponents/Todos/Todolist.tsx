@@ -39,7 +39,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
         const cycleTodos = realm
           .objects<Todo>('Todo')
           .filtered('ANY weekCycle == $0 AND isClone == false', taskDate.day);
-        console.log(cycleTodos);
 
         if (cycleTodos.length === 0 || dateFormatKey === '') {
           setTodos([]);
@@ -81,7 +80,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
             realm.delete(date);
           } else {
             // console.log('todos 업데이트');
-            console.log(date.todos);
             setTodos(date.todos);
           }
         });
@@ -181,9 +179,15 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
         if (nextDate) {
           nextDate.todos.push(item);
         } else {
+          const day = new Date(
+            taskDate.year,
+            taskDate.month - 1,
+            taskDate.date,
+          ).getDay();
           const newNextDate = realm.create<FullyDate>('FullyDate', {
             dateKey: nextDateKey,
             fullness: 0.2,
+            dayIdx: day,
             todos: [],
           });
           newNextDate.todos.push(item);
@@ -207,6 +211,79 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
     }
   };
 
+  const deleteTodo = (itemId: string) => {
+    setChanged(changed => !changed);
+    const item = realm.objectForPrimaryKey<Todo>(
+      'Todo',
+      new Realm.BSON.ObjectId(itemId),
+    );
+
+    if (item) {
+      realm.write(() => {
+        try {
+          const itemGoal = item.linkingObjects<Goal>('Goal', 'todos')[0];
+          const goalId = itemGoal._id;
+          const title = item.title;
+          const priority = item.priority;
+          const itemDate = item.date;
+
+          // 삭제할 모든 Todo를 한 번에 쿼리
+          const deleteTodos = realm
+            .objects<Todo>('Todo')
+            .filtered(
+              'title == $0 AND priority == $1 AND date >= $2',
+              title,
+              priority,
+              itemDate,
+            );
+          const originTodos = realm
+            .objects<Todo>('Todo')
+            .filtered(
+              'title == $0 AND priority == $1 AND isClone == false',
+              title,
+              priority,
+            );
+          for (let i = 0; i < originTodos.length; i++) {
+            originTodos[i].isClone = true;
+          }
+
+          // FullyDate 객체들을 추적
+          const affectedFullyDates = new Set<FullyDate>();
+
+          deleteTodos.forEach(todo => {
+            const dateKey = todo.date;
+            const goal = todo.linkingObjects<Goal>('Goal', 'todos')[0];
+            if (goalId?.equals(goal._id)) {
+              if (dateKey) {
+                const fullyDate = realm.objectForPrimaryKey<FullyDate>(
+                  'FullyDate',
+                  dateKey,
+                );
+                if (fullyDate) {
+                  affectedFullyDates.add(fullyDate);
+                }
+              }
+              console.log('삭제: ' + todo.date);
+              realm.delete(todo);
+            }
+          });
+
+          affectedFullyDates.forEach(fullyDate => {
+            if (
+              fullyDate.todos.length === 0 &&
+              Number(fullyDate.dateKey) !== taskDateFormat
+            ) {
+              realm.delete(fullyDate);
+            }
+          });
+        } catch (error) {
+          console.error('Error deleting todos:', error);
+          // 여기에 사용자에게 오류를 알리는 로직 추가
+        }
+      });
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <CustomisableAlert />
@@ -219,11 +296,11 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
               dateFormatKey={dateFormatKey}
               delayTodo={delayTodo}
               completeTodo={completeTodo}
-              setChanged={setChanged}
               taskDateFormat={taskDateFormat}
               todayFormat={todayFormat}
               theme={theme}
               screenWidth={screenWidth}
+              deleteTodo={deleteTodo}
             />
           );
         }}

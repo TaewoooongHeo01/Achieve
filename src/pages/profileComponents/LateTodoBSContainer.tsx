@@ -18,7 +18,15 @@ import { ms } from 'react-native-size-matters';
 import { useColors } from '../../context/ThemeContext';
 import MonthCalendar from '../commonComponents/MonthCalendar';
 
-const LateTodoBSContainer = ({ item }: { item: Todo }) => {
+const LateTodoBSContainer = ({
+  item,
+  itemDelete,
+  completeDelete,
+}: {
+  item: Todo;
+  itemDelete(todo: Todo): void;
+  completeDelete(itemId: Realm.BSON.ObjectId): void;
+}) => {
   const { theme } = useColors();
 
   const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
@@ -76,7 +84,7 @@ const LateTodoBSContainer = ({ item }: { item: Todo }) => {
         onPress={() => {
           todoHandlePresentModal();
         }}>
-        <TodoItemDetail item={item} />
+        <TodoItemDetail item={item} itemDelete={itemDelete} />
       </TouchableOpacity>
       <BottomSheetModal
         ref={todoBottomSheetModalRef}
@@ -109,6 +117,7 @@ const LateTodoBSContainer = ({ item }: { item: Todo }) => {
             itemAdd={true}
             setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
             item={item}
+            completeDelete={completeDelete}
           />
         </BottomSheetView>
       </BottomSheetModal>

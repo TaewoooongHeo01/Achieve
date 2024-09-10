@@ -6,16 +6,19 @@ import { days } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { makeWeekCalendar, selectedCheck } from '../../utils/makeWeekCalendar';
+import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 
 const WeekCalender = (): React.ReactElement => {
   const { theme } = useColors();
-  const { setTaskDate, taskDate } = useDateContext();
+  const { setTaskDate, taskDate, today } = useDateContext();
   const week = makeWeekCalendar();
+  const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
 
   return (
     <View style={styles.layout}>
       {week.map((value, index) => {
         const isToday: boolean = selectedCheck(value, taskDate);
+        const valueKey = makeDateFormatKey(value.year, value.month, value.date);
         return (
           <Pressable
             key={index}
@@ -43,9 +46,10 @@ const WeekCalender = (): React.ReactElement => {
               ]}>
               {value.date}
             </Text>
-            {value.isInclude ? (
+            {value.isInclude || todayFormat === valueKey ? (
               <Icon
-                name='circle-medium'
+                name={todayFormat === valueKey ? 'asterisk' : 'circle-medium'}
+                size={ms(15, 0.3)}
                 style={[
                   styles.days,
                   { color: theme.textColor },

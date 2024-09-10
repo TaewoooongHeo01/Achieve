@@ -5,7 +5,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../App';
 import LinearGradient from 'react-native-linear-gradient';
 import { ColorSet } from '../../assets/style/ThemeColor';
-import { fontStyle } from '../../assets/style/fontStyle';
 import { StyleSheet, Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -62,11 +61,6 @@ const GoalComponentDetail = ({
           <View style={{ flex: 1 }}>
             <View style={[{ flex: ms(0.75, 0.3) }, GoalStyle.titleContainer]}>
               <Text style={GoalStyle.titleText}>{item.title}</Text>
-              <Text style={[fontStyle.fontSizeSub, GoalStyle.todoText]}>
-                {!item.isComplete
-                  ? `${item.todos ? item.todos.length : 0}개의 투 두`
-                  : `${item.startDate}`}
-              </Text>
             </View>
             <View
               style={[GoalStyle.iconD_day, { flex: ms(0.25, 0.3) }]}

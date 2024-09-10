@@ -7,20 +7,23 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { shadow } from '../../../assets/style/shadow';
 import { days } from '../../../context/DateContext';
-import CalendarIcon from 'react-native-vector-icons/AntDesign';
-import CheckIcon from 'react-native-vector-icons/AntDesign';
-import Question from 'react-native-vector-icons/AntDesign';
+import SubIcon from 'react-native-vector-icons/AntDesign';
+import { showAlert } from 'react-native-customisable-alert';
+import DeleteTodoAlert from '../../Alert/DeleteTodoAlert';
+import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const TodoItemDetail = ({
   item,
   goal,
-  todoEditHandlePresentModal,
-  achieved,
+  todoCompleteAnimation,
+  itemDelete,
+  // setChanged,
 }: {
   item: Todo;
   goal?: Goal;
-  todoEditHandlePresentModal?(): void;
-  achieved?: boolean;
+  todoCompleteAnimation?(isRemove: boolean): void;
+  itemDelete?(todo: Todo): void;
+  // setChanged(changed: boolean | ((changed: boolean) => boolean)): void;
 }) => {
   const { theme, currentTheme } = useColors();
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
@@ -31,12 +34,10 @@ const TodoItemDetail = ({
         styles.todoContainer,
         {
           borderRadius: ms(6, 0.3),
-          backgroundColor: !achieved
-            ? item.isComplete
-              ? currentTheme === 'dark'
-                ? '#222222'
-                : '#F4F4F4'
-              : theme.backgroundColor
+          backgroundColor: item.isComplete
+            ? currentTheme === 'dark'
+              ? '#222222'
+              : '#F4F4F4'
             : theme.backgroundColor,
         },
         currentTheme === 'light' ? shadow.boxShadow : {},
@@ -62,7 +63,7 @@ const TodoItemDetail = ({
               style={{
                 flex: 1,
                 borderRadius: ms(10, 0.3),
-                opacity: !achieved ? (item.isComplete ? 0.5 : 1) : 1,
+                opacity: item.isComplete ? 0.5 : 1,
               }}
               colors={theme.gradientColor[goal != undefined ? goal.color : 1]}>
               <View
@@ -93,7 +94,7 @@ const TodoItemDetail = ({
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Question
+              <SubIcon
                 name='question'
                 style={{
                   textAlign: 'center',
@@ -115,13 +116,13 @@ const TodoItemDetail = ({
             style={[
               {
                 color: theme.textColor,
-                opacity: !achieved ? (item.isComplete ? 0.4 : 1) : 1,
+                opacity: item.isComplete ? 0.4 : 1,
               },
               fontStyle.itemTitle,
             ]}>
             {item.title}
           </Text>
-          <CalendarIcon
+          <SubIcon
             name='exclamationcircle'
             color={
               item.priority === 2
@@ -174,7 +175,7 @@ const TodoItemDetail = ({
         </View>
       </View>
       <View style={styles.dateContainer}>
-        {todoEditHandlePresentModal ? (
+        {!item.isComplete ? (
           <TouchableOpacity
             style={{
               paddingLeft: ms(15, 0.3),
@@ -182,22 +183,37 @@ const TodoItemDetail = ({
               paddingTop: ms(15, 0.3),
             }}
             onPress={() => {
-              todoEditHandlePresentModal();
+              if (todoCompleteAnimation) {
+                showAlert({
+                  alertType: 'custom',
+                  dismissable: true,
+                  customAlert: (
+                    <DeleteTodoAlert
+                      item={item}
+                      todoCompleteAnimation={todoCompleteAnimation}
+                    />
+                  ),
+                });
+              } else if (itemDelete) {
+                itemDelete(item);
+              }
             }}>
-            <Icon name='pencil' size={ms(20, 0.3)} color={theme.textColor} />
-          </TouchableOpacity>
-        ) : achieved ? (
-          item.isComplete ? (
-            <CheckIcon
-              name='check'
-              color='green'
+            <DeleteIcon
+              name='delete'
               size={ms(20, 0.3)}
-              style={{
-                marginLeft: ms(5, 0.3),
-              }}
+              color={theme.textColor}
             />
-          ) : null
-        ) : null}
+          </TouchableOpacity>
+        ) : (
+          <SubIcon
+            name='check'
+            color='green'
+            size={ms(20, 0.3)}
+            style={{
+              marginLeft: ms(5, 0.3),
+            }}
+          />
+        )}
       </View>
     </View>
   );

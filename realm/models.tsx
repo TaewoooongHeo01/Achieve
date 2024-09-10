@@ -105,8 +105,8 @@ export class Todo extends Realm.Object {
   weekCycle!: number[];
   priority!: number;
   isComplete!: boolean;
-  originDate!: number;
-  isClone!: boolean;
+  originDate?: number;
+  isClone?: boolean;
 
   static schema: Realm.ObjectSchema = {
     name: 'Todo',
