@@ -33,7 +33,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
   const fetchTodos = useCallback(async () => {
     try {
       if (fullyDate) {
-        setTodos(fullyDate.todos);
+        setTodos(fullyDate.todos.sorted('isComplete', false));
       } else {
         // console.log('date 없음. 생성필요. cycleTodos: ');
         const cycleTodos = realm
@@ -74,6 +74,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
               notAdded = false;
             }
           });
+          console.log(date);
           if (notAdded) {
             // console.log('추가되지 않음. date 다시 삭제');
             setTodos([]);

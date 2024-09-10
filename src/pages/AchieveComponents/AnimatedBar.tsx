@@ -32,11 +32,9 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
   return (
     <View
       style={{
-        flex: 1,
-        borderColor: '#ccc',
-        borderWidth: 0.2,
+        height: ms(80, 0.3),
+        backgroundColor: theme.backgroundColor,
         borderRadius: ms(5, 0.3),
-        backgroundColor: theme.appBackgroundColor,
       }}>
       <View
         style={{
@@ -45,7 +43,7 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
           paddingLeft: ms(5, 10),
         }}>
         <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
-          얼마나 충만했나요? - {dateKey.substring(0, 4)}.
+          얼마나 몰입했나요? - {dateKey.substring(0, 4)}.
           {dateKey.substring(4, 6)}.{dateKey.substring(6, 8)}
         </Text>
       </View>

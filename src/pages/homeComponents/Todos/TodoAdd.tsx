@@ -446,73 +446,70 @@ const TodoAdd = ({
             }}
             onPress={() => {
               if (inputValid()) {
-                realm.write(() => {
-                  //create
+                if (item) {
+                  //update
+                } else {
+                  realm.write(() => {
+                    //create
 
-                  //Todo 생성
-                  const todo = realm.create('Todo', {
-                    title: title,
-                    date: dateKeyFormat,
-                    goal: todosGoal,
-                    weekCycle: weekCycle,
-                    priority: item ? item.priority : priority,
-                    isComplete: false,
-                    originDate: Number(dateKeyFormat),
-                    isClone: false,
-                  });
-
-                  //오늘 날짜를 키로 가진 fullyDate 가 있는 지 탐색
-                  const date = realm.objectForPrimaryKey<FullyDate>(
-                    'FullyDate',
-                    dateKeyFormat,
-                  );
-
-                  if (date) {
-                    //만약 있다면 기존 FullyDate.todos 에 현재 Todo 추가
-                    date.todos.push(todo);
-                  } else {
-                    //만약 없다면 FullyDate 를 새로 만듦
-                    const newDate = realm.create('FullyDate', {
-                      dateKey: dateKeyFormat,
-                      fullness: 0.2,
-                      dayIdx: taskDate.day,
-                      todos: [],
+                    //Todo 생성
+                    const todo = realm.create('Todo', {
+                      title: title,
+                      date: dateKeyFormat,
+                      goal: todosGoal,
+                      weekCycle: weekCycle,
+                      priority: priority,
+                      isComplete: false,
+                      originDate: Number(dateKeyFormat),
+                      isClone: false,
                     });
-                    newDate.todos.push(todo);
-                  }
-                  //목표에 현재 Todo 추가
-                  todosGoal?.todos.push(todo);
 
-                  //dayIdx 가 일치하고, dateKey 가 dateKeyFormat 보다 큰 FullyDate 들의 todos 에도 현재 Todo 추가
-                  for (let i = 0; i < todo.weekCycle.length; i++) {
-                    const key = weekCycle[i];
-                    const fullyDates = weekFullyDatesMap.get(key);
-                    if (fullyDates) {
-                      fullyDates.forEach(element => {
-                        const copyTodo = realm.create('Todo', {
-                          title: title,
-                          date: element.dateKey,
-                          goal: todosGoal,
-                          weekCycle: weekCycle,
-                          priority: priority,
-                          isComplete: false,
-                          originDate: Number(dateKeyFormat),
-                          isClone: true,
-                        });
-                        element.todos.push(copyTodo);
-                        todosGoal?.todos.push(copyTodo);
+                    //오늘 날짜를 키로 가진 fullyDate 가 있는 지 탐색
+                    const date = realm.objectForPrimaryKey<FullyDate>(
+                      'FullyDate',
+                      dateKeyFormat,
+                    );
+
+                    if (date) {
+                      //만약 있다면 기존 FullyDate.todos 에 현재 Todo 추가
+                      date.todos.push(todo);
+                    } else {
+                      //만약 없다면 FullyDate 를 새로 만듦
+                      const newDate = realm.create('FullyDate', {
+                        dateKey: dateKeyFormat,
+                        fullness: 0.2,
+                        dayIdx: taskDate.day,
+                        todos: [],
                       });
+                      newDate.todos.push(todo);
                     }
-                  }
-                  dismiss();
-                  if (setTodoBottomSheetSnapPoint) {
-                    setTodoBottomSheetSnapPoint('45%');
-                  }
-                });
-              }
-              navigation.navigate('Home');
-              if (item && completeDelete) {
-                completeDelete(item._id);
+                    //목표에 현재 Todo 추가
+                    todosGoal?.todos.push(todo);
+
+                    //dayIdx 가 일치하고, dateKey 가 dateKeyFormat 보다 큰 FullyDate 들의 todos 에도 현재 Todo 추가
+                    for (let i = 0; i < todo.weekCycle.length; i++) {
+                      const key = weekCycle[i];
+                      const fullyDates = weekFullyDatesMap.get(key);
+                      if (fullyDates) {
+                        fullyDates.forEach(element => {
+                          const copyTodo = realm.create('Todo', {
+                            title: title,
+                            date: element.dateKey,
+                            goal: todosGoal,
+                            weekCycle: weekCycle,
+                            priority: priority,
+                            isComplete: false,
+                            originDate: Number(dateKeyFormat),
+                            isClone: true,
+                          });
+                          element.todos.push(copyTodo);
+                          todosGoal?.todos.push(copyTodo);
+                        });
+                      }
+                    }
+                    dismiss();
+                  });
+                }
               }
             }}>
             <Text
