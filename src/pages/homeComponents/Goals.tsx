@@ -94,7 +94,7 @@ const Goals = (): React.ReactElement => {
 const styles = StyleSheet.create({
   layout: {
     flex: 1,
-    marginTop: ms(20, 0.3),
+    marginTop: ms(30, 0.3),
   },
   subTitle: {
     paddingTop: ms(3, 0.3),
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 
 const GoalStyle = StyleSheet.create({
   layout: {
-    flex: 1,
+    // flex: 1,
     width: ms(130, 0.3),
     height: ms(130, 0.3),
     marginRight: ms(10, 0.3),

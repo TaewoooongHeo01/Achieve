@@ -40,7 +40,7 @@ export type RootStackParamList = {
   SettingScreen: undefined;
   SettingPhrase: undefined;
   SettingUser: undefined;
-  GoalEdit: { goal: Goal | undefined };
+  GoalEdit: { goalId: string };
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<

@@ -247,7 +247,7 @@ const TodoDate = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   layout: {
-    marginTop: ms(20, 0.3),
+    marginTop: ms(30, 0.3),
     flex: 1,
   },
   subTitle: {

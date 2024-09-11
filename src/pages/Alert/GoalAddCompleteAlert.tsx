@@ -24,7 +24,7 @@ const GoalAddCompleteAlert = ({
           backgroundColor: theme.backgroundColor,
           padding: ms(20, 0.3),
           borderRadius: ms(5, 0.3),
-          width: ms(330, 0.3),
+          width: ms(290, 0.3),
         },
       ]}>
       <LinearGradient
@@ -56,17 +56,32 @@ const GoalAddCompleteAlert = ({
             fontFamily: 'Pretendard-Semibold',
             fontSize: ms(17, 0.3),
             color: theme.textColor,
-            marginTop: ms(8, 0.3),
+            marginTop: ms(15, 0.3),
           },
         ]}>
-        축하합니다 새로운 목표가 생겼어요 🎉
+        축하합니다 🎉
+      </Text>
+      <Text
+        style={[
+          {
+            fontFamily: 'Pretendard-Semibold',
+            fontSize: ms(17, 0.3),
+            color: theme.textColor,
+            marginTop: ms(2, 0.3),
+          },
+        ]}>
+        새로운 목표가 생겼어요
       </Text>
       <Text
         style={[
           fontStyle.fontSizeSub,
-          { color: theme.textColor, marginBottom: ms(20, 0.3) },
+          {
+            color: theme.textColor,
+            marginBottom: ms(20, 0.3),
+            marginTop: ms(5, 0.3),
+          },
         ]}>
-        이제 목표를 위해 해야 할 일들을 추가해보세요
+        목표를 위해 해야 할 일들을 추가해보세요
       </Text>
       <TouchableOpacity
         activeOpacity={0.8}
@@ -77,7 +92,7 @@ const GoalAddCompleteAlert = ({
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
-          height: ms(40, 0.3),
+          height: ms(36, 0.3),
           backgroundColor: theme.textColor,
           borderRadius: ms(5, 0.3),
         }}>

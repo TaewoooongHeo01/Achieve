@@ -25,6 +25,7 @@ import { showAlert } from 'react-native-customisable-alert';
 import GoalAddCompleteAlert from '../Alert/GoalAddCompleteAlert';
 import { useDateContext } from '../../context/DateContext';
 import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
 
 const GoalAddIconAndColor = ({
   route,
@@ -128,11 +129,13 @@ const GoalAddIconAndColor = ({
         />
       )}
       <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
-        }}>
+        style={[
+          {
+            flex: 1,
+            justifyContent: 'center',
+          },
+          topMargin.margin,
+        ]}>
         <View
           style={{
             flex: ms(0.2, 0.3),

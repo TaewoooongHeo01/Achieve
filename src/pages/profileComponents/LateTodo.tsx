@@ -171,7 +171,7 @@ const LateTodo = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: ms(20, 0.3),
-          marginTop: ms(10, 0.3),
+          // marginTop: ms(10, 0.3),
         }}>
         <TouchableOpacity
           activeOpacity={1}
@@ -186,7 +186,7 @@ const LateTodo = () => {
         style={{
           flex: 1,
           backgroundColor: theme.appBackgroundColor,
-          paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
+          // paddingTop: Platform.OS === 'android' ? ms(15, 0.3) : 0,
           paddingHorizontal: ms(20, 0.3),
         }}>
         <View

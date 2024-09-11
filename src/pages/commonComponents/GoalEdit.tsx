@@ -1,4 +1,5 @@
 import {
+  Alert,
   Platform,
   StatusBar,
   Text,
@@ -19,17 +20,36 @@ import { useState } from 'react';
 import { showAlert } from 'react-native-customisable-alert';
 import DeleteGoalAlert from '../Alert/DeleteGoalAlert';
 import CompleteGoalAlert from '../Alert/CompleteGoalAlert';
+import { useObject, useRealm } from '@realm/react';
+import { Goal } from '../../../realm/models';
+import { Realm } from '@realm/react';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
 
 const GoalEdit = ({ route, navigation }: GoalEditProps) => {
   const { theme, currentTheme } = useColors();
   const { top } = useSafeAreaInsets();
-  const goal = route.params.goal;
+  const goalId = new Realm.BSON.ObjectId(route.params.goalId);
+  const goal = useObject(Goal, goalId);
+
   const [title, setTitle] = useState<string | undefined>(
     goal ? goal.title : undefined,
   );
   const [description, setDescription] = useState<string | undefined>(
     goal ? goal.description : undefined,
   );
+  const realm = useRealm();
+
+  const isValid = () => {
+    if (title === '') {
+      Alert.alert('제목을 입력해주세요');
+      return false;
+    } else if (title && title?.length >= 30) {
+      Alert.alert('제목의 길이는 30 자 이하로 설정해주세요');
+      return false;
+    }
+    return true;
+  };
+
   return (
     <SafeAreaView
       edges={
@@ -54,12 +74,15 @@ const GoalEdit = ({ route, navigation }: GoalEditProps) => {
         />
       )}
       <View
-        style={{
-          marginHorizontal: ms(18, 0.3),
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
+        style={[
+          {
+            marginHorizontal: ms(18, 0.3),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          },
+          topMargin.margin,
+        ]}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -216,7 +239,13 @@ const GoalEdit = ({ route, navigation }: GoalEditProps) => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
-              console.log('변경');
+              if (isValid() && title && description && goal) {
+                realm.write(() => {
+                  goal.title = title;
+                  goal.description = description;
+                });
+                navigation.goBack();
+              }
             }}
             style={{
               width: '100%',

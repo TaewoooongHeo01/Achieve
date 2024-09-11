@@ -7,10 +7,14 @@ import { closeAlert, showAlert } from 'react-native-customisable-alert';
 import { useRealm } from '@realm/react';
 import { Goal } from '../../../realm/models';
 import CelebrationAlert from './CelebrationAlert';
+import { useDateContext } from '../../context/DateContext';
+import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 
 const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
   const { theme } = useColors();
   const realm = useRealm();
+  const { today } = useDateContext();
+  const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
 
   return (
     <View
@@ -39,6 +43,7 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
           if (goal) {
             realm.write(() => {
               goal.isComplete = true;
+              goal.endDate = todayFormat;
             });
           }
           closeAlert();

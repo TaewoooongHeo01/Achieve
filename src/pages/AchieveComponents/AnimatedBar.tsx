@@ -42,7 +42,11 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
           justifyContent: 'flex-end',
           paddingLeft: ms(5, 10),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+        <Text
+          style={[
+            fontStyle.fontSizeSub,
+            { color: theme.textColor, marginLeft: ms(13, 0.3) },
+          ]}>
           얼마나 몰입했나요? - {dateKey.substring(0, 4)}.
           {dateKey.substring(4, 6)}.{dateKey.substring(6, 8)}
         </Text>
@@ -59,7 +63,7 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
             setBarWidth(e.nativeEvent.layout.width);
           }}
           style={{
-            height: ms(10, 0.3),
+            height: ms(13, 0.3),
             backgroundColor: '#E6E6E6',
             width: '85%',
             borderRadius: ms(3, 0.3),
@@ -72,7 +76,7 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
                 position: 'absolute',
                 zIndex: 10,
                 backgroundColor: '#50b458',
-                height: ms(10, 0.3),
+                height: ms(13, 0.3),
                 borderRadius: ms(3, 0.3),
               },
             ]}

@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Keyboard,
   Platform,
@@ -134,6 +135,17 @@ const SettingPhrase = (): React.ReactElement => {
     );
   };
 
+  const isValid = () => {
+    if (title === '') {
+      Alert.alert('문구를 입력해주세요');
+      return false;
+    } else if (title.length >= 100) {
+      Alert.alert('문구는 100 자 이하로 설정해주세요');
+      return false;
+    }
+    return true;
+  };
+
   return (
     <SafeAreaView
       edges={
@@ -258,15 +270,15 @@ const SettingPhrase = (): React.ReactElement => {
               borderRadius: ms(5, 0.3),
             }}
             onPress={() => {
-              if (title !== '') {
+              if (isValid()) {
                 realm.write(() => {
                   realm.create('Phrase', {
                     content: title,
                   });
                 });
+                dismiss();
+                setTitle('');
               }
-              setTitle('');
-              dismiss();
             }}>
             <Text
               style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>

@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Goal } from '../../../realm/models';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -25,6 +31,17 @@ const GoalComponentDetail = ({
   theme: ColorSet;
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
+  const [title, setTitle] = useState<string>(item.title);
+
+  useEffect(() => {
+    if (item.title.length >= 20) {
+      const newTitle = title.substring(0, 20) + '...';
+      setTitle(newTitle);
+    } else {
+      setTitle(item.title);
+    }
+  }, [item.title]);
+
   const cardRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['80%'], []);
   const cardRefPresent = useCallback(() => {
@@ -60,7 +77,7 @@ const GoalComponentDetail = ({
           angle={35}>
           <View style={{ flex: 1 }}>
             <View style={[{ flex: ms(0.75, 0.3) }, GoalStyle.titleContainer]}>
-              <Text style={GoalStyle.titleText}>{item.title}</Text>
+              <Text style={GoalStyle.titleText}>{title}</Text>
             </View>
             <View
               style={[GoalStyle.iconD_day, { flex: ms(0.25, 0.3) }]}
@@ -111,8 +128,8 @@ const GoalComponentDetail = ({
 const GoalStyle = StyleSheet.create({
   layout: {
     flex: 1,
-    width: ms(130, 0.3),
-    height: ms(130, 0.3),
+    width: ms(120, 0.3),
+    height: ms(120, 0.3),
     borderRadius: ms(5, 0.3),
     padding: ms(9, 0.3),
   },

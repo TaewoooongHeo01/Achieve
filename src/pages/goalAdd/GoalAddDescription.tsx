@@ -17,8 +17,8 @@ import {
 import { fontStyle } from '../../assets/style/fontStyle';
 import { ms } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Circle from 'react-native-vector-icons/MaterialCommunityIcons';
 import { GoalAddDescriptionProps } from '../../../App';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
 
 const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
   const { theme, currentTheme } = useColors();
@@ -26,15 +26,16 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
   const title = route.params.title;
   const [description, setDescription] = useState<string>('');
 
-  const tips = ['팁~~~~~~~~~~~', '탭~~~~~~~~~~~', '톡~~~~~~~~~~~~'];
+  // const tips = ['팁~~~~~~~~~~~', '탭~~~~~~~~~~~', '톡~~~~~~~~~~~~'];
 
   const inputValid = (): boolean => {
+    console.log(description.trim().length);
     if (description.trim() === '') {
       Alert.alert('설명을 입력해주세요');
       return false;
     }
-    if (description.trim().length > 50) {
-      Alert.alert('설명은 50 자 이하로 해주세요');
+    if (description.trim().length > 400) {
+      Alert.alert('설명은 400 자 이하로 해주세요');
       return false;
     }
     return true;
@@ -64,11 +65,13 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
         />
       )}
       <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
-        }}>
+        style={[
+          {
+            flex: 1,
+            justifyContent: 'center',
+          },
+          topMargin.margin,
+        ]}>
         <View
           style={{
             flex: ms(0.2, 0.3),
@@ -114,9 +117,23 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
           <Text
             style={[
               fontStyle.fontSizeMain,
+              { color: theme.textColor, marginBottom: ms(2, 0.3) },
+            ]}>
+            왜 이루고 싶나요?
+          </Text>
+          <Text
+            style={[
+              fontStyle.fontSizeMain,
+              { color: theme.textColor, marginBottom: ms(2, 0.3) },
+            ]}>
+            {title} 에 대한
+          </Text>
+          <Text
+            style={[
+              fontStyle.fontSizeMain,
               { color: theme.textColor, marginBottom: ms(10, 0.3) },
             ]}>
-            {title} 을/를 통해 얻고자 하는 건 무엇인가요?
+            추가적인 설명을 자유롭게 해주세요
           </Text>
           {/* <Text
             style={[
@@ -130,7 +147,7 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
           <TextInput
             style={{
               width: '100%',
-              height: ms(40, 0.3),
+              height: ms(150, 0.3),
               borderRadius: ms(5, 0.3),
               marginBottom: ms(5, 0.3),
               color: theme.textColor,
@@ -139,12 +156,14 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
               borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               // borderWidth: 0.2,
               padding: ms(7, 0.3),
+              textAlignVertical: 'top',
             }}
             value={description}
             onChangeText={setDescription}
             onEndEditing={e => setDescription(e.nativeEvent.text.trim())}
+            multiline={true}
           />
-          {tips.map((value, index) => {
+          {/* {tips.map((value, index) => {
             return (
               <View
                 key={index.toString()}
@@ -164,7 +183,7 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
                 </Text>
               </View>
             );
-          })}
+          })} */}
         </TouchableOpacity>
         <View
           style={{

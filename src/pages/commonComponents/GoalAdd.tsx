@@ -20,7 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Circle from 'react-native-vector-icons/MaterialCommunityIcons';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
 
 const GoalAdd = () => {
   const { theme, currentTheme } = useColors();
@@ -29,7 +29,7 @@ const GoalAdd = () => {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [title, setTitle] = useState<string>('');
 
-  const tips = ['팁~~~~~~~~~~~', '탭~~~~~~~~~~~', '톡~~~~~~~~~~~~'];
+  // const tips = ['팁~~~~~~~~~~~', '탭~~~~~~~~~~~', '톡~~~~~~~~~~~~'];
 
   const inputValid = (): boolean => {
     if (title.trim() === '') {
@@ -67,11 +67,13 @@ const GoalAdd = () => {
         />
       )}
       <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
-        }}>
+        style={[
+          {
+            flex: 1,
+            justifyContent: 'center',
+          },
+          topMargin.margin,
+        ]}>
         <View
           style={{
             flex: ms(0.2, 0.3),
@@ -137,7 +139,7 @@ const GoalAdd = () => {
             onChangeText={setTitle}
             onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
           />
-          {tips.map((value, index) => {
+          {/* {tips.map((value, index) => {
             return (
               <View
                 key={index.toString()}
@@ -157,7 +159,7 @@ const GoalAdd = () => {
                 </Text>
               </View>
             );
-          })}
+          })} */}
         </TouchableOpacity>
         <View
           style={{
