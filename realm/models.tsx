@@ -48,7 +48,7 @@ export class Goal extends Realm.Object {
   icon!: string;
   color!: number;
   todos!: Realm.List<Todo>;
-  description?: string;
+  description!: string;
   startDate!: string;
   endDate?: string;
   todoCnt!: number;

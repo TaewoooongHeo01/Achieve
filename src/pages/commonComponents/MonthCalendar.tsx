@@ -22,31 +22,31 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
-import { fontStyle } from '../../assets/style/fontStyle';
 import { Todo } from '../../../realm/models';
+import { fontStyle } from '../../assets/style/fontStyle';
 
 const MonthCalendar = ({
   itemAdd,
   setTodoBottomSheetSnapPoint,
   item,
-  completeDelete,
+  itemDelete,
 }: {
   itemAdd: boolean;
   setTodoBottomSheetSnapPoint?(
     snapPoint?: SetStateAction<string> | undefined,
   ): void;
   item?: Todo;
-  completeDelete?(itemId: Realm.BSON.ObjectId): void;
+  itemDelete?(todo: Todo): void;
 }): React.ReactElement => {
   const { theme } = useColors();
-
+  console.log(item);
   const { taskDate, today, setTaskDate } = useDateContext();
 
   const { dismiss } = useBottomSheetModal();
   const [curYear, setCurYear] = useState(taskDate.year);
   const [curMonth, setCurMonth] = useState(taskDate.month);
   const [monthDays, setMonthDays] = useState<TaskDate[]>([]);
-  const bottomSheetWidth = useWindowDimensions().width - ms(20, 0.3);
+  const bottomSheetWidth = useWindowDimensions().width - ms(15, 0.3);
   const bottomSheetHeight = useWindowDimensions().height / 2;
   const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
 
@@ -233,39 +233,28 @@ const MonthCalendar = ({
     <Animated.View
       style={[
         {
-          width: bottomSheetWidth * 2,
+          width: bottomSheetWidth * 2 - ms(15, 0.3),
           height: bottomSheetHeight + ms(150, 0.3),
           flexDirection: 'row',
           overflow: 'hidden',
+          justifyContent: 'space-between',
         },
         transformXAnime,
       ]}>
       <View
         style={{
-          width: bottomSheetWidth,
+          width: bottomSheetWidth - ms(15, 0.3),
           height: bottomSheetHeight,
-          paddingHorizontal: ms(28, 0.3),
           paddingVertical: itemAdd ? 0 : ms(8, 0.3),
         }}>
-        {itemAdd ? (
-          <Text
-            style={[
-              fontStyle.fontSizeMain,
-              {
-                color: theme.textColor,
-                paddingVertical: ms(20, 0.3),
-              },
-            ]}>
-            날짜를 선택하세요
-          </Text>
-        ) : null}
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingHorizontal: ms(4, 0.3),
-            marginBottom: ms(5, 0.3),
+            paddingHorizontal: ms(45, 0.3),
+            marginBottom: ms(10, 0.3),
+            marginTop: ms(25, 0.3),
           }}>
           {!itemAdd ? (
             <TouchableOpacity
@@ -306,7 +295,7 @@ const MonthCalendar = ({
             <Icon name='right' color={theme.textColor}></Icon>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: ms(20, 0.3) }}>
           <View
             style={{
               flexDirection: 'row',
@@ -314,7 +303,7 @@ const MonthCalendar = ({
             }}>
             {days.map(value => {
               return (
-                <View key={value.toString()} style={[styles.cell]}>
+                <View key={value.toString()} style={[styles.cell, { flex: 1 }]}>
                   <Text
                     style={[
                       styles.daysfont,
@@ -333,7 +322,7 @@ const MonthCalendar = ({
             style={{
               flex: 1,
               flexDirection: 'column',
-              marginHorizontal: ms(-8, 0.3),
+              // marginHorizontal: ms(-8, 0.3),
             }}>
             <BottomSheetFlatList
               style={{ flex: 1 }}
@@ -347,21 +336,24 @@ const MonthCalendar = ({
           <TouchableOpacity
             onPress={() => {
               layoutX.value = -bottomSheetWidth;
-              setTodoBottomSheetSnapPoint('70%');
+              setTodoBottomSheetSnapPoint('65%');
             }}
             style={{
               backgroundColor: theme.textColor,
-              padding: ms(13, 0.3),
-              marginHorizontal: ms(8, 0.3),
+              padding: ms(11, 0.3),
+              marginHorizontal: ms(30, 0.3),
               borderRadius: ms(5, 0.3),
               justifyContent: 'center',
               alignItems: 'center',
+              marginBottom: ms(30, 0.3),
             }}>
             <Text
-              style={{
-                fontFamily: 'Pretendard-Medium',
-                backgroundColor: theme.textColor,
-              }}>
+              style={[
+                {
+                  color: theme.backgroundColor,
+                },
+                fontStyle.BtnFont,
+              ]}>
               다음
             </Text>
           </TouchableOpacity>
@@ -369,14 +361,14 @@ const MonthCalendar = ({
       </View>
       <View
         style={{
-          width: bottomSheetWidth,
+          width: bottomSheetWidth - ms(15, 0.3),
           height: bottomSheetHeight + ms(100, 0.3),
           padding: ms(10, 0.3),
         }}>
         <TodoAdd
           item={item}
           setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
-          completeDelete={completeDelete}
+          itemDelete={itemDelete}
         />
       </View>
     </Animated.View>
@@ -392,7 +384,7 @@ const styles = StyleSheet.create({
     fontSize: ms(18, 0.3),
   },
   cell: {
-    padding: ms(10, 0.3), //요일 박스 크기
+    // padding: ms(10, 0.3),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(5, 0.3),
@@ -411,13 +403,6 @@ const styles = StyleSheet.create({
   },
   pressedBtn: {
     backgroundColor: 'white',
-  },
-  bottomSheetContainer: {
-    flex: 1,
-    paddingHorizontal: ms(20, 0.3),
-    marginHorizontal: ms(10, 0.3),
-    borderBottomRightRadius: 15,
-    borderBottomLeftRadius: 15,
   },
 });
 

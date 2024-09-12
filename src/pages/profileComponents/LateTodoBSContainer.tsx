@@ -21,11 +21,9 @@ import MonthCalendar from '../commonComponents/MonthCalendar';
 const LateTodoBSContainer = ({
   item,
   itemDelete,
-  completeDelete,
 }: {
   item: Todo;
   itemDelete(todo: Todo): void;
-  completeDelete(itemId: Realm.BSON.ObjectId): void;
 }) => {
   const { theme } = useColors();
 
@@ -77,15 +75,13 @@ const LateTodoBSContainer = ({
   );
 
   return (
-    <>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={{ flex: 1 }}
-        onPress={() => {
-          todoHandlePresentModal();
-        }}>
-        <TodoItemDetail item={item} itemDelete={itemDelete} />
-      </TouchableOpacity>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={{ flex: 1 }}
+      onPress={() => {
+        todoHandlePresentModal();
+      }}>
+      <TodoItemDetail item={item} itemDelete={itemDelete} />
       <BottomSheetModal
         ref={todoBottomSheetModalRef}
         index={0}
@@ -117,11 +113,11 @@ const LateTodoBSContainer = ({
             itemAdd={true}
             setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
             item={item}
-            completeDelete={completeDelete}
+            itemDelete={itemDelete}
           />
         </BottomSheetView>
       </BottomSheetModal>
-    </>
+    </TouchableOpacity>
   );
 };
 

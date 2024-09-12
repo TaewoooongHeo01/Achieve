@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
 import Realm from 'realm';
-import { View, Platform, StatusBar, Text, ScrollView } from 'react-native';
+import {
+  View,
+  Platform,
+  StatusBar,
+  Text,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import { GoalDetailScreenProps } from '../../../App';
 import { useObject } from '@realm/react';
 import { Goal, Todo } from '../../../realm/models';
@@ -141,30 +148,64 @@ const GoalDetail = ({
               alignItems: 'center',
             }}>
             {goal ? (
+              // <LinearGradient
+              //   colors={theme.gradientColor[goal?.color]}
+              //   style={{
+              //     width: ms(300, 0.3),
+              //     height: ms(189, 0.3),
+              //     borderRadius: ms(5, 0.3),
+              //     justifyContent: 'space-between',
+              //     padding: ms(30, 0.3),
+              //   }}>
+              //   <Text
+              //     style={{
+              //       fontSize: ms(20, 0.3),
+              //       fontFamily: 'Pretendard-SemiBold',
+              //     }}>
+              //     {goal.title}
+              //   </Text>
+              //   <View
+              //     style={{
+              //       flexDirection: 'row',
+              //       alignItems: 'center',
+              //       justifyContent: 'space-between',
+              //     }}>
+              //     <Text style={fontStyle.fontSizeSub}> {goal.startDate}-</Text>
+              //     <GoalIcon name={goal.icon} size={ms(18, 0.3)} />
+              //   </View>
+              // </LinearGradient>
               <LinearGradient
-                colors={theme.gradientColor[goal?.color]}
-                style={{
-                  width: ms(300, 0.3),
-                  height: ms(189, 0.3),
-                  borderRadius: ms(5, 0.3),
-                  justifyContent: 'space-between',
-                  padding: ms(30, 0.3),
-                }}>
-                <Text
-                  style={{
-                    fontSize: ms(20, 0.3),
-                    fontFamily: 'Pretendard-SemiBold',
-                  }}>
-                  {goal.title}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text style={fontStyle.fontSizeSub}> {goal.startDate}-</Text>
-                  <GoalIcon name={goal.icon} size={ms(18, 0.3)} />
+                colors={theme.gradientColor[goal.color]}
+                style={[
+                  GoalStyle.layout,
+                  { marginRight: !goal.isComplete ? ms(10, 0.3) : null },
+                ]}
+                useAngle={true}
+                angle={35}>
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={[{ flex: ms(0.75, 0.3) }, GoalStyle.titleContainer]}>
+                    <Text
+                      style={[
+                        GoalStyle.titleText,
+                        fontStyle.fontSizeSub,
+                        {
+                          color: 'black',
+                          fontFamily: 'Pretendard-Medium',
+                          fontSize: ms(16, 0.3),
+                        },
+                      ]}>
+                      {goal.title}
+                    </Text>
+                  </View>
+                  <View
+                    style={[GoalStyle.iconD_day, { flex: ms(0.25, 0.3) }]}
+                    // onLayout={e => {
+                    //   setIconSize(e.nativeEvent.layout.height);
+                    // }}
+                  >
+                    <GoalIcon name={goal.icon} size={ms(23, 0.3)} />
+                  </View>
                 </View>
               </LinearGradient>
             ) : null}
@@ -220,5 +261,34 @@ const GoalDetail = ({
     </SafeAreaView>
   );
 };
+
+const GoalStyle = StyleSheet.create({
+  layout: {
+    flex: 1,
+    width: ms(120, 0.3),
+    height: ms(120, 0.3),
+    borderRadius: ms(5, 0.3),
+    padding: ms(9, 0.3),
+  },
+  titleContainer: {
+    justifyContent: 'flex-start',
+  },
+  iconD_day: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  todoText: {
+    fontSize: ms(13, 0.3),
+    color: '#282828',
+    fontFamily: 'Pretendard-Medium',
+  },
+  titleText: {
+    fontSize: ms(16, 0.3),
+    fontFamily: 'Pretendard-SemiBold',
+    marginBottom: ms(5, 0.3),
+    marginTop: ms(2, 0.3),
+  },
+});
 
 export default GoalDetail;

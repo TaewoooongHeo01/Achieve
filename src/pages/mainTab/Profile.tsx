@@ -76,17 +76,22 @@ const Profile = (): React.JSX.Element => {
           <View
             style={[
               currentTheme === 'light' ? shadow.boxShadow : {},
-              { backgroundColor: theme.backgroundColor },
+              {
+                backgroundColor:
+                  currentTheme === 'light'
+                    ? '#A7D397'
+                    : 'rgba(34, 243, 118, 1)',
+              },
               styles.goalContainer,
             ]}>
             <Text
               style={[
-                { color: theme.textColor, marginBottom: ms(5, 0.3) },
+                { color: '#282828', marginBottom: ms(5, 0.3) },
                 fontStyle.fontSizeMain,
               ]}>
               목표 설정하기
             </Text>
-            <Text style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
+            <Text style={[{ color: '#282828' }, fontStyle.fontSizeSub]}>
               해야 할 일들의 대략적인 목표를 설정해보세요
             </Text>
           </View>
@@ -113,20 +118,16 @@ const Profile = (): React.JSX.Element => {
               <View
                 style={[
                   {
-                    backgroundColor: theme.backgroundColor,
+                    backgroundColor:
+                      currentTheme === 'light' ? '#EEF0E5' : '#ddff33',
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text
-                  style={[
-                    fontStyle.fontSizeMain,
-                    { color: theme.textColor, marginBottom: ms(3, 0.3) },
-                  ]}>
+                <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
                   Achieve
                 </Text>
-                <Text
-                  style={[{ color: theme.textColor }, fontStyle.fontSizeSub]}>
+                <Text style={[{ color: '#282828' }, fontStyle.fontSizeSub]}>
                   제대로 사용하기
                 </Text>
               </View>
@@ -145,13 +146,13 @@ const Profile = (): React.JSX.Element => {
               <View
                 style={[
                   {
-                    backgroundColor: theme.backgroundColor,
+                    backgroundColor:
+                      currentTheme === 'light' ? '#CECECE' : '#CECECE',
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text
-                  style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+                <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
                   달성한 목표들
                 </Text>
               </View>
@@ -177,13 +178,13 @@ const Profile = (): React.JSX.Element => {
               <View
                 style={[
                   {
-                    backgroundColor: theme.backgroundColor,
+                    backgroundColor:
+                      currentTheme === 'light' ? '#F2F2F2' : '#F2F2F2',
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text
-                  style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+                <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
                   나중에 할 일
                 </Text>
               </View>
@@ -202,13 +203,13 @@ const Profile = (): React.JSX.Element => {
               <View
                 style={[
                   {
-                    backgroundColor: theme.backgroundColor,
+                    backgroundColor:
+                      currentTheme === 'light' ? '#6A6A6A' : '#6A6A6A',
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text
-                  style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+                <Text style={[fontStyle.fontSizeMain, { color: 'white' }]}>
                   설정
                 </Text>
               </View>

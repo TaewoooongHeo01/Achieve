@@ -306,7 +306,7 @@ const TodoInfo = ({
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
-            console.log();
+            dismiss();
             navigation.navigate('GoalDetail', { _id: goal._id.toString() });
           }}
           style={[

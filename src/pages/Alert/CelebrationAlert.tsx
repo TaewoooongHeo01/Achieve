@@ -10,28 +10,42 @@ const CelebrationAlert = () => {
 
   return (
     <View
-      style={{
-        width: ms(300, 0.3),
-        backgroundColor: theme.backgroundColor,
-        borderRadius: ms(5, 0.3),
-        padding: ms(20, 0.3),
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-      }}>
-      <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-        🥳 축하드려요!
+      style={[
+        {
+          backgroundColor: theme.backgroundColor,
+          padding: ms(20, 0.3),
+          borderRadius: ms(5, 0.3),
+          width: ms(290, 0.3),
+        },
+      ]}>
+      <Text
+        style={[
+          {
+            fontFamily: 'Pretendard-Semibold',
+            fontSize: ms(20, 0.3),
+            color: theme.textColor,
+          },
+        ]}>
+        축하합니다!🥳
       </Text>
       <Text
         style={[
-          fontStyle.fontSizeMain,
-          { color: theme.textColor, marginBottom: ms(15, 0.3) },
+          {
+            fontFamily: 'Pretendard-Semibold',
+            fontSize: ms(20, 0.3),
+            color: theme.textColor,
+          },
         ]}>
         목표를 달성했어요
       </Text>
       <Text
         style={[
           fontStyle.fontSizeSub,
-          { color: theme.textColor, marginBottom: ms(15, 0.3) },
+          {
+            color: theme.textColor,
+            marginBottom: ms(20, 0.3),
+            marginTop: ms(5, 0.3),
+          },
         ]}>
         달성한 목표들은 [ 내 프로필 ] → [ 달성한 목표들 ] 에서 확인할 수 있어요
       </Text>
@@ -39,15 +53,15 @@ const CelebrationAlert = () => {
         onPress={() => {
           closeAlert();
         }}
-        activeOpacity={0.8}
         style={{
-          backgroundColor: 'green',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: ms(8, 0.3),
+          width: '100%',
+          height: ms(36, 0.3),
+          backgroundColor: 'green',
           borderRadius: ms(5, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+        <Text style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
           완료
         </Text>
       </TouchableOpacity>

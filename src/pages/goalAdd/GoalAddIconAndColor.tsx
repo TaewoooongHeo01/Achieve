@@ -307,9 +307,8 @@ const GoalAddIconAndColor = ({
               borderWidth: 0.2,
               backgroundColor: theme.textColor,
             }}>
-            <Text
-              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
-              다음
+            <Text style={[fontStyle.BtnFont, { color: theme.backgroundColor }]}>
+              완료
             </Text>
           </TouchableOpacity>
         </View>

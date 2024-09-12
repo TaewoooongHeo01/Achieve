@@ -10,10 +10,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useColors } from '../../context/ThemeContext';
+import { shadow } from '../../assets/style/shadow';
 
 const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
   const realm = useRealm();
-  const { theme } = useColors();
+  const { theme, currentTheme } = useColors();
   const fd = realm.objectForPrimaryKey<FullyDate>(
     'FullyDate',
     dateKey,
@@ -31,11 +32,14 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
 
   return (
     <View
-      style={{
-        height: ms(80, 0.3),
-        backgroundColor: theme.backgroundColor,
-        borderRadius: ms(5, 0.3),
-      }}>
+      style={[
+        {
+          height: ms(80, 0.3),
+          backgroundColor: theme.backgroundColor,
+          borderRadius: ms(5, 0.3),
+        },
+        currentTheme === 'light' ? shadow.boxShadow : {},
+      ]}>
       <View
         style={{
           flex: ms(0.45, 0.3),
@@ -44,7 +48,7 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
         }}>
         <Text
           style={[
-            fontStyle.fontSizeSub,
+            fontStyle.BtnFont,
             { color: theme.textColor, marginLeft: ms(13, 0.3) },
           ]}>
           얼마나 몰입했나요? - {dateKey.substring(0, 4)}.

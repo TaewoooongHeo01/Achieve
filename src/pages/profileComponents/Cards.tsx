@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Platform,
+  ScrollView,
   StatusBar,
+  StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import {
@@ -21,6 +24,10 @@ import { Goal } from '../../../realm/models';
 import { FlatList } from 'react-native-gesture-handler';
 import GoalComponentDetail from '../commonComponents/GoalComponentDetail';
 import { fontStyle } from '../../assets/style/fontStyle';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
+import LinearGradient from 'react-native-linear-gradient';
+import GoalIcon from 'react-native-vector-icons/Ionicons';
+import { shadow } from '../../assets/style/shadow';
 
 const Cards = () => {
   const { theme, currentTheme } = useColors();
@@ -30,55 +37,68 @@ const Cards = () => {
   const goals = useQuery(Goal)
     .filtered('isComplete == true')
     .sorted('todoCnt', true);
+  const windowWidth = useWindowDimensions().width;
+  const [desc, setDesc] = useState<string>('');
 
-  const renderItem = ({ item }: { item: Goal[] }) => {
+  const renderItem = ({ item }: { item: Goal }) => {
     return (
       <View
         style={{
-          flex: 1,
-          flexDirection: 'row',
+          width: windowWidth,
+          height: ms(250, 0.3),
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
-        {item[0] ? (
-          <View style={{ margin: ms(5, 0.3) }}>
-            <GoalComponentDetail
-              item={item[0]}
-              theme={theme}
-              navigation={navigation}
-            />
+        <LinearGradient
+          colors={theme.gradientColor[item.color]}
+          style={[GoalStyle.layout]}
+          useAngle={true}
+          angle={35}>
+          <View style={{ flex: 1, justifyContent: 'space-between' }}>
+            <View
+              style={[
+                GoalStyle.titleContainer,
+                {
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                },
+              ]}>
+              <View style={{ flex: 0.9 }}>
+                <Text
+                  style={[
+                    GoalStyle.titleText,
+                    fontStyle.BtnFont,
+                    { color: 'black' },
+                  ]}>
+                  {item.title}
+                </Text>
+              </View>
+              <View style={{}}>
+                <Text style={[fontStyle.BtnFont, { color: 'black' }]}>
+                  {item.todoCnt}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={[
+                GoalStyle.iconD_day,
+                { justifyContent: 'space-between', alignItems: 'center' },
+              ]}>
+              <Text style={[{ color: 'black' }, fontStyle.BtnFont]}>
+                {item.startDate}-{item.endDate}
+              </Text>
+              <GoalIcon
+                name={item.icon}
+                size={ms(23, 0.3)}
+                style={{ color: 'black' }}
+              />
+            </View>
           </View>
-        ) : null}
-        {item[1] ? (
-          <View style={{ margin: ms(5, 0.3) }}>
-            <GoalComponentDetail
-              item={item[1]}
-              theme={theme}
-              navigation={navigation}
-            />
-          </View>
-        ) : null}
+        </LinearGradient>
       </View>
     );
   };
-
-  const goalArr: Goal[][] = [];
-  let idx = 0;
-  const t = true;
-  while (t) {
-    let flag;
-    const gArr: Goal[] = [];
-    for (let i = 0; i < 2; i++) {
-      gArr[i] = goals[idx];
-      if (idx == goals.length) {
-        flag = true;
-        break;
-      }
-      idx += 1;
-    }
-    goalArr.push(gArr);
-    if (flag) {
-      break;
-    }
-  }
 
   return (
     <SafeAreaView
@@ -103,38 +123,91 @@ const Cards = () => {
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <TouchableOpacity
-        activeOpacity={1}
-        style={{ marginBottom: ms(7, 0.3), paddingHorizontal: ms(18, 0.3) }}
-        onPress={() => {
-          navigation.goBack();
-        }}>
-        <Icon name='arrowleft' color={theme.textColor} size={ms(23, 0.3)} />
-      </TouchableOpacity>
-      <View
-        style={{
-          backgroundColor: theme.appBackgroundColor,
-          justifyContent: 'center',
-          paddingTop: Platform.OS === 'android' ? ms(10, 0.3) : 0,
-          marginHorizontal: ms(18, 0.3),
-        }}>
-        <Text
-          style={[
-            fontStyle.fontSizeMain,
-            { color: theme.textColor, marginVertical: ms(20, 0.3) },
-          ]}>
-          완료한 목표들
-        </Text>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <View style={[topMargin.margin, { flex: 1 }]}>
+        <TouchableOpacity
+          activeOpacity={1}
+          style={{ marginBottom: ms(7, 0.3), paddingHorizontal: ms(18, 0.3) }}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Icon name='arrowleft' color={theme.textColor} size={ms(23, 0.3)} />
+        </TouchableOpacity>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <FlatList
-            data={goalArr}
+            data={goals}
             renderItem={renderItem}
-            style={{ marginHorizontal: ms(20, 0.3) }}
+            horizontal
+            snapToInterval={windowWidth}
+            snapToAlignment='center'
+            decelerationRate='fast'
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: ms(130, 0.3),
+            }}
+            onViewableItemsChanged={({ viewableItems, changed }) => {
+              setDesc(() => viewableItems[0].item.description);
+            }}
           />
+          {desc === '' ? null : (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={[
+                {
+                  backgroundColor: theme.backgroundColor,
+                  padding: ms(10, 0.3),
+                  borderRadius: ms(5, 0.3),
+                  width: ms(320, 0.3),
+                },
+                shadow.boxShadow,
+              ]}>
+              <Text
+                style={{
+                  color: theme.textColor,
+                  fontFamily: 'Pretendard-Medium',
+                  fontSize: ms(16, 0.3),
+                  lineHeight: ms(22, 0.3),
+                }}>
+                {desc}
+              </Text>
+            </ScrollView>
+          )}
         </View>
       </View>
     </SafeAreaView>
   );
 };
+
+const GoalStyle = StyleSheet.create({
+  layout: {
+    width: ms(300, 0.3),
+    height: ms(189, 0.3),
+    borderRadius: ms(5, 0.3),
+    padding: ms(20, 0.3),
+  },
+  titleContainer: {
+    justifyContent: 'flex-start',
+  },
+  iconD_day: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  todoText: {
+    fontSize: ms(13, 0.3),
+    color: '#282828',
+    fontFamily: 'Pretendard-Medium',
+  },
+  titleText: {
+    fontSize: ms(16, 0.3),
+    fontFamily: 'Pretendard-SemiBold',
+    marginBottom: ms(5, 0.3),
+  },
+});
 
 export default Cards;

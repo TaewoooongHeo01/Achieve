@@ -1,3 +1,5 @@
+import { UpdateMode } from 'realm';
+import { makeDateFormatKey } from '../utils/makeDateFormatKey';
 import { FullyDate } from './../../realm/models';
 //개발 단계에서 넣는 테스트 데이터
 import { useQuery, useRealm } from '@realm/react';
@@ -14,8 +16,25 @@ const todayDate: string = year + month + today;
 const tomorrowDate = '20240912';
 // const tomorrowDate: string = year + month + tomorrow;
 
+const dateArr = [];
+const fArr = [0.2, 0.4, 0.6, 0.8, 1.0];
+for (let i = 0; i < 104; i++) {
+  const randomInt = Math.floor(Math.random() * 5);
+  const fullness = fArr[randomInt];
+  const date = new Date(now.getFullYear(), now.getMonth() - 3, i);
+  const year = String(date.getFullYear());
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  dateArr.push({
+    dateKey: year + month + d,
+    fullness: fullness,
+    dayIdx: date.getDay(),
+    todos: [],
+  });
+}
+
 const phrase = [
-  '길을 걷다가 돌을 보면 약자는 그것을 걸림돌이라고 하고 강자는 그것을 디딤돌이라고 한다. 길을 걷다가 돌을 보면 약자는 그것을 걸림돌이라고 하고 강자는 그것을 디딤돌이라고 한다.길을 걷다가 돌을 보면 약 다.길을 걷다가 돌을 보면 약',
+  '길을 걷다가 돌을 보면 약자는 그것을 걸림돌이라고 하고 강자는 그것을 디딤돌이라고 한다.',
 ];
 
 const UserData = {
@@ -240,13 +259,44 @@ export const initialize = () => {
   realm.write(() => {
     Goal = realm.create('Goal', {
       title: G.title,
-      isComplete: false,
+      isComplete: true,
       icon: G.icon,
       color: G.color,
       todos: [],
       description: G.description,
       startDate: G.startDate,
       todoCnt: G.todoCnt,
+    });
+    realm.create('Goal', {
+      title:
+        'd아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아ㅍ',
+      isComplete: true,
+      icon: 'rocket',
+      color: 8,
+      todos: [],
+      description: '',
+      startDate: G.startDate,
+      todoCnt: 5,
+    });
+    realm.create('Goal', {
+      title: '김',
+      isComplete: true,
+      icon: 'book',
+      color: 11,
+      todos: [],
+      description: '김',
+      startDate: G.startDate,
+      todoCnt: 20,
+    });
+    realm.create('Goal', {
+      title: '김asdfasdfasdf',
+      isComplete: true,
+      icon: 'book',
+      color: 11,
+      todos: [],
+      description: '김asdfasdfasdf',
+      startDate: G.startDate,
+      todoCnt: 20,
     });
   });
 
@@ -276,6 +326,22 @@ export const initialize = () => {
     });
     Goal.todos.push(todo);
     date.todos.push(todo);
+  });
+
+  realm.write(() => {
+    for (let i = 0; i < dateArr.length; i++) {
+      const d = dateArr[i];
+      realm.create(
+        'FullyDate',
+        {
+          dateKey: d.dateKey,
+          fullness: d.fullness,
+          dayIdx: d.dayIdx,
+          todos: [],
+        },
+        UpdateMode.Modified,
+      );
+    }
   });
 };
 

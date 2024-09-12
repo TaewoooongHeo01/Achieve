@@ -20,6 +20,7 @@ import { useQuery } from '@realm/react';
 import { User } from '../../../realm/models';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { shadow } from '../../assets/style/shadow';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
 
 type Setting = {
   title: string;
@@ -35,7 +36,7 @@ const Options = () => {
 
   const acount: Setting = {
     title: user.username,
-    subTitle: '내 정보 수정하기',
+    subTitle: '이름 수정하기',
   };
 
   const setting: Setting[] = [
@@ -72,7 +73,7 @@ const Options = () => {
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <View style={{ paddingHorizontal: ms(18, 0.3) }}>
+      <View style={[topMargin.margin, { paddingHorizontal: ms(18, 0.3) }]}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {

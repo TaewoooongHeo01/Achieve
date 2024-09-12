@@ -21,7 +21,6 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import CalendarBottomSheet from '../../commonComponents/CalendarBottomSheet';
 import WeekCalender from '../../commonComponents/WeekCalendar';
 import { dayNames, useDateContext } from '../../../context/DateContext';
 import { useColors } from '../../../context/ThemeContext';
@@ -57,7 +56,7 @@ const TodoDate = (): React.ReactElement => {
   );
 
   const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
-    useState<string>('60%');
+    useState<string>('65%');
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
   const todoSnapPoints = useMemo(
     () => [todoBottomSheetSnapPoint],
@@ -69,13 +68,13 @@ const TodoDate = (): React.ReactElement => {
       const keyboardDidShowListener = Keyboard.addListener(
         'keyboardDidShow',
         () => {
-          setTodoBottomSheetSnapPoint('90%');
+          setTodoBottomSheetSnapPoint('100%');
         },
       );
       const keyboardDidHideListener = Keyboard.addListener(
         'keyboardDidHide',
         () => {
-          setTodoBottomSheetSnapPoint('70%');
+          setTodoBottomSheetSnapPoint('65%');
         },
       );
 
@@ -189,23 +188,28 @@ const TodoDate = (): React.ReactElement => {
         bottomInset={50}
         handleStyle={{
           backgroundColor: theme.backgroundColor,
-          borderTopRightRadius: 15,
-          borderTopLeftRadius: 15,
-          marginHorizontal: ms(10, 0.3),
+          borderTopRightRadius: ms(10, 0.3),
+          borderTopLeftRadius: ms(10, 0.3),
           height: 0,
+        }}
+        style={{
+          borderRadius: ms(10, 0.3),
+          marginHorizontal: ms(15, 0.3),
         }}
         handleIndicatorStyle={{ backgroundColor: theme.textColor }}
         backgroundStyle={{
           backgroundColor: 'transparent',
-          marginHorizontal: ms(10, 0.3),
           flex: 1,
         }}>
         <BottomSheetView
           style={[
             styles.bottomSheetContainer,
-            { backgroundColor: theme.backgroundColor },
+            {
+              backgroundColor: theme.backgroundColor,
+              marginTop: ms(-2, 0.3),
+            },
           ]}>
-          <CalendarBottomSheet />
+          <MonthCalendar itemAdd={false}></MonthCalendar>
         </BottomSheetView>
       </BottomSheetModal>
       <BottomSheetModal
@@ -216,14 +220,17 @@ const TodoDate = (): React.ReactElement => {
         keyboardBehavior='interactive'
         keyboardBlurBehavior='restore'
         android_keyboardInputMode='adjustResize'
+        detached={true}
+        bottomInset={50}
         handleStyle={{
           backgroundColor: theme.backgroundColor,
-          borderTopRightRadius: 15,
-          borderTopLeftRadius: 15,
-          marginHorizontal: ms(10, 0.3),
+          borderTopRightRadius: ms(10, 0.3),
+          borderTopLeftRadius: ms(10, 0.3),
           height: 0,
-          borderColor: 'transparent',
-          borderBottomWidth: 0,
+        }}
+        style={{
+          borderRadius: ms(10, 0.3),
+          marginHorizontal: ms(15, 0.3),
         }}
         handleIndicatorStyle={{ backgroundColor: theme.textColor }}
         backgroundStyle={{
@@ -233,7 +240,7 @@ const TodoDate = (): React.ReactElement => {
         <BottomSheetView
           style={[
             styles.bottomSheetContainer,
-            { backgroundColor: theme.backgroundColor },
+            { backgroundColor: theme.backgroundColor, marginTop: ms(-2, 0.3) },
           ]}>
           <MonthCalendar
             itemAdd={true}
@@ -255,7 +262,7 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     flex: 1,
-    marginHorizontal: ms(10, 0.3),
+    // marginHorizontal: ms(10, 0.3),
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
   },

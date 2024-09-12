@@ -120,10 +120,10 @@ const TodoItem = ({
     .onUpdate(e => {
       translateX.value = startX.value + e.translationX;
       if (translateX.value > 0) {
-        (iconBackgroundColor.value = '#FB8159'),
+        (iconBackgroundColor.value = 'rgba(255, 124, 101, 1)'),
           (backFontOpacityLeft.value = withTiming(1));
       } else if (translateX.value < 0) {
-        (iconBackgroundColor.value = '#D2E168'),
+        (iconBackgroundColor.value = theme.green),
           (backFontOpacityRight.value = withTiming(1));
       }
     })

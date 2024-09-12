@@ -177,8 +177,7 @@ const GoalAdd = () => {
             }}
             style={{
               width: '100%',
-              height: ms(45, 0.3),
-
+              height: ms(48, 0.3),
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: ms(5, 0.3),
@@ -186,8 +185,7 @@ const GoalAdd = () => {
               borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
               borderWidth: 0.2,
             }}>
-            <Text
-              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
+            <Text style={[fontStyle.BtnFont, { color: theme.backgroundColor }]}>
               다음
             </Text>
           </TouchableOpacity>

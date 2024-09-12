@@ -12,4 +12,8 @@ export const fontStyle = StyleSheet.create({
     // fontWeight: 'bold',
     fontFamily: 'Pretendard-Medium',
   },
+  BtnFont: {
+    fontSize: ms(15, 0.3),
+    fontFamily: 'Pretendard-SemiBold',
+  },
 });

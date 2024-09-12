@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../App';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
 
 const HowToUse = () => {
   const navigation =
@@ -48,7 +49,8 @@ const HowToUse = () => {
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <ScrollView style={{ flex: 1, paddingHorizontal: ms(18, 0.3) }}>
+      <ScrollView
+        style={[topMargin.margin, { flex: 1, paddingHorizontal: ms(18, 0.3) }]}>
         <TouchableOpacity
           activeOpacity={1}
           style={{ marginBottom: ms(7, 0.3) }}

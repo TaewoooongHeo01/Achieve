@@ -214,8 +214,7 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
               marginBottom: ms(5, 0.3),
               padding: ms(7, 0.3),
             }}>
-            <Text
-              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
+            <Text style={[fontStyle.BtnFont, { color: theme.backgroundColor }]}>
               다음
             </Text>
           </TouchableOpacity>

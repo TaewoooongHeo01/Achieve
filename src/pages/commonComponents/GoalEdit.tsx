@@ -1,5 +1,7 @@
 import {
   Alert,
+  Keyboard,
+  KeyboardAvoidingView,
   Platform,
   StatusBar,
   Text,
@@ -90,182 +92,195 @@ const GoalEdit = ({ route, navigation }: GoalEditProps) => {
           <Icon name='arrowleft' size={ms(23, 0.3)} color={theme.textColor} />
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1, marginHorizontal: ms(18, 0.3) }}>
-        <View style={{ flex: 0.9, marginTop: ms(20, 0.3) }}>
-          <View
-            style={{
-              justifyContent: 'flex-start',
-            }}>
-            <Text
-              style={[
-                fontStyle.fontSizeMain,
-                { color: theme.textColor, marginBottom: ms(10, 0.3) },
-              ]}>
-              제목
-            </Text>
-            <TextInput
-              style={{
-                width: '100%',
-                height: ms(40, 0.3),
-                borderRadius: ms(5, 0.3),
-                marginBottom: ms(5, 0.3),
-                color: theme.textColor,
-                backgroundColor:
-                  currentTheme === 'light' ? '#F4F4F4' : theme.backgroundColor,
-                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-                // borderWidth: 0.2,
-                padding: ms(7, 0.3),
-              }}
-              value={title}
-              onChangeText={setTitle}
-              onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
-            />
-          </View>
-          <View
-            style={{
-              justifyContent: 'flex-start',
-              marginTop: ms(20, 0.3),
-            }}>
-            <Text
-              style={[
-                fontStyle.fontSizeMain,
-                { color: theme.textColor, marginBottom: ms(10, 0.3) },
-              ]}>
-              설명
-            </Text>
-            <TextInput
-              style={{
-                width: '100%',
-                height: ms(40, 0.3),
-                borderRadius: ms(5, 0.3),
-                marginBottom: ms(5, 0.3),
-                color: theme.textColor,
-                backgroundColor:
-                  currentTheme === 'light' ? '#F4F4F4' : theme.backgroundColor,
-                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-                padding: ms(7, 0.3),
-              }}
-              value={description}
-              onChangeText={setDescription}
-              onEndEditing={e => setDescription(e.nativeEvent.text.trim())}
-            />
-          </View>
-          <Text
-            style={[
-              { marginTop: ms(20, 0.3), color: theme.textColor },
-              fontStyle.fontSizeMain,
-            ]}>
-            설정
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: ms(15, 0.3),
-              justifyContent: 'space-between',
-            }}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                if (goal) {
-                  navigation.navigate('Main');
-                  showAlert({
-                    alertType: 'custom',
-                    dismissable: true,
-                    customAlert: (
-                      <DeleteGoalAlert goal={goal} todos={goal.todos} />
-                    ),
-                  });
-                }
-              }}
-              style={{
-                width: '48%',
-                height: ms(45, 0.3),
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: ms(5, 0.3),
-                backgroundColor: 'red',
-                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-                borderWidth: 0.2,
-                marginBottom: ms(70, 0.3),
-                padding: ms(7, 0.3),
-              }}>
-              <Text
-                style={[
-                  fontStyle.fontSizeSub,
-                  { color: theme.backgroundColor },
-                ]}>
-                목표 삭제
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                navigation.navigate('Main');
-                if (goal) {
-                  showAlert({
-                    alertType: 'custom',
-                    dismissable: true,
-                    customAlert: <CompleteGoalAlert goal={goal} />,
-                  });
-                }
-              }}
-              style={{
-                width: '48%',
-                height: ms(45, 0.3),
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: ms(5, 0.3),
-                backgroundColor: 'green',
-                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-                borderWidth: 0.2,
-                marginBottom: ms(70, 0.3),
-                padding: ms(7, 0.3),
-              }}>
-              <Text
-                style={[
-                  fontStyle.fontSizeSub,
-                  { color: theme.backgroundColor },
-                ]}>
-                목표 완료
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        activeOpacity={1}
+        onPress={() => {
+          Keyboard.dismiss();
+        }}>
         <View
           style={{
-            flex: ms(0.1, 0.3),
-            justifyContent: 'flex-end',
+            flex: 1,
+            marginHorizontal: ms(18, 0.3),
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => {
-              if (isValid() && title && description && goal) {
-                realm.write(() => {
-                  goal.title = title;
-                  goal.description = description;
-                });
-                navigation.goBack();
-              }
-            }}
-            style={{
-              width: '100%',
-              height: ms(45, 0.3),
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: ms(5, 0.3),
-              backgroundColor: theme.textColor,
-              borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-              borderWidth: 0.2,
-              marginBottom: ms(70, 0.3),
-              padding: ms(7, 0.3),
-            }}>
+          <View style={{ marginTop: ms(20, 0.3) }}>
+            <View
+              style={{
+                justifyContent: 'flex-start',
+              }}>
+              <Text
+                style={[
+                  fontStyle.fontSizeMain,
+                  { color: theme.textColor, marginBottom: ms(10, 0.3) },
+                ]}>
+                제목
+              </Text>
+              <TextInput
+                style={{
+                  width: '100%',
+                  height: ms(40, 0.3),
+                  borderRadius: ms(5, 0.3),
+                  marginBottom: ms(5, 0.3),
+                  color: theme.textColor,
+                  backgroundColor:
+                    currentTheme === 'light'
+                      ? '#F4F4F4'
+                      : theme.backgroundColor,
+                  borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                  // borderWidth: 0.2,
+                  padding: ms(7, 0.3),
+                }}
+                value={title}
+                onChangeText={setTitle}
+                onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
+              />
+            </View>
+            <View
+              style={{
+                justifyContent: 'flex-start',
+                marginTop: ms(20, 0.3),
+              }}>
+              <Text
+                style={[
+                  fontStyle.fontSizeMain,
+                  { color: theme.textColor, marginBottom: ms(10, 0.3) },
+                ]}>
+                설명
+              </Text>
+              <KeyboardAvoidingView behavior='position'>
+                <TextInput
+                  style={{
+                    width: '100%',
+                    height: ms(150, 0.3),
+                    borderRadius: ms(5, 0.3),
+                    marginBottom: ms(5, 0.3),
+                    color: theme.textColor,
+                    backgroundColor:
+                      currentTheme === 'light'
+                        ? '#F4F4F4'
+                        : theme.backgroundColor,
+                    borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                    padding: ms(7, 0.3),
+                    textAlignVertical: 'top',
+                  }}
+                  multiline={true}
+                  value={description}
+                  onChangeText={setDescription}
+                  onEndEditing={e => setDescription(e.nativeEvent.text.trim())}
+                />
+              </KeyboardAvoidingView>
+            </View>
             <Text
-              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
-              변경
+              style={[
+                { marginTop: ms(20, 0.3), color: theme.textColor },
+                fontStyle.fontSizeMain,
+              ]}>
+              설정
             </Text>
-          </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: ms(10, 0.3),
+                justifyContent: 'space-between',
+              }}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  if (goal) {
+                    navigation.navigate('Main');
+                    showAlert({
+                      alertType: 'custom',
+                      dismissable: true,
+                      customAlert: (
+                        <DeleteGoalAlert goal={goal} todos={goal.todos} />
+                      ),
+                    });
+                  }
+                }}
+                style={{
+                  width: '48%',
+                  height: ms(45, 0.3),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: ms(5, 0.3),
+                  backgroundColor: theme.red,
+                  borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                  marginBottom: ms(70, 0.3),
+                  padding: ms(7, 0.3),
+                }}>
+                <Text style={[fontStyle.BtnFont, { color: theme.textColor }]}>
+                  목표 삭제
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  navigation.navigate('Main');
+                  if (goal) {
+                    showAlert({
+                      alertType: 'custom',
+                      dismissable: true,
+                      customAlert: <CompleteGoalAlert goal={goal} />,
+                    });
+                  }
+                }}
+                style={{
+                  width: '48%',
+                  height: ms(45, 0.3),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: ms(5, 0.3),
+                  backgroundColor: theme.green,
+                  borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                  marginBottom: ms(70, 0.3),
+                  padding: ms(7, 0.3),
+                }}>
+                <Text style={[fontStyle.BtnFont, { color: theme.textColor }]}>
+                  목표 완료
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View
+            style={{
+              justifyContent: 'flex-end',
+            }}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                if (isValid() && title && description && goal) {
+                  realm.write(() => {
+                    goal.title = title;
+                    goal.description = description;
+                  });
+                  navigation.goBack();
+                }
+              }}
+              style={{
+                width: '100%',
+                height: ms(45, 0.3),
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: ms(5, 0.3),
+                backgroundColor: theme.textColor,
+                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                borderWidth: 0.2,
+                marginBottom: ms(70, 0.3),
+                padding: ms(7, 0.3),
+              }}>
+              <Text
+                style={[
+                  fontStyle.fontSizeSub,
+                  { color: theme.backgroundColor },
+                ]}>
+                변경
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

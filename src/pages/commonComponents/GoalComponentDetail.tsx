@@ -77,7 +77,17 @@ const GoalComponentDetail = ({
           angle={35}>
           <View style={{ flex: 1 }}>
             <View style={[{ flex: ms(0.75, 0.3) }, GoalStyle.titleContainer]}>
-              <Text style={GoalStyle.titleText}>{title}</Text>
+              <Text
+                style={[
+                  GoalStyle.titleText,
+                  {
+                    color: 'black',
+                    fontFamily: 'Pretendard-Medium',
+                    fontSize: ms(16, 0.3),
+                  },
+                ]}>
+                {title}
+              </Text>
             </View>
             <View
               style={[GoalStyle.iconD_day, { flex: ms(0.25, 0.3) }]}

@@ -10,7 +10,6 @@ import { useQuery, useRealm } from '@realm/react';
 import { FullyDate, Todo } from '../../../realm/models';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AnimatedBar from '../AchieveComponents/AnimatedBar';
-import { hitmapColorSet } from '../../assets/style/ThemeColor';
 
 type heapmapDataType = {
   dateKey: string;
@@ -197,7 +196,7 @@ export default function Achieve() {
                     borderColor:
                       currentTheme === 'light' ? '#B8B8B8' : '#121212',
                     backgroundColor:
-                      hitmapColorSet[
+                      theme.heatmapColor[
                         Math.max((map.get(value.dateKey) ?? 0) - 1, 0)
                       ] || 'green',
                   }}
@@ -288,7 +287,7 @@ export default function Achieve() {
             marginTop: ms(10, 0.3),
             marginBottom: ms(30, 0.3),
           }}>
-          {theme.hitmapColor.map((value, index) => {
+          {theme.heatmapColor.map((value, index) => {
             return (
               <View
                 key={index.toString()}

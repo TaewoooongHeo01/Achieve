@@ -9,6 +9,7 @@ import { Goal } from '../../../realm/models';
 import CelebrationAlert from './CelebrationAlert';
 import { useDateContext } from '../../context/DateContext';
 import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
   const { theme } = useColors();
@@ -18,26 +19,59 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
 
   return (
     <View
-      style={{
-        width: ms(300, 0.3),
-        backgroundColor: theme.backgroundColor,
-        borderRadius: ms(5, 0.3),
-        padding: ms(20, 0.3),
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-      }}>
-      <View>
-        <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-          {goal?.title} 을/를 달성했나요?
-        </Text>
-        <Text
-          style={[
-            fontStyle.fontSizeSub,
-            { color: theme.textColor, marginVertical: ms(15, 0.3) },
-          ]}>
-          목표를 완료하면 투두 생성 시 더이상 이 목표를 사용할 수 없어요
-        </Text>
+      style={[
+        {
+          backgroundColor: theme.backgroundColor,
+          padding: ms(20, 0.3),
+          borderRadius: ms(5, 0.3),
+          width: ms(290, 0.3),
+        },
+      ]}>
+      <View
+        style={{
+          width: ms(40, 0.3),
+          height: ms(40, 0.3),
+          borderRadius: ms(5, 0.3),
+          justifyContent: 'center',
+          alignItems: 'center',
+          // padding: ms(11, 0.3),
+          backgroundColor: theme.green,
+        }}>
+        <View
+          // onLayout={e => {
+          //   setIconSize(e.nativeEvent.layout.height);
+          // }}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            aspectRatio: 1,
+          }}>
+          <Ionicons name='checkmark' size={ms(22, 0.3)} />
+        </View>
       </View>
+      <Text
+        style={[
+          {
+            fontFamily: 'Pretendard-Semibold',
+            fontSize: ms(17, 0.3),
+            color: theme.textColor,
+            marginTop: ms(15, 0.3),
+          },
+        ]}>
+        {goal ? goal.title : '?'} 을/를 달성했나요?
+      </Text>
+      <Text
+        style={[
+          fontStyle.fontSizeSub,
+          {
+            color: theme.textColor,
+            marginBottom: ms(20, 0.3),
+            marginTop: ms(5, 0.3),
+          },
+        ]}>
+        목표를 완료하면 투두 생성 시 더이상 이 목표를 사용할 수 없어요
+      </Text>
       <TouchableOpacity
         onPress={() => {
           if (goal) {
@@ -53,16 +87,16 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
             customAlert: <CelebrationAlert />,
           });
         }}
-        activeOpacity={0.8}
         style={{
-          backgroundColor: 'green',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: ms(8, 0.3),
+          width: '100%',
+          height: ms(36, 0.3),
+          backgroundColor: theme.green,
           borderRadius: ms(5, 0.3),
         }}>
         <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
-          목표 완료
+          목표삭제
         </Text>
       </TouchableOpacity>
     </View>

@@ -27,6 +27,7 @@ const TodoItemDetail = ({
 }) => {
   const { theme, currentTheme } = useColors();
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
+  console.log('item detail render');
 
   return (
     <View
@@ -65,7 +66,7 @@ const TodoItemDetail = ({
                 borderRadius: ms(10, 0.3),
                 opacity: item.isComplete ? 0.5 : 1,
               }}
-              colors={theme.gradientColor[goal != undefined ? goal.color : 1]}>
+              colors={theme.gradientColor[goal != undefined ? goal.color : 0]}>
               <View
                 style={{
                   marginVertical: ms(10.3, 0.3),
@@ -98,6 +99,7 @@ const TodoItemDetail = ({
                 name='question'
                 style={{
                   textAlign: 'center',
+                  color: theme.backgroundColor,
                 }}
                 size={ms(20, 0.3)}
               />
@@ -105,10 +107,16 @@ const TodoItemDetail = ({
           )}
         </View>
       </View>
-      <View style={[styles.infoContainer]}>
+      <View
+        style={[
+          styles.infoContainer,
+          {
+            justifyContent: 'center',
+            marginBottom: ms(4, 0.3),
+          },
+        ]}>
         <View
           style={{
-            flex: ms(0.4, 0.3),
             flexDirection: 'row',
             alignItems: 'center',
           }}>
@@ -139,7 +147,6 @@ const TodoItemDetail = ({
         </View>
         <View
           style={{
-            flex: ms(0.4, 0.3),
             flexDirection: 'row',
             alignItems: 'center',
           }}>
@@ -207,7 +214,7 @@ const TodoItemDetail = ({
         ) : (
           <SubIcon
             name='check'
-            color='green'
+            color={theme.green}
             size={ms(20, 0.3)}
             style={{
               marginLeft: ms(5, 0.3),
@@ -228,16 +235,14 @@ const styles = StyleSheet.create({
     paddingRight: ms(10, 0.3),
   },
   iconContainer: {
-    flex: 0.2,
+    flex: ms(0.2, 0.3),
   },
   infoContainer: {
-    marginVertical: ms(9, 0),
-    flex: 0.6,
-    justifyContent: 'center',
+    flex: ms(0.6, 0.3),
     flexDirection: 'column',
   },
   dateContainer: {
-    flex: 0.2,
+    flex: ms(0.2, 0.3),
     alignItems: 'flex-end',
   },
 });

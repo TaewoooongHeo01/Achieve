@@ -17,7 +17,7 @@ export const shadow =
     : StyleSheet.create({
         boxShadow: {
           borderColor: '#ccc',
-          borderWidth: 0.3,
-          elevation: 0.6,
+          borderWidth: 0.4,
+          // elevation: 0.6,
         },
       });

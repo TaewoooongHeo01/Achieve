@@ -10,6 +10,7 @@ import { Realm } from '@realm/react';
 import CustomisableAlert, { showAlert } from 'react-native-customisable-alert';
 import CheckFullnessAlert from '../../Alert/CheckFullnessAlert';
 import { ColorSet } from '../../../assets/style/ThemeColor';
+import { List } from 'realm';
 
 const MemorizedItem = memo(TodoItem);
 
@@ -27,7 +28,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
 
   const fullyDate = useObject(FullyDate, dateFormatKey);
   const [todos, setTodos] = useState<
-    Realm.Results<Todo & Realm.Object> | Todo[]
+    Realm.Results<Todo & Realm.Object> | Todo[] | List<Todo>
   >([]);
 
   const fetchTodos = useCallback(async () => {
@@ -47,7 +48,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
         }
 
         realm.write(() => {
-          const date = realm.create('FullyDate', {
+          const date = realm.create<FullyDate>('FullyDate', {
             dateKey: dateFormatKey,
             fullness: 0.2,
             dayIdx: taskDate.day,
@@ -58,7 +59,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
             if (taskDateFormat > Number(td.originDate)) {
               // console.log('새로 생성중...');
               const Goal = td.linkingObjects<Goal>('Goal', 'todos')[0];
-              const todo = realm.create('Todo', {
+              const todo = realm.create<Todo>('Todo', {
                 title: td.title,
                 date: dateFormatKey,
                 goal: Goal,
@@ -118,6 +119,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
         setCheckedValue(checkedValue);
         showAlert({
           alertType: 'custom',
+          dismissable: false,
           customAlert: (
             <CheckFullnessAlert
               theme={theme}

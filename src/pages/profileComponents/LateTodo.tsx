@@ -37,6 +37,7 @@ import {
   BottomSheetView,
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
+import { topMargin } from '../../assets/style/StackNavTopPadding';
 
 const LateTodo = () => {
   const { theme, currentTheme } = useColors();
@@ -47,44 +48,16 @@ const LateTodo = () => {
   const { dismiss } = useBottomSheetModal();
   const realm = useRealm();
 
-  const [todos, setTodos] = useState<
-    Realm.Results<Todo & Realm.Object> | Todo[]
-  >([]);
-
+  // const [todos, setTodos] = useState<Realm.Results<Todo & Realm.Object> | Todo[] | List<Todo>>([]);
+  const todos = useQuery(Todo).filtered('date == "none"');
   console.log(todos);
-
-  useEffect(() => {
-    const todosResults = realm.objects('Todo').filtered('date == "none"');
-    const onChange = newTodos => {
-      setTodos([...newTodos]);
-    };
-    todosResults.addListener(onChange);
-    return () => {
-      todosResults.removeListener(onChange);
-    };
-  }, []);
 
   const renderItem = ({ item }: { item: Todo }) => {
     return (
       <View style={{ marginVertical: ms(5, 0.3) }}>
-        <LateTodoBSContainer
-          item={item}
-          itemDelete={itemDelete}
-          completeDelete={completeDelete}
-        />
+        <LateTodoBSContainer item={item} itemDelete={itemDelete} />
       </View>
     );
-  };
-
-  const completeDelete = (itemId: Realm.BSON.ObjectId) => {
-    realm.write(() => {
-      const itemToDelete = realm.objectForPrimaryKey<Todo>('Todo', itemId);
-      console.log(itemToDelete);
-      if (itemToDelete) {
-        setTodos(todos.filter(todo => todo._id !== itemId));
-        realm.delete(itemToDelete);
-      }
-    });
   };
 
   const itemDelete = (item: Todo) => {
@@ -167,12 +140,14 @@ const LateTodo = () => {
         />
       )}
       <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          paddingHorizontal: ms(20, 0.3),
-          // marginTop: ms(10, 0.3),
-        }}>
+        style={[
+          topMargin.margin,
+          {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingHorizontal: ms(20, 0.3),
+          },
+        ]}>
         <TouchableOpacity
           activeOpacity={1}
           style={{ marginBottom: ms(7, 0.3) }}
@@ -215,7 +190,7 @@ const LateTodo = () => {
                   marginBottom: ms(15, 0.3),
                 },
               ]}>
-              언젠가 해야 할 일들을 간단하게 기록해보세요
+              나중에 해야 할 일들을 간단하게 만들어보세요
             </Text>
           </View>
           <TouchableOpacity
@@ -245,7 +220,7 @@ const LateTodo = () => {
           backgroundColor: theme.backgroundColor,
           borderTopRightRadius: 15,
           borderTopLeftRadius: 15,
-          marginHorizontal: ms(10, 0.3),
+          marginHorizontal: ms(15, 0.3),
           height: 0,
           borderColor: 'transparent',
           borderBottomWidth: 0,
@@ -325,7 +300,7 @@ const LateTodo = () => {
 const styles = StyleSheet.create({
   bottomSheetContainer: {
     flex: 1,
-    marginHorizontal: ms(10, 0.3),
+    marginHorizontal: ms(15, 0.3),
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
     paddingHorizontal: ms(20, 0.3),

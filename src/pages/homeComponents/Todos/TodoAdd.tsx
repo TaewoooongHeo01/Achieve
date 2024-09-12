@@ -29,15 +29,18 @@ import { RootStackParamList } from '../../../../App';
 
 const TodoAdd = ({
   item,
-  setTodoBottomSheetSnapPoint,
-  completeDelete,
+  // setTodoBottomSheetSnapPoint,
+  // completeDelete,
+  // itemDelete,
 }: {
   item?: Todo;
   setTodoBottomSheetSnapPoint?(
     snapPoint?: SetStateAction<string> | undefined,
   ): void;
-  completeDelete?(itemId: Realm.BSON.ObjectID): void;
+  itemDelete?(todo: Todo): void;
 }) => {
+  console.log(item);
+  const titleContentGap = ms(12, 0.3);
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const goals = useQuery(Goal).filtered('isComplete == false');
@@ -140,12 +143,13 @@ const TodoAdd = ({
         flexDirection: 'column',
         marginTop: ms(7, 0.3),
         marginBottom: ms(-40, 0.3),
-        marginHorizontal: ms(10, 0.3),
+        marginHorizontal: ms(20, 0.3),
         height: 100,
+        // backgroundColor: 'red',
       }}>
       <View
         style={{
-          flex: ms(0.1, 0.3),
+          // flex: ms(0.1, 0.3),
           flexDirection: 'row',
         }}>
         <Text
@@ -162,7 +166,7 @@ const TodoAdd = ({
         </Text>
         <Text
           style={{
-            fontFamily: 'Pretendard-Medium',
+            fontFamily: 'Pretendard-SemiBold',
             fontSize: ms(20, 0.3),
             color: theme.textColor,
             padding: ms(8, 0.3),
@@ -170,7 +174,12 @@ const TodoAdd = ({
           에 할 일 추가하기
         </Text>
       </View>
-      <View style={{ flex: ms(0.2, 0.3), marginBottom: ms(3, 0.3) }}>
+      <View
+        style={
+          {
+            // flex: ms(0.2, 0.3),
+          }
+        }>
         <Text
           style={[
             fontStyle.fontSizeSub,
@@ -189,26 +198,30 @@ const TodoAdd = ({
             {
               fontFamily: 'Pretendard-Bold',
               fontSize: ms(15, 0.3),
-              marginVertical: ms(5, 0.3),
-              color: 'green',
+              marginBottom: titleContentGap,
+              color: theme.green,
             },
           ]}>
           또는 목표 만들러가기
         </Text>
         <FlatList
-          style={{ marginVertical: ms(5, 0.3), marginHorizontal: ms(10, 0.3) }}
+          style={{
+            marginHorizontal: ms(10, 0.3),
+            marginBottom: titleContentGap,
+          }}
           data={goals}
           horizontal={true}
           renderItem={renderItem}
           showsHorizontalScrollIndicator={false}
         />
       </View>
-      <View style={{ flex: ms(0.14, 0.3) }}>
-        <Text
-          style={[
-            fontStyle.fontSizeSub,
-            { marginBottom: ms(2, 0.3), color: theme.textColor },
-          ]}>
+      <View
+        style={
+          {
+            // flex: ms(0.14, 0.3)
+          }
+        }>
+        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
           제목
         </Text>
         <BottomSheetTextInput
@@ -218,7 +231,6 @@ const TodoAdd = ({
           placeholder={item ? item.title : ''}
           placeholderTextColor={'grey'}
           style={{
-            marginHorizontal: ms(10, 0.3),
             marginTop: ms(5, 0.3),
             borderWidth: currentTheme === 'light' ? 0.2 : 0,
             borderRadius: Platform.OS === 'android' ? ms(5, 0.3) : ms(7, 0.5),
@@ -228,10 +240,16 @@ const TodoAdd = ({
             backgroundColor:
               currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
             color: theme.textColor,
+            marginBottom: titleContentGap,
           }}
         />
       </View>
-      <View style={{ flex: ms(0.15, 0.3) }}>
+      <View
+        style={
+          {
+            // flex: ms(0.15, 0.3)
+          }
+        }>
         <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
           중요도
         </Text>
@@ -241,7 +259,7 @@ const TodoAdd = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginHorizontal: ms(10, 0.3),
+            marginBottom: titleContentGap,
           }}>
           <TouchableOpacity
             activeOpacity={0.8}
@@ -312,7 +330,12 @@ const TodoAdd = ({
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flex: ms(0.12, 0.3) }}>
+      <View
+        style={
+          {
+            // flex: ms(0.12, 0.3)
+          }
+        }>
         <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
           반복일
         </Text>
@@ -322,7 +345,7 @@ const TodoAdd = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginHorizontal: ms(10, 0.3),
+            marginBottom: ms(30, 0.3),
           }}>
           {days.map((value, index) => {
             if (index === 0) {
@@ -429,13 +452,8 @@ const TodoAdd = ({
           })}
         </View>
       </View>
-      <View style={{ flex: ms(0.15, 0.3), marginBottom: ms(0, 0.3) }}>
-        <View
-          style={{
-            paddingHorizontal: ms(10, 0.3),
-            paddingVertical: ms(15, 0.3),
-            flex: 1,
-          }}>
+      <View>
+        <View style={{ width: '100%', height: ms(40, 0.3) }}>
           <TouchableOpacity
             style={{
               flex: 1,
@@ -446,77 +464,77 @@ const TodoAdd = ({
             }}
             onPress={() => {
               if (inputValid()) {
-                if (item) {
-                  //update
-                } else {
-                  realm.write(() => {
-                    //create
-
-                    //Todo 생성
-                    const todo = realm.create('Todo', {
-                      title: title,
-                      date: dateKeyFormat,
-                      goal: todosGoal,
-                      weekCycle: weekCycle,
-                      priority: priority,
-                      isComplete: false,
-                      originDate: Number(dateKeyFormat),
-                      isClone: false,
-                    });
-
-                    //오늘 날짜를 키로 가진 fullyDate 가 있는 지 탐색
-                    const date = realm.objectForPrimaryKey<FullyDate>(
-                      'FullyDate',
-                      dateKeyFormat,
-                    );
-
-                    if (date) {
-                      //만약 있다면 기존 FullyDate.todos 에 현재 Todo 추가
-                      date.todos.push(todo);
-                    } else {
-                      //만약 없다면 FullyDate 를 새로 만듦
-                      const newDate = realm.create('FullyDate', {
-                        dateKey: dateKeyFormat,
-                        fullness: 0.2,
-                        dayIdx: taskDate.day,
-                        todos: [],
-                      });
-                      newDate.todos.push(todo);
-                    }
-                    //목표에 현재 Todo 추가
-                    todosGoal?.todos.push(todo);
-
-                    //dayIdx 가 일치하고, dateKey 가 dateKeyFormat 보다 큰 FullyDate 들의 todos 에도 현재 Todo 추가
-                    for (let i = 0; i < todo.weekCycle.length; i++) {
-                      const key = weekCycle[i];
-                      const fullyDates = weekFullyDatesMap.get(key);
-                      if (fullyDates) {
-                        fullyDates.forEach(element => {
-                          const copyTodo = realm.create('Todo', {
-                            title: title,
-                            date: element.dateKey,
-                            goal: todosGoal,
-                            weekCycle: weekCycle,
-                            priority: priority,
-                            isComplete: false,
-                            originDate: Number(dateKeyFormat),
-                            isClone: true,
-                          });
-                          element.todos.push(copyTodo);
-                          todosGoal?.todos.push(copyTodo);
-                        });
-                      }
-                    }
-                    dismiss();
+                realm.write(() => {
+                  //Todo 생성
+                  const todo = realm.create<Todo>('Todo', {
+                    title: title,
+                    date: dateKeyFormat,
+                    goal: todosGoal,
+                    weekCycle: weekCycle,
+                    priority: priority,
+                    isComplete: false,
+                    originDate: Number(dateKeyFormat),
+                    isClone: false,
                   });
-                }
+
+                  //오늘 날짜를 키로 가진 fullyDate 가 있는 지 탐색
+                  const date = realm.objectForPrimaryKey<FullyDate>(
+                    'FullyDate',
+                    dateKeyFormat,
+                  );
+
+                  if (date) {
+                    //만약 있다면 기존 FullyDate.todos 에 현재 Todo 추가
+                    date.todos.push(todo);
+                  } else {
+                    //만약 없다면 FullyDate 를 새로 만듦
+                    const newDate = realm.create<FullyDate>('FullyDate', {
+                      dateKey: dateKeyFormat,
+                      fullness: 0.2,
+                      dayIdx: taskDate.day,
+                      todos: [],
+                    });
+                    newDate.todos.push(todo);
+                  }
+                  //목표에 현재 Todo 추가
+                  todosGoal?.todos.push(todo);
+
+                  //dayIdx 가 일치하고, dateKey 가 dateKeyFormat 보다 큰 FullyDate 들의 todos 에도 현재 Todo 추가
+                  for (let i = 0; i < todo.weekCycle.length; i++) {
+                    const key = weekCycle[i];
+                    const fullyDates = weekFullyDatesMap.get(key);
+                    if (fullyDates) {
+                      fullyDates.forEach(element => {
+                        const copyTodo = realm.create<Todo>('Todo', {
+                          title: title,
+                          date: element.dateKey,
+                          goal: todosGoal,
+                          weekCycle: weekCycle,
+                          priority: priority,
+                          isComplete: false,
+                          originDate: Number(dateKeyFormat),
+                          isClone: true,
+                        });
+                        element.todos.push(copyTodo);
+                        todosGoal?.todos.push(copyTodo);
+                      });
+                    }
+                  }
+                });
+                // if (item && itemDelete) {
+                //   itemDelete(item);
+                // }
               }
+              // dismiss();
+              navigation.navigate('Home');
             }}>
             <Text
-              style={{
-                color: theme.backgroundColor,
-                fontFamily: 'Pretendard-Regular',
-              }}>
+              style={[
+                {
+                  color: theme.backgroundColor,
+                },
+                fontStyle.BtnFont,
+              ]}>
               완료
             </Text>
           </TouchableOpacity>
@@ -537,7 +555,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: ms(10, 0.3),
+    paddingVertical: ms(7, 0.3),
   },
 });
 
