@@ -30,23 +30,22 @@ const gradientColorset: string[][] = [
   ['#e7c6ff', '#b8c0ff'], //Kind Steel
   ['#accbee', '#e7f0fd'], //Febuary Ink
   ['#f3e7e9', '#e3eeff'], //Cloudy Apple
-  ['#e5383b', '#f5f3f4'],
 ];
 
 export const ligthmodeHeatmapColorSet: string[] = [
-  '#97ef7f',
-  '#68ce4e',
-  '#258c0b',
-  '#378025',
   '#165607',
+  '#378025',
+  '#258c0b',
+  '#68ce4e',
+  '#97ef7f',
 ];
 
 export const darkmodeHeatmapColorSet: string[] = [
-  '#0eff00',
-  '#1fc600',
-  '#089000',
-  '#0a5d00',
   'rgba(8, 74, 0, 1)',
+  '#0a5d00',
+  '#089000',
+  '#1fc600',
+  '#0eff00',
 ];
 
 const lightmodeRed: string = 'rgba(255, 91, 91, 1)';

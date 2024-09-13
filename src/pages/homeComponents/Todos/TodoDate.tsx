@@ -30,6 +30,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 import MonthCalendar from '../../commonComponents/MonthCalendar';
+import { useQuery } from '@realm/react';
+import { Goal } from '../../../../realm/models';
 
 const TodoDate = (): React.ReactElement => {
   const { theme } = useColors();
@@ -37,6 +39,7 @@ const TodoDate = (): React.ReactElement => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['50%'], []);
   const todoString = '해야 할 일 ';
+  const goal = useQuery(Goal);
 
   const handlePresentModal = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -160,7 +163,7 @@ const TodoDate = (): React.ReactElement => {
             </Text>
           </Pressable>
         </View>
-        {taskDateFormat >= todayFormat ? (
+        {taskDateFormat >= todayFormat && goal.length > 0 ? (
           <TouchableOpacity
             onPress={() => {
               setTodoBottomSheetSnapPoint('60%');

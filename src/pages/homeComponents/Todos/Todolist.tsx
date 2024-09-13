@@ -153,6 +153,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
       taskDate.month,
       taskDate.date + 1,
     );
+    let addNextday = true;
     if (item) {
       realm.write(() => {
         const fullyDate = realm.objectForPrimaryKey<FullyDate>(
@@ -163,6 +164,10 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
           const todoToRemove = fullyDate.todos.find(todo =>
             todo._id.equals(item._id),
           );
+          const day = fullyDate.dayIdx;
+          if (todoToRemove?.weekCycle.includes(day + 1)) {
+            addNextday = false;
+          }
           if (todoToRemove) {
             for (let i = 0; i < fullyDate.todos.length; i++) {
               const todosItem = fullyDate.todos[i];
@@ -177,23 +182,25 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
           throw new Error("can't find fully date");
         }
 
-        const nextDate = realm.objectForPrimaryKey(FullyDate, nextDateKey);
-        item.date = nextDateKey;
-        if (nextDate) {
-          nextDate.todos.push(item);
-        } else {
-          const day = new Date(
-            taskDate.year,
-            taskDate.month - 1,
-            taskDate.date,
-          ).getDay();
-          const newNextDate = realm.create<FullyDate>('FullyDate', {
-            dateKey: nextDateKey,
-            fullness: 0.2,
-            dayIdx: day,
-            todos: [],
-          });
-          newNextDate.todos.push(item);
+        if (addNextday) {
+          const nextDate = realm.objectForPrimaryKey(FullyDate, nextDateKey);
+          item.date = nextDateKey;
+          if (nextDate) {
+            nextDate.todos.push(item);
+          } else {
+            const day = new Date(
+              taskDate.year,
+              taskDate.month - 1,
+              taskDate.date,
+            ).getDay();
+            const newNextDate = realm.create<FullyDate>('FullyDate', {
+              dateKey: nextDateKey,
+              fullness: 0.2,
+              dayIdx: day,
+              todos: [],
+            });
+            newNextDate.todos.push(item);
+          }
         }
       });
     }

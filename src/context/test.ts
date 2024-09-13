@@ -38,7 +38,6 @@ const phrase = [
 ];
 
 const UserData = {
-  username: 'username',
   fullnessCheck: [
     '진짜 후회가 없는가?',
     '완전한 몰입을 경험했는가?',
@@ -228,10 +227,6 @@ export const initialize = () => {
   });
 
   realm.write(() => {
-    const user = realm.create('User', {
-      username: UserData.username,
-      phrase: [],
-    });
     for (let i = 0; i < phrase.length; i++) {
       const ph = realm.create('Phrase', {
         content: phrase[i],

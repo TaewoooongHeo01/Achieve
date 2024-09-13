@@ -43,6 +43,8 @@ const SettingPhrase = (): React.ReactElement => {
   const realm = useRealm();
   const { dismiss } = useBottomSheetModal();
 
+  console.log(title);
+
   const data: Phrase[] = [];
   for (let i = 0; i < phrases.length; i++) {
     data.push(phrases[i]);
@@ -112,7 +114,11 @@ const SettingPhrase = (): React.ReactElement => {
         ]}>
         <Text
           style={[
-            { color: theme.textColor, lineHeight: ms(23, 0.3), flex: ms(0.9) },
+            {
+              color: theme.textColor,
+              lineHeight: ms(23, 0.3),
+              flex: ms(0.9, 0.3),
+            },
             styles.font,
           ]}>
           {item.content}
@@ -128,6 +134,7 @@ const SettingPhrase = (): React.ReactElement => {
             flex: ms(0.1),
             alignItems: 'center',
             justifyContent: 'center',
+            marginLeft: ms(6, 0.3),
           }}>
           <Icon name='delete' color={theme.textColor} size={ms(13, 0.3)} />
         </TouchableOpacity>
@@ -189,9 +196,18 @@ const SettingPhrase = (): React.ReactElement => {
             marginTop: ms(13, 0.3),
             marginBottom: ms(6, 0.3),
           }}>
-          <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
-            문구 설정하기
-          </Text>
+          <View>
+            <Text
+              style={[
+                fontStyle.fontSizeMain,
+                { color: theme.textColor, marginBottom: ms(2, 0.3) },
+              ]}>
+              문구 설정하기
+            </Text>
+            <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+              설정한 문구들을 홈 화면에서 볼 수 있어요
+            </Text>
+          </View>
           <TouchableOpacity
             onPress={() => {
               todoHandlePresentModal();
@@ -257,6 +273,8 @@ const SettingPhrase = (): React.ReactElement => {
               backgroundColor:
                 currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
               color: theme.textColor,
+              fontFamily: 'Pretendard-Semibold',
+              fontWeight: 'normal',
             }}
           />
           <TouchableOpacity

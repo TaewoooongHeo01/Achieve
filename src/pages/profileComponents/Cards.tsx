@@ -22,7 +22,6 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { useQuery } from '@realm/react';
 import { Goal } from '../../../realm/models';
 import { FlatList } from 'react-native-gesture-handler';
-import GoalComponentDetail from '../commonComponents/GoalComponentDetail';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { topMargin } from '../../assets/style/StackNavTopPadding';
 import LinearGradient from 'react-native-linear-gradient';
@@ -150,7 +149,7 @@ const Cards = () => {
               alignItems: 'center',
               marginTop: ms(130, 0.3),
             }}
-            onViewableItemsChanged={({ viewableItems, changed }) => {
+            onViewableItemsChanged={({ viewableItems }) => {
               setDesc(() => viewableItems[0].item.description);
             }}
           />
@@ -163,6 +162,7 @@ const Cards = () => {
                   padding: ms(10, 0.3),
                   borderRadius: ms(5, 0.3),
                   width: ms(320, 0.3),
+                  maxHeight: ms(300, 0.3),
                 },
                 shadow.boxShadow,
               ]}>

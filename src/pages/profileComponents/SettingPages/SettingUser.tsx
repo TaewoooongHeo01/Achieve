@@ -1,4 +1,5 @@
 import {
+  Alert,
   Keyboard,
   Platform,
   StatusBar,
@@ -30,6 +31,17 @@ const SettingUser = () => {
   const user = useQuery(User)[0];
   const [username, setUsername] = useState<string>(user.username);
   const realm = useRealm();
+
+  const isValid = () => {
+    if (username === '') {
+      Alert.alert('이름을 입력해주세요');
+      return false;
+    } else if (username.length >= 20) {
+      Alert.alert('이름은 20 자 이하로 설정해주세요');
+      return false;
+    }
+    return true;
+  };
 
   return (
     <SafeAreaView
@@ -112,7 +124,7 @@ const SettingUser = () => {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => {
-                if (username !== '') {
+                if (isValid()) {
                   realm.write(() => {
                     user.username = username;
                   });

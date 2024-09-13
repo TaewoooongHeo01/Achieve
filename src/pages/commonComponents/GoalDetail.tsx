@@ -195,7 +195,9 @@ const GoalDetail = ({
                           fontSize: ms(16, 0.3),
                         },
                       ]}>
-                      {goal.title}
+                      {goal.title.length >= 20
+                        ? goal.title.substring(0, 20) + '...'
+                        : goal.title}
                     </Text>
                   </View>
                   <View

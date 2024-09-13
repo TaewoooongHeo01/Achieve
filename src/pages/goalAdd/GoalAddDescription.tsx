@@ -126,7 +126,7 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
               fontStyle.fontSizeMain,
               { color: theme.textColor, marginBottom: ms(2, 0.3) },
             ]}>
-            {title} 에 대한
+            {title}에 대한
           </Text>
           <Text
             style={[

@@ -58,10 +58,10 @@ const CelebrationAlert = () => {
           alignItems: 'center',
           width: '100%',
           height: ms(36, 0.3),
-          backgroundColor: 'green',
+          backgroundColor: theme.green,
           borderRadius: ms(5, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
+        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
           완료
         </Text>
       </TouchableOpacity>

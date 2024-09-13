@@ -199,7 +199,7 @@ const TodoAdd = ({
               fontFamily: 'Pretendard-Bold',
               fontSize: ms(15, 0.3),
               marginBottom: titleContentGap,
-              color: theme.green,
+              color: 'lightgreen',
             },
           ]}>
           또는 목표 만들러가기
@@ -241,6 +241,7 @@ const TodoAdd = ({
               currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
             color: theme.textColor,
             marginBottom: titleContentGap,
+            fontFamily: 'Pretendard-Semibold',
           }}
         />
       </View>
@@ -525,7 +526,7 @@ const TodoAdd = ({
                 //   itemDelete(item);
                 // }
               }
-              // dismiss();
+              dismiss();
               navigation.navigate('Home');
             }}>
             <Text

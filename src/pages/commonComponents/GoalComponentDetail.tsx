@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { Goal } from '../../../realm/models';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -31,17 +25,6 @@ const GoalComponentDetail = ({
   theme: ColorSet;
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
-  const [title, setTitle] = useState<string>(item.title);
-
-  useEffect(() => {
-    if (item.title.length >= 20) {
-      const newTitle = title.substring(0, 20) + '...';
-      setTitle(newTitle);
-    } else {
-      setTitle(item.title);
-    }
-  }, [item.title]);
-
   const cardRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['80%'], []);
   const cardRefPresent = useCallback(() => {
@@ -86,7 +69,9 @@ const GoalComponentDetail = ({
                     fontSize: ms(16, 0.3),
                   },
                 ]}>
-                {title}
+                {item.title.length >= 20
+                  ? item.title.substring(0, 20) + '...'
+                  : item.title}
               </Text>
             </View>
             <View
