@@ -197,10 +197,12 @@ const TodoAdd = ({
               fontFamily: 'Pretendard-Bold',
               fontSize: ms(15, 0.3),
               marginBottom: titleContentGap,
-              color: 'lightgreen',
             },
           ]}>
-          또는 목표 만들러가기
+          <Text
+            style={{ backgroundColor: theme.green, color: theme.textColor }}>
+            또는 목표 만들러가기
+          </Text>
         </Text>
         <FlatList
           style={{
