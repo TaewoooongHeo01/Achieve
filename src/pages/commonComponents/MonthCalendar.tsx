@@ -29,14 +29,14 @@ const MonthCalendar = ({
   itemAdd,
   setTodoBottomSheetSnapPoint,
   item,
-  itemDelete,
+  mode,
 }: {
   itemAdd: boolean;
   setTodoBottomSheetSnapPoint?(
     snapPoint?: SetStateAction<string> | undefined,
   ): void;
   item?: Todo;
-  itemDelete?(todo: Todo): void;
+  mode?: string;
 }): React.ReactElement => {
   const { theme } = useColors();
   const { taskDate, today, setTaskDate } = useDateContext();
@@ -210,9 +210,9 @@ const MonthCalendar = ({
                     ? itemAdd
                       ? itemFormat >= todayFormat
                         ? theme.textColor
-                        : '#949494'
+                        : '#6B6B6B'
                       : theme.textColor
-                    : '#949494',
+                    : '#6B6B6B',
                   fontSize: ms(15, 0.3),
                 },
               ]}>
@@ -255,23 +255,13 @@ const MonthCalendar = ({
             marginBottom: ms(10, 0.3),
             marginTop: ms(25, 0.3),
           }}>
-          {!itemAdd ? (
-            <TouchableOpacity
-              style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
-              onPress={() => {
-                handleMoveMonth(-1);
-              }}>
-              <Icon name='left' color={theme.textColor}></Icon>
-            </TouchableOpacity>
-          ) : (
-            <View
-              style={[
-                styles.btn,
-                { backgroundColor: theme.backgroundColor, opacity: 0.3 },
-              ]}>
-              <Icon name='left' color={theme.textColor}></Icon>
-            </View>
-          )}
+          <TouchableOpacity
+            style={[styles.btn, { backgroundColor: theme.backgroundColor }]}
+            onPress={() => {
+              handleMoveMonth(-1);
+            }}>
+            <Icon name='left' color={theme.textColor}></Icon>
+          </TouchableOpacity>
           <View
             style={{
               flex: 1,
@@ -344,7 +334,7 @@ const MonthCalendar = ({
               borderRadius: ms(5, 0.3),
               justifyContent: 'center',
               alignItems: 'center',
-              marginBottom: ms(30, 0.3),
+              marginBottom: ms(15, 0.3),
             }}>
             <Text
               style={[
@@ -367,7 +357,7 @@ const MonthCalendar = ({
         <TodoAdd
           item={item}
           setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
-          itemDelete={itemDelete}
+          mode={mode}
         />
       </View>
     </Animated.View>

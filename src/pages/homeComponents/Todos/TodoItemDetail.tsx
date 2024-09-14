@@ -22,7 +22,7 @@ const TodoItemDetail = ({
   item: Todo;
   goal?: Goal;
   todoCompleteAnimation?(isRemove: boolean): void;
-  itemDelete?(todo: Todo): void;
+  itemDelete?(itemId: string): void;
   // setChanged(changed: boolean | ((changed: boolean) => boolean)): void;
 }) => {
   const { theme, currentTheme } = useColors();
@@ -203,7 +203,7 @@ const TodoItemDetail = ({
                   ),
                 });
               } else if (itemDelete) {
-                itemDelete(item);
+                itemDelete(item._id.toString());
               }
             }}>
             <DeleteIcon

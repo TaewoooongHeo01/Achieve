@@ -46,9 +46,12 @@ const WeekCalender = (): React.ReactElement => {
               ]}>
               {value.date}
             </Text>
-            {value.isInclude || todayFormat === valueKey ? (
+            {todayFormat === valueKey ? (
               <Icon
-                name={todayFormat === valueKey ? 'asterisk' : 'circle-medium'}
+                name={
+                  // 'asterisk'
+                  'circle-medium'
+                }
                 size={ms(15, 0.3)}
                 style={[
                   styles.days,

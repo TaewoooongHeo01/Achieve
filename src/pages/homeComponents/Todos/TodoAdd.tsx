@@ -26,18 +26,19 @@ import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../../App';
+import { UpdateMode } from 'realm';
+import { Realm } from 'realm';
 
 const TodoAdd = ({
   item,
   // setTodoBottomSheetSnapPoint,
-  // completeDelete,
-  // itemDelete,
+  mode,
 }: {
   item?: Todo;
   setTodoBottomSheetSnapPoint?(
     snapPoint?: SetStateAction<string> | undefined,
   ): void;
-  itemDelete?(todo: Todo): void;
+  mode?: string;
 }) => {
   const titleContentGap = ms(12, 0.3);
   const navigation =
@@ -49,7 +50,9 @@ const TodoAdd = ({
   const { dismiss } = useBottomSheetModal();
 
   const [todosGoal, setTodosGoal] = useState<Goal | undefined>(undefined);
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>(
+    item && mode === 'lateTodo' ? item.title : '',
+  );
   const [weekCycle, setWeekCycle] = useState<number[]>([]);
   const [priority, setPriority] = useState<number>(2);
   const year = String(taskDate.year);
@@ -462,16 +465,24 @@ const TodoAdd = ({
               if (inputValid()) {
                 realm.write(() => {
                   //Todo 생성
-                  const todo = realm.create<Todo>('Todo', {
-                    title: title,
-                    date: dateKeyFormat,
-                    goal: todosGoal,
-                    weekCycle: weekCycle,
-                    priority: priority,
-                    isComplete: false,
-                    originDate: Number(dateKeyFormat),
-                    isClone: false,
-                  });
+                  const todo = realm.create<Todo>(
+                    'Todo',
+                    {
+                      _id:
+                        item && mode === 'lateTodo'
+                          ? item._id
+                          : new Realm.BSON.ObjectId(),
+                      title: title,
+                      date: dateKeyFormat,
+                      goal: todosGoal,
+                      weekCycle: weekCycle,
+                      priority: priority,
+                      isComplete: false,
+                      originDate: Number(dateKeyFormat),
+                      isClone: false,
+                    },
+                    UpdateMode.Modified,
+                  );
 
                   //오늘 날짜를 키로 가진 fullyDate 가 있는 지 탐색
                   const date = realm.objectForPrimaryKey<FullyDate>(
@@ -516,12 +527,10 @@ const TodoAdd = ({
                       });
                     }
                   }
-                  dismiss();
-                  navigation.navigate('Home');
                 });
-                // if (item && itemDelete) {
-                //   itemDelete(item);
-                // }
+
+                // navigation.navigate('Home');
+                dismiss();
               }
             }}>
             <Text

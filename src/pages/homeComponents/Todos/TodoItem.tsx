@@ -283,15 +283,18 @@ const TodoItem = ({
         bottomInset={50}
         handleStyle={{
           backgroundColor: theme.backgroundColor,
-          borderTopRightRadius: 15,
-          borderTopLeftRadius: 15,
+          borderTopRightRadius: ms(15, 0.3),
+          borderTopLeftRadius: ms(15, 0.3),
           marginHorizontal: ms(10, 0.3),
           height: 0,
+          marginBottom: ms(-0.2, 0.3),
         }}
         handleIndicatorStyle={{ backgroundColor: theme.textColor }}
         backgroundStyle={{
           marginHorizontal: ms(10, 0.3),
           flex: 1,
+          borderBottomRightRadius: ms(15, 0.3),
+          borderBottomLeftRadius: ms(15, 0.3),
         }}>
         <BottomSheetView
           style={[

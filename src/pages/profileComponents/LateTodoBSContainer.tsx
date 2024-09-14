@@ -1,13 +1,7 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import TodoItemDetail from '../homeComponents/Todos/TodoItemDetail';
 import { Todo } from '../../../realm/models';
-import { Keyboard, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -23,7 +17,7 @@ const LateTodoBSContainer = ({
   itemDelete,
 }: {
   item: Todo;
-  itemDelete(todo: Todo): void;
+  itemDelete(itemId: string): void;
 }) => {
   const { theme } = useColors();
 
@@ -35,27 +29,27 @@ const LateTodoBSContainer = ({
     [todoBottomSheetSnapPoint],
   );
 
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      const keyboardDidShowListener = Keyboard.addListener(
-        'keyboardDidShow',
-        () => {
-          setTodoBottomSheetSnapPoint('90%');
-        },
-      );
-      const keyboardDidHideListener = Keyboard.addListener(
-        'keyboardDidHide',
-        () => {
-          setTodoBottomSheetSnapPoint('70%');
-        },
-      );
+  // useEffect(() => {
+  //   if (Platform.OS === 'android') {
+  //     const keyboardDidShowListener = Keyboard.addListener(
+  //       'keyboardDidShow',
+  //       () => {
+  //         setTodoBottomSheetSnapPoint('90%');
+  //       },
+  //     );
+  //     const keyboardDidHideListener = Keyboard.addListener(
+  //       'keyboardDidHide',
+  //       () => {
+  //         setTodoBottomSheetSnapPoint('70%');
+  //       },
+  //     );
 
-      return () => {
-        keyboardDidShowListener.remove();
-        keyboardDidHideListener.remove();
-      };
-    }
-  }, []);
+  //     return () => {
+  //       keyboardDidShowListener.remove();
+  //       keyboardDidHideListener.remove();
+  //     };
+  //   }
+  // }, []);
 
   const todoHandlePresentModal = useCallback(() => {
     todoBottomSheetModalRef.current?.present();
@@ -113,7 +107,7 @@ const LateTodoBSContainer = ({
             itemAdd={true}
             setTodoBottomSheetSnapPoint={setTodoBottomSheetSnapPoint}
             item={item}
-            itemDelete={itemDelete}
+            mode={'lateTodo'}
           />
         </BottomSheetView>
       </BottomSheetModal>

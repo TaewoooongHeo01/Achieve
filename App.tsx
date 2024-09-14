@@ -17,7 +17,7 @@ import SettingUser from './src/pages/profileComponents/SettingPages/SettingUser'
 import SettingPhrase from './src/pages/profileComponents/SettingPages/SettingPhrase';
 import SettingScreen from './src/pages/profileComponents/SettingPages/SettingScreen';
 import GoalEdit from './src/pages/commonComponents/GoalEdit';
-import { useQuery } from '@realm/react';
+import { useQuery, useRealm } from '@realm/react';
 import { User } from './realm/models';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -29,6 +29,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Start from './src/pages/onboarding/Start';
 import UserOnboarding from './src/pages/onboarding/User';
 import Use from './src/pages/onboarding/Use';
+import { initialize } from './src/context/test';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -76,6 +77,10 @@ function App(): React.JSX.Element {
   const [firstLaunch, setFirstLaunch] = useState<boolean | undefined>(
     undefined,
   );
+
+  const realm = useRealm();
+  console.log(realm.path);
+  // initialize();
 
   const user = useQuery(User)[0];
 

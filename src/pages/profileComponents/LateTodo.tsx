@@ -37,6 +37,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { topMargin } from '../../assets/style/StackNavTopPadding';
 import BottomSheetSimpleTextInput from '../commonComponents/BottomSheetSimpleTextInput';
+import { Realm } from '@realm/react';
 
 const LateTodo = () => {
   const { theme, currentTheme } = useColors();
@@ -49,6 +50,7 @@ const LateTodo = () => {
   const todos = useQuery(Todo).filtered('date == "none"');
 
   const renderItem = ({ item }: { item: Todo }) => {
+    console.log('renderItem: ' + item.title);
     return (
       <View style={{ marginVertical: ms(5, 0.3) }}>
         <LateTodoBSContainer item={item} itemDelete={itemDelete} />
@@ -56,7 +58,9 @@ const LateTodo = () => {
     );
   };
 
-  const itemDelete = (item: Todo) => {
+  const itemDelete = (itemId: string) => {
+    const _id = new Realm.BSON.ObjectId(itemId);
+    const item = realm.objectForPrimaryKey<Todo>('Todo', _id);
     realm.write(() => {
       realm.delete(item);
     });
