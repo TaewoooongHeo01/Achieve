@@ -22,6 +22,7 @@ import { useQuery, useRealm } from '@realm/react';
 import { User } from '../../../../realm/models';
 import { useState } from 'react';
 import { fontStyle } from '../../../assets/style/fontStyle';
+import { topMargin } from '../../../assets/style/StackNavTopPadding';
 
 const SettingUser = () => {
   const navigation =
@@ -66,94 +67,98 @@ const SettingUser = () => {
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <TouchableOpacity
-        activeOpacity={1}
-        style={{ marginBottom: ms(20, 0.3), paddingHorizontal: ms(18, 0.3) }}
-        onPress={() => {
-          navigation.goBack();
-        }}>
-        <Icon name='arrowleft' color={theme.textColor} size={ms(23, 0.3)} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{ flex: 1 }}
-        activeOpacity={1}
-        onPress={() => {
-          Keyboard.dismiss();
-        }}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            paddingHorizontal: ms(18, 0.3),
+      <View style={[{ flex: 1 }, topMargin.margin]}>
+        <TouchableOpacity
+          activeOpacity={1}
+          style={{ marginBottom: ms(20, 0.3), paddingHorizontal: ms(18, 0.3) }}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Icon name='arrowleft' color={theme.textColor} size={ms(23, 0.3)} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          activeOpacity={1}
+          onPress={() => {
+            Keyboard.dismiss();
           }}>
           <View
             style={{
-              justifyContent: 'flex-end',
-              flex: ms(0.32, 0.3),
+              flex: 1,
+              justifyContent: 'center',
+              paddingHorizontal: ms(18, 0.3),
             }}>
-            <Text
-              style={[
-                fontStyle.fontSizeMain,
-                { color: theme.textColor, marginBottom: ms(10, 0.3) },
-              ]}>
-              이름을 입력하세요
-            </Text>
-            <TextInput
+            <View
               style={{
-                width: '100%',
-                height: ms(40, 0.3),
-                borderRadius: ms(5, 0.3),
-                marginBottom: ms(5, 0.3),
-                color: theme.textColor,
-                backgroundColor:
-                  currentTheme === 'light' ? '#F4F4F4' : theme.backgroundColor,
-                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-                // borderWidth: 0.2,
-                padding: ms(7, 0.3),
-              }}
-              value={username}
-              onChangeText={setUsername}
-              onEndEditing={e => setUsername(e.nativeEvent.text.trim())}
-            />
-          </View>
-          <View
-            style={{
-              flex: ms(0.68, 0.3),
-              justifyContent: 'flex-end',
-            }}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                if (isValid()) {
-                  realm.write(() => {
-                    user.username = username;
-                  });
-                  navigation.goBack();
-                }
-              }}
-              style={{
-                width: '100%',
-                height: ms(45, 0.3),
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: ms(5, 0.3),
-                backgroundColor: theme.textColor,
-                borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
-                borderWidth: 0.2,
-                marginBottom: ms(70, 0.3),
-                padding: ms(7, 0.3),
+                justifyContent: 'flex-end',
+                flex: ms(0.32, 0.3),
               }}>
               <Text
                 style={[
-                  fontStyle.fontSizeSub,
-                  { color: theme.backgroundColor },
+                  fontStyle.fontSizeMain,
+                  { color: theme.textColor, marginBottom: ms(10, 0.3) },
                 ]}>
-                변경
+                이름을 입력하세요
               </Text>
-            </TouchableOpacity>
+              <TextInput
+                style={{
+                  width: '100%',
+                  height: ms(40, 0.3),
+                  borderRadius: ms(5, 0.3),
+                  marginBottom: ms(5, 0.3),
+                  color: theme.textColor,
+                  backgroundColor:
+                    currentTheme === 'light'
+                      ? '#F4F4F4'
+                      : theme.backgroundColor,
+                  borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                  // borderWidth: 0.2,
+                  padding: ms(7, 0.3),
+                }}
+                value={username}
+                onChangeText={setUsername}
+                onEndEditing={e => setUsername(e.nativeEvent.text.trim())}
+              />
+            </View>
+            <View
+              style={{
+                flex: ms(0.68, 0.3),
+                justifyContent: 'flex-end',
+              }}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  if (isValid()) {
+                    realm.write(() => {
+                      user.username = username;
+                    });
+                    navigation.goBack();
+                  }
+                }}
+                style={{
+                  width: '100%',
+                  height: ms(45, 0.3),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: ms(5, 0.3),
+                  backgroundColor: theme.textColor,
+                  borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
+                  borderWidth: 0.2,
+                  marginBottom: ms(70, 0.3),
+                  padding: ms(7, 0.3),
+                }}>
+                <Text
+                  style={[
+                    fontStyle.fontSizeSub,
+                    { color: theme.backgroundColor },
+                  ]}>
+                  변경
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

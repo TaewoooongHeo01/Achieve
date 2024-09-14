@@ -19,6 +19,7 @@ import { ms } from 'react-native-size-matters';
 import { fontStyle } from '../../../assets/style/fontStyle';
 import Colors from '../../../assets/style/ThemeColor';
 import { shadow } from '../../../assets/style/shadow';
+import { topMargin } from '../../../assets/style/StackNavTopPadding';
 
 const SettingScreen = (): React.ReactElement => {
   const navigation =
@@ -49,7 +50,7 @@ const SettingScreen = (): React.ReactElement => {
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <View style={{ paddingHorizontal: ms(18, 0.3) }}>
+      <View style={[topMargin.margin, { paddingHorizontal: ms(18, 0.3) }]}>
         <TouchableOpacity
           activeOpacity={1}
           style={{ marginBottom: ms(7, 0.3) }}

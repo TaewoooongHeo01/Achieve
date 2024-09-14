@@ -47,7 +47,11 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
             alignItems: 'center',
             aspectRatio: 1,
           }}>
-          <Ionicons name='checkmark' size={ms(22, 0.3)} />
+          <Ionicons
+            name='checkmark'
+            size={ms(22, 0.3)}
+            color={theme.textColor}
+          />
         </View>
       </View>
       <Text

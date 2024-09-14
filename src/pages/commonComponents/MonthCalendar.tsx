@@ -39,7 +39,6 @@ const MonthCalendar = ({
   itemDelete?(todo: Todo): void;
 }): React.ReactElement => {
   const { theme } = useColors();
-  console.log(item);
   const { taskDate, today, setTaskDate } = useDateContext();
 
   const { dismiss } = useBottomSheetModal();

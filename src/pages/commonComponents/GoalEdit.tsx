@@ -45,7 +45,7 @@ const GoalEdit = ({ route, navigation }: GoalEditProps) => {
     if (title === '') {
       Alert.alert('제목을 입력해주세요');
       return false;
-    } else if (title && title?.length >= 30) {
+    } else if (title && title?.length > 30) {
       Alert.alert('제목의 길이는 30 자 이하로 설정해주세요');
       return false;
     }

@@ -5,19 +5,19 @@ export const shadow =
   Platform.OS === 'ios'
     ? StyleSheet.create({
         boxShadow: {
-          borderWidth: 0.2,
+          borderWidth: ms(0.2, 0.3),
           borderColor: '#ccc',
           shadowColor: '#000',
-          shadowOffset: { width: 1, height: 1 },
-          shadowOpacity: 0.1,
-          shadowRadius: 2,
+          shadowOffset: { width: ms(0.8, 0.3), height: ms(0.8, 0.3) },
+          shadowOpacity: ms(0.1, 0.3),
+          shadowRadius: 1,
           borderRadius: ms(5, 0.3),
         },
       })
     : StyleSheet.create({
         boxShadow: {
           borderColor: '#ccc',
-          borderWidth: 0.4,
-          // elevation: 0.6,
+          borderWidth: ms(0.2, 0.3),
+          elevation: ms(0.4, 0.3),
         },
       });

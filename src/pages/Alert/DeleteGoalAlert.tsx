@@ -49,7 +49,7 @@ const DeleteGoalAlert = ({
             alignItems: 'center',
             aspectRatio: 1,
           }}>
-          <Ionicons name='trash' size={ms(22, 0.3)} />
+          <Ionicons name='trash' size={ms(22, 0.3)} color={theme.textColor} />
         </View>
       </View>
       <Text

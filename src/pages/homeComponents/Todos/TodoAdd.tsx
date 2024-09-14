@@ -39,7 +39,6 @@ const TodoAdd = ({
   ): void;
   itemDelete?(todo: Todo): void;
 }) => {
-  console.log(item);
   const titleContentGap = ms(12, 0.3);
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -72,10 +71,6 @@ const TodoAdd = ({
     );
     weekFullyDatesMap.set(i, fullyDates);
   }
-  //그냥 일요일부터 토요일까지 다 가져온 다음, 각 day 에 맞는 배열들을 갖고 온 뒤, 그 배열에 안에 있는 fullyDate 에 다 추가하는 방식
-  //어차피 오늘보다 이후 날짜들이라서 오늘 날짜들은 따로 넣어야 함. 이후 일치하는 배열들만 뽑아서 그 안에 있는 FullyDate 들의 todos 에 추가
-  //이게 오늘날보다 이후에 있는 fullyDate 에 넣는 과정임.
-  //주의할 점은 useQeury 로 가져온 타입이 weekFullyDates 의 빈 배열로 그대로 넣을 수 있을 지 의문 -> 조건문으로 분리할까
 
   const updateWeekCycle = (day: number) => {
     const newWeek = [...weekCycle];
@@ -98,8 +93,8 @@ const TodoAdd = ({
       Alert.alert('제목을 입력해주세요');
       return false;
     }
-    if (title.trim().length > 20) {
-      Alert.alert('제목길이는 20자 이하로 설정해주세요');
+    if (title.trim().length > 30) {
+      Alert.alert('제목길이는 30자 이하로 설정해주세요');
       return false;
     }
     return true;
@@ -155,7 +150,7 @@ const TodoAdd = ({
         <Text
           style={[
             {
-              fontFamily: 'Pretendard-Medium',
+              fontFamily: 'Pretendard-SemiBold',
               fontSize: ms(20, 0.3),
               color: theme.textColor,
               paddingTop: ms(8, 0.3),
@@ -241,7 +236,7 @@ const TodoAdd = ({
               currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
             color: theme.textColor,
             marginBottom: titleContentGap,
-            fontFamily: 'Pretendard-Semibold',
+            fontFamily: 'Pretendard-Medium',
           }}
         />
       </View>
@@ -521,13 +516,13 @@ const TodoAdd = ({
                       });
                     }
                   }
+                  dismiss();
+                  navigation.navigate('Home');
                 });
                 // if (item && itemDelete) {
                 //   itemDelete(item);
                 // }
               }
-              dismiss();
-              navigation.navigate('Home');
             }}>
             <Text
               style={[

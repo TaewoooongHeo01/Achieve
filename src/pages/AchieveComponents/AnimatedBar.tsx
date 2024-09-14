@@ -51,8 +51,8 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
             fontStyle.BtnFont,
             { color: theme.textColor, marginLeft: ms(13, 0.3) },
           ]}>
-          얼마나 몰입했나요? - {dateKey.substring(0, 4)}.
-          {dateKey.substring(4, 6)}.{dateKey.substring(6, 8)}
+          {dateKey.substring(0, 4)}.{dateKey.substring(4, 6)}.
+          {dateKey.substring(6, 8)} - {Number(fd?.toFixed(2)) * 100}%
         </Text>
       </View>
       <View

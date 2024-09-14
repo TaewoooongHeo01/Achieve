@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React from 'react';
 import { Goal } from '../../../realm/models';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -8,13 +8,6 @@ import { ColorSet } from '../../assets/style/ThemeColor';
 import { StyleSheet, Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import CardDetail from '../profileComponents/CardDetail';
 
 const GoalComponentDetail = ({
   item,
@@ -25,30 +18,11 @@ const GoalComponentDetail = ({
   theme: ColorSet;
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
-  const cardRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['80%'], []);
-  const cardRefPresent = useCallback(() => {
-    cardRef.current?.present();
-  }, []);
-  const todoRenderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        pressBehavior={'close'}
-        opacity={0.8}
-      />
-    ),
-    [],
-  );
   return (
     <>
       <TouchableOpacity
         onPress={() => {
-          !item.isComplete
-            ? navigation.navigate('GoalDetail', { _id: item._id.toString() })
-            : cardRefPresent();
+          navigation.navigate('GoalDetail', { _id: item._id.toString() });
         }}>
         <LinearGradient
           colors={theme.gradientColor[item.color]}
@@ -59,7 +33,7 @@ const GoalComponentDetail = ({
           useAngle={true}
           angle={35}>
           <View style={{ flex: 1 }}>
-            <View style={[{ flex: ms(0.75, 0.3) }, GoalStyle.titleContainer]}>
+            <View style={[{ flex: ms(0.8, 0.3) }, GoalStyle.titleContainer]}>
               <Text
                 style={[
                   GoalStyle.titleText,
@@ -69,9 +43,7 @@ const GoalComponentDetail = ({
                     fontSize: ms(16, 0.3),
                   },
                 ]}>
-                {item.title.length >= 20
-                  ? item.title.substring(0, 20) + '...'
-                  : item.title}
+                {item.title}
               </Text>
             </View>
             <View
@@ -80,42 +52,11 @@ const GoalComponentDetail = ({
               //   setIconSize(e.nativeEvent.layout.height);
               // }}
             >
-              <Icon name={item.icon} size={ms(23, 0.3)}></Icon>
+              <Icon name={item.icon} size={ms(23, 0.3)} color={'black'}></Icon>
             </View>
           </View>
         </LinearGradient>
       </TouchableOpacity>
-      <BottomSheetModal
-        ref={cardRef}
-        index={0}
-        snapPoints={snapPoints}
-        enablePanDownToClose={false}
-        enableContentPanningGesture={false}
-        backdropComponent={todoRenderBackdrop}
-        detached={true}
-        bottomInset={ms(130, 0.3)}
-        backgroundStyle={{ backgroundColor: 'transparent' }}
-        handleIndicatorStyle={{ height: 0 }}
-        style={{
-          backgroundColor: 'transparent',
-          alignItems: 'center',
-        }}>
-        <BottomSheetView
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <CardDetail item={item} theme={theme} />
-          </View>
-        </BottomSheetView>
-      </BottomSheetModal>
     </>
   );
 };
@@ -123,8 +64,8 @@ const GoalComponentDetail = ({
 const GoalStyle = StyleSheet.create({
   layout: {
     flex: 1,
-    width: ms(120, 0.3),
-    height: ms(120, 0.3),
+    width: ms(130, 0.3),
+    height: ms(130, 0.3),
     borderRadius: ms(5, 0.3),
     padding: ms(9, 0.3),
   },

@@ -131,7 +131,7 @@ const GoalDetail = ({
             style={{
               marginLeft: ms(18, 0.3),
               backgroundColor: theme.textColor,
-              padding: ms(7, 0.3),
+              padding: ms(8, 0.3),
               borderRadius: ms(5, 0.3),
             }}>
             <Text
@@ -195,9 +195,7 @@ const GoalDetail = ({
                           fontSize: ms(16, 0.3),
                         },
                       ]}>
-                      {goal.title.length >= 20
-                        ? goal.title.substring(0, 20) + '...'
-                        : goal.title}
+                      {goal.title}
                     </Text>
                   </View>
                   <View
@@ -206,7 +204,11 @@ const GoalDetail = ({
                     //   setIconSize(e.nativeEvent.layout.height);
                     // }}
                   >
-                    <GoalIcon name={goal.icon} size={ms(23, 0.3)} />
+                    <GoalIcon
+                      name={goal.icon}
+                      size={ms(23, 0.3)}
+                      color={'black'}
+                    />
                   </View>
                 </View>
               </LinearGradient>
@@ -267,8 +269,8 @@ const GoalDetail = ({
 const GoalStyle = StyleSheet.create({
   layout: {
     flex: 1,
-    width: ms(120, 0.3),
-    height: ms(120, 0.3),
+    width: ms(130, 0.3),
+    height: ms(130, 0.3),
     borderRadius: ms(5, 0.3),
     padding: ms(9, 0.3),
   },

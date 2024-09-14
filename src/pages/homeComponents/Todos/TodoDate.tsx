@@ -39,7 +39,7 @@ const TodoDate = (): React.ReactElement => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['50%'], []);
   const todoString = '해야 할 일 ';
-  const goal = useQuery(Goal);
+  const goal = useQuery(Goal).filtered('isComplete == false');
 
   const handlePresentModal = useCallback(() => {
     bottomSheetModalRef.current?.present();

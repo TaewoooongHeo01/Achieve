@@ -27,7 +27,6 @@ const TodoItemDetail = ({
 }) => {
   const { theme, currentTheme } = useColors();
   const [iconContainerSize, seticonContainerSize] = useState<number>(0);
-  console.log('item detail render');
 
   return (
     <View
@@ -128,7 +127,9 @@ const TodoItemDetail = ({
               },
               fontStyle.itemTitle,
             ]}>
-            {item.title}
+            {item.title.length >= 13
+              ? item.title.substring(0, 13) + '...'
+              : item.title}
           </Text>
           <SubIcon
             name='exclamationcircle'

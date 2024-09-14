@@ -157,6 +157,7 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
               // borderWidth: 0.2,
               padding: ms(7, 0.3),
               textAlignVertical: 'top',
+              fontFamily: 'Pretendard-Medium',
             }}
             value={description}
             onChangeText={setDescription}

@@ -33,24 +33,20 @@ import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
-  BottomSheetTextInput,
   BottomSheetView,
-  useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
 import { topMargin } from '../../assets/style/StackNavTopPadding';
+import BottomSheetSimpleTextInput from '../commonComponents/BottomSheetSimpleTextInput';
 
 const LateTodo = () => {
   const { theme, currentTheme } = useColors();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { top } = useSafeAreaInsets();
-  const [title, setTitle] = useState<string>('');
-  const { dismiss } = useBottomSheetModal();
   const realm = useRealm();
 
   // const [todos, setTodos] = useState<Realm.Results<Todo & Realm.Object> | Todo[] | List<Todo>>([]);
   const todos = useQuery(Todo).filtered('date == "none"');
-  console.log(todos);
 
   const renderItem = ({ item }: { item: Todo }) => {
     return (
@@ -108,9 +104,6 @@ const LateTodo = () => {
         appearsOnIndex={0}
         pressBehavior={'close'}
         opacity={0.8}
-        onPress={() => {
-          setTitle('');
-        }}
       />
     ),
     [],
@@ -186,7 +179,7 @@ const LateTodo = () => {
                 fontStyle.fontSizeSub,
                 {
                   color: theme.textColor,
-                  marginVertical: ms(5, 0.3),
+                  marginVertical: ms(2, 0.3),
                   marginBottom: ms(15, 0.3),
                 },
               ]}>
@@ -235,62 +228,7 @@ const LateTodo = () => {
             styles.bottomSheetContainer,
             { backgroundColor: theme.backgroundColor },
           ]}>
-          <Text
-            style={[
-              fontStyle.fontSizeSub,
-              { marginVertical: ms(8, 0.3), color: theme.textColor },
-            ]}>
-            제목
-          </Text>
-          <BottomSheetTextInput
-            value={title}
-            onChangeText={setTitle}
-            onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
-            placeholderTextColor={'grey'}
-            style={{
-              // marginHorizontal: ms(10, 0.3),
-              // marginTop: ms(5, 0.3),
-              borderWidth: currentTheme === 'light' ? 0.2 : 0,
-              borderRadius: Platform.OS === 'android' ? ms(5, 0.3) : ms(7, 0.5),
-              padding: Platform.OS === 'android' ? ms(5, 0.3) : ms(10, 0.3),
-              paddingLeft: Platform.OS === 'android' ? ms(10, 0.3) : null,
-              borderColor: Platform.OS === 'ios' ? '#ccc' : '#737373',
-              backgroundColor:
-                currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
-              color: theme.textColor,
-            }}
-          />
-          <TouchableOpacity
-            style={{
-              padding: ms(14, 0.3),
-              backgroundColor: theme.textColor,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: ms(20, 0.3),
-              marginBottom: ms(30, 0.3),
-              borderRadius: ms(5, 0.3),
-            }}
-            onPress={() => {
-              if (title !== '') {
-                realm.write(() => {
-                  realm.create('Todo', {
-                    title: title,
-                    date: 'none',
-                    priority: 2,
-                    isComplete: false,
-                    originDate: -1,
-                    isClone: true,
-                  });
-                });
-              }
-              setTitle('');
-              dismiss();
-            }}>
-            <Text
-              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
-              완료
-            </Text>
-          </TouchableOpacity>
+          <BottomSheetSimpleTextInput mode={'lateTodo'} />
         </BottomSheetView>
       </BottomSheetModal>
     </SafeAreaView>

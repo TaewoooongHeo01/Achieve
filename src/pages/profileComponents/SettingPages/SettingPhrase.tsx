@@ -1,5 +1,4 @@
 import {
-  Alert,
   FlatList,
   Keyboard,
   Platform,
@@ -28,10 +27,10 @@ import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
-  BottomSheetTextInput,
   BottomSheetView,
-  useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
+import BottomSheetSimpleTextInput from '../../commonComponents/BottomSheetSimpleTextInput';
+import { topMargin } from '../../../assets/style/StackNavTopPadding';
 
 const SettingPhrase = (): React.ReactElement => {
   const navigation =
@@ -39,11 +38,7 @@ const SettingPhrase = (): React.ReactElement => {
   const { theme, currentTheme } = useColors();
   const { top } = useSafeAreaInsets();
   const phrases = useQuery(Phrase);
-  const [title, setTitle] = useState<string>('');
   const realm = useRealm();
-  const { dismiss } = useBottomSheetModal();
-
-  console.log(title);
 
   const data: Phrase[] = [];
   for (let i = 0; i < phrases.length; i++) {
@@ -92,9 +87,6 @@ const SettingPhrase = (): React.ReactElement => {
         appearsOnIndex={0}
         pressBehavior={'close'}
         opacity={0.8}
-        onPress={() => {
-          setTitle('');
-        }}
       />
     ),
     [],
@@ -142,17 +134,6 @@ const SettingPhrase = (): React.ReactElement => {
     );
   };
 
-  const isValid = () => {
-    if (title === '') {
-      Alert.alert('문구를 입력해주세요');
-      return false;
-    } else if (title.length >= 100) {
-      Alert.alert('문구는 100 자 이하로 설정해주세요');
-      return false;
-    }
-    return true;
-  };
-
   return (
     <SafeAreaView
       edges={
@@ -177,10 +158,13 @@ const SettingPhrase = (): React.ReactElement => {
         />
       )}
       <View
-        style={{
-          paddingHorizontal: ms(18, 0.3),
-          flex: 1,
-        }}>
+        style={[
+          topMargin.margin,
+          {
+            paddingHorizontal: ms(18, 0.3),
+            flex: 1,
+          },
+        ]}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
@@ -250,59 +234,7 @@ const SettingPhrase = (): React.ReactElement => {
             styles.bottomSheetContainer,
             { backgroundColor: theme.backgroundColor },
           ]}>
-          <Text
-            style={[
-              fontStyle.fontSizeSub,
-              { marginVertical: ms(8, 0.3), color: theme.textColor },
-            ]}>
-            제목
-          </Text>
-          <BottomSheetTextInput
-            value={title}
-            onChangeText={setTitle}
-            onEndEditing={e => setTitle(e.nativeEvent.text.trim())}
-            placeholderTextColor={'grey'}
-            style={{
-              // marginHorizontal: ms(10, 0.3),
-              // marginTop: ms(5, 0.3),
-              borderWidth: currentTheme === 'light' ? 0.2 : 0,
-              borderRadius: Platform.OS === 'android' ? ms(5, 0.3) : ms(7, 0.5),
-              padding: Platform.OS === 'android' ? ms(5, 0.3) : ms(10, 0.3),
-              paddingLeft: Platform.OS === 'android' ? ms(10, 0.3) : null,
-              borderColor: Platform.OS === 'ios' ? '#ccc' : '#737373',
-              backgroundColor:
-                currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
-              color: theme.textColor,
-              fontFamily: 'Pretendard-Semibold',
-              fontWeight: 'normal',
-            }}
-          />
-          <TouchableOpacity
-            style={{
-              padding: ms(14, 0.3),
-              backgroundColor: theme.textColor,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: ms(20, 0.3),
-              marginBottom: ms(30, 0.3),
-              borderRadius: ms(5, 0.3),
-            }}
-            onPress={() => {
-              if (isValid()) {
-                realm.write(() => {
-                  realm.create('Phrase', {
-                    content: title,
-                  });
-                });
-                dismiss();
-                setTitle('');
-              }
-            }}>
-            <Text
-              style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
-              완료
-            </Text>
-          </TouchableOpacity>
+          <BottomSheetSimpleTextInput mode={'phrase'} />
         </BottomSheetView>
       </BottomSheetModal>
     </SafeAreaView>

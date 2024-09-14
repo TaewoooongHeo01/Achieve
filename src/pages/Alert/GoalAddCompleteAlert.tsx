@@ -47,7 +47,7 @@ const GoalAddCompleteAlert = ({
             alignItems: 'center',
             aspectRatio: 1,
           }}>
-          <Ionicons name={icon} size={ms(22, 0.3)} />
+          <Ionicons name={icon} size={ms(22, 0.3)} color={'black'} />
         </View>
       </LinearGradient>
       <Text

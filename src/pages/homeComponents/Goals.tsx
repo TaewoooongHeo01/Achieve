@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { ms } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
@@ -75,7 +75,7 @@ const Goals = (): React.ReactElement => {
             currentTheme === 'light' ? shadow.boxShadow : {},
             {
               marginTop: ms(10, 0.3),
-              backgroundColor: 'theme.backgroundColor',
+              backgroundColor: theme.backgroundColor,
               justifyContent: 'center',
               alignItems: 'center',
             },
@@ -83,7 +83,7 @@ const Goals = (): React.ReactElement => {
           onPress={() => {
             navigation.navigate('GoalAdd');
           }}
-          activeOpacity={1}>
+          activeOpacity={0.8}>
           <PlusIcon name='plus' color={theme.textColor} size={30}></PlusIcon>
         </TouchableOpacity>
       )}

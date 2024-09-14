@@ -7,8 +7,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  TextInput,
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 import { useColors } from '../../context/ThemeContext';
 import {
   SafeAreaView,
@@ -134,6 +134,7 @@ const GoalAdd = () => {
               marginBottom: ms(5, 0.3),
               color: theme.textColor,
               padding: ms(7, 0.3),
+              fontFamily: 'Pretendard-Medium',
             }}
             value={title}
             onChangeText={setTitle}

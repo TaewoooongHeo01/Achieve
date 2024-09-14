@@ -33,11 +33,11 @@ const gradientColorset: string[][] = [
 ];
 
 export const ligthmodeHeatmapColorSet: string[] = [
-  '#165607',
-  '#378025',
-  '#258c0b',
-  '#68ce4e',
   '#97ef7f',
+  '#68ce4e',
+  '#258c0b',
+  '#378025',
+  '#165607',
 ];
 
 export const darkmodeHeatmapColorSet: string[] = [
