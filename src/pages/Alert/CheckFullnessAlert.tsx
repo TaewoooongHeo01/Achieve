@@ -5,16 +5,21 @@ import { ColorSet } from '../../assets/style/ThemeColor';
 import { ms } from 'react-native-size-matters';
 import { TouchableOpacity } from 'react-native';
 import { closeAlert } from 'react-native-customisable-alert';
+import { useRealm } from '@realm/react';
+import { FullyDate } from '../../../realm/models';
 
 const CheckFullnessAlert = ({
   theme,
   checkedValue,
   setCheckedValue,
+  dateFormatKey,
 }: {
   theme: ColorSet;
   checkedValue: number;
   setCheckedValue: React.Dispatch<React.SetStateAction<number>>;
+  dateFormatKey: string;
 }) => {
+  const realm = useRealm();
   return (
     <View
       style={[
@@ -98,6 +103,15 @@ const CheckFullnessAlert = ({
             backgroundColor: theme.textColor,
           }}
           onPress={() => {
+            realm.write(() => {
+              const fullyDate = realm.objectForPrimaryKey<FullyDate>(
+                'FullyDate',
+                dateFormatKey,
+              );
+              if (fullyDate) {
+                fullyDate.fullness = checkedValue;
+              }
+            });
             closeAlert();
           }}>
           <Text

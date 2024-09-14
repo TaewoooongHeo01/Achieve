@@ -80,7 +80,7 @@ function App(): React.JSX.Element {
 
   const realm = useRealm();
   console.log(realm.path);
-  // initialize();
+  initialize();
 
   const user = useQuery(User)[0];
 

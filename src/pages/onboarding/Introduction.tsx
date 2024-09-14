@@ -6,9 +6,11 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { imagePath } from '../../utils/imagePath';
+import { darkmodeImagePath, lightmodeImagePath } from '../../utils/imagePath';
 import { ms } from 'react-native-size-matters';
 import { fontStyle } from '../../assets/style/fontStyle';
+import { useColors } from '../../context/ThemeContext';
+import { shadow } from '../../assets/style/shadow';
 
 const Introduction = ({
   selectedIdx,
@@ -19,11 +21,20 @@ const Introduction = ({
 }) => {
   const windowWidth = useWindowDimensions().width;
 
-  const imageSet = [
-    imagePath.addGoal,
-    imagePath.todolist,
-    imagePath.swipe,
-    imagePath.heatmap,
+  const { theme, currentTheme } = useColors();
+
+  const darkmode = [
+    darkmodeImagePath.addGoal,
+    darkmodeImagePath.todolist,
+    darkmodeImagePath.swipe,
+    darkmodeImagePath.heatmap,
+  ];
+
+  const lightmode = [
+    lightmodeImagePath.addGoal,
+    lightmodeImagePath.todolist,
+    lightmodeImagePath.swipe,
+    lightmodeImagePath.heatmap,
   ];
 
   const description = [
@@ -63,23 +74,26 @@ const Introduction = ({
           <Image
             source={item}
             resizeMode={'contain'}
-            style={{ width: ms(320, 0.3), height: ms(270, 0.3) }}
+            style={{ width: ms(320, 0.3), height: ms(350, 0.3) }}
           />
         </View>
         <View
-          style={{
-            backgroundColor: '#282828',
-            marginHorizontal: ms(40, 0.3),
-            padding: ms(15, 0.3),
-            borderRadius: ms(5, 0.3),
-          }}>
+          style={[
+            currentTheme === 'light' ? shadow.boxShadow : {},
+            {
+              backgroundColor: theme.backgroundColor,
+              marginHorizontal: ms(40, 0.3),
+              padding: ms(15, 0.3),
+              borderRadius: ms(5, 0.3),
+            },
+          ]}>
           {description[index].map((value, index) => {
             return (
               <Text
                 key={index.toString()}
                 style={[
                   fontStyle.fontSizeSub,
-                  { color: 'white', lineHeight: ms(24, 0.3) },
+                  { color: theme.textColor, lineHeight: ms(24, 0.3) },
                 ]}>
                 {value}
               </Text>
@@ -93,7 +107,7 @@ const Introduction = ({
   return (
     <View>
       <FlatList
-        data={imageSet}
+        data={currentTheme === 'dark' ? darkmode : lightmode}
         renderItem={renderItem}
         horizontal
         snapToInterval={windowWidth}
@@ -119,13 +133,19 @@ const Introduction = ({
           return (
             <View
               key={index.toString()}
-              style={{
-                width: ms(10, 0.3),
-                height: ms(10, 0.3),
-                borderRadius: ms(5, 0.3),
-                marginHorizontal: ms(3, 0.3),
-                backgroundColor: selectedIdx === value ? 'white' : '#6A6A6A',
-              }}
+              style={[
+                {
+                  width: ms(10, 0.3),
+                  height: ms(10, 0.3),
+                  borderRadius: ms(5, 0.3),
+                  marginHorizontal: ms(3, 0.3),
+                  backgroundColor:
+                    selectedIdx === value
+                      ? theme.textColor
+                      : theme.backgroundColor,
+                },
+                currentTheme === 'light' ? shadow.boxShadow : {},
+              ]}
             />
           );
         })}

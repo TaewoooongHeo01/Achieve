@@ -122,16 +122,12 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
           dismissable: false,
           customAlert: (
             <CheckFullnessAlert
+              dateFormatKey={dateFormatKey}
               theme={theme}
               checkedValue={checkedValue}
               setCheckedValue={setCheckedValue}
             />
           ),
-        });
-      }
-      if (fullyDate) {
-        realm.write(() => {
-          fullyDate.fullness = checkedValue;
         });
       }
     }

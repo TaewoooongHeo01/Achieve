@@ -196,9 +196,11 @@ export default function Achieve() {
                     borderColor:
                       currentTheme === 'light' ? '#B8B8B8' : '#121212',
                     backgroundColor:
-                      theme.heatmapColor[
-                        Math.max((map.get(value.dateKey) ?? 0) - 1, 0)
-                      ] || 'green',
+                      todayFormat === value.dateKey
+                        ? theme.backgroundColor
+                        : theme.heatmapColor[
+                            Math.max((map.get(value.dateKey) ?? 0) - 1, 0)
+                          ] || 'green',
                   }}
                 />
               ) : (

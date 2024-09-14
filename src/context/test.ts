@@ -11,7 +11,7 @@ const month = String(now.getMonth() + 1).padStart(2, '0');
 const today = String(now.getDate()).padStart(2, '0');
 // const tomorrow = String(now.getDate() + 1).padStart(2, '0');
 // const yesterdayDate: string = year + month + yesterday;
-const yesterdayDate = '20240908';
+const yesterdayDate = '202401011';
 const todayDate: string = year + month + today;
 const tomorrowDate = '20240912';
 // const tomorrowDate: string = year + month + tomorrow;
@@ -222,106 +222,98 @@ const todos = [
 export const initialize = () => {
   const realm = useRealm();
   console.log(realm.path);
-  realm.write(() => {
-    realm.deleteAll();
-  });
+  // realm.write(() => {
+  //   realm.deleteAll();
+  // });
 
-  realm.write(() => {
-    for (let i = 0; i < phrase.length; i++) {
-      const ph = realm.create('Phrase', {
-        content: phrase[i],
-      });
-      user.phrase.push(ph);
-    }
-  });
+  // realm.write(() => {
+  //   for (let i = 0; i < phrase.length; i++) {
+  //     const ph = realm.create('Phrase', {
+  //       content: phrase[i],
+  //     });
+  //     user.phrase.push(ph);
+  //   }
+  // });
 
-  const g = GoalsData[0];
-  realm.write(() => {
-    Goal = realm.create('Goal', {
-      title: g.title,
-      isComplete: false,
-      icon: g.icon,
-      color: g.color,
-      todos: [],
-      description: g.description,
-      startDate: g.startDate,
-      todoCnt: g.todoCnt,
-    });
-  });
+  // const g = GoalsData[0];
+  // realm.write(() => {
+  //   Goal = realm.create('Goal', {
+  //     title: g.title,
+  //     isComplete: false,
+  //     icon: g.icon,
+  //     color: g.color,
+  //     todos: [],
+  //     description: g.description,
+  //     startDate: g.startDate,
+  //     todoCnt: g.todoCnt,
+  //   });
+  // });
 
-  const G = GoalsData[3];
-  let Goal;
-  realm.write(() => {
-    Goal = realm.create('Goal', {
-      title: G.title,
-      isComplete: true,
-      icon: G.icon,
-      color: G.color,
-      todos: [],
-      description: G.description,
-      startDate: G.startDate,
-      todoCnt: G.todoCnt,
-    });
-    realm.create('Goal', {
-      title:
-        'd아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아ㅍ',
-      isComplete: true,
-      icon: 'rocket',
-      color: 8,
-      todos: [],
-      description: '',
-      startDate: G.startDate,
-      todoCnt: 5,
-    });
-    realm.create('Goal', {
-      title: '김',
-      isComplete: true,
-      icon: 'book',
-      color: 11,
-      todos: [],
-      description: '김',
-      startDate: G.startDate,
-      todoCnt: 20,
-    });
-    realm.create('Goal', {
-      title: '김asdfasdfasdf',
-      isComplete: true,
-      icon: 'book',
-      color: 11,
-      todos: [],
-      description: '김asdfasdfasdf',
-      startDate: G.startDate,
-      todoCnt: 20,
-    });
-  });
+  // const G = GoalsData[3];
+  // let Goal;
+  // realm.write(() => {
+  //   Goal = realm.create('Goal', {
+  //     title: G.title,
+  //     isComplete: true,
+  //     icon: G.icon,
+  //     color: G.color,
+  //     todos: [],
+  //     description: G.description,
+  //     startDate: G.startDate,
+  //     todoCnt: G.todoCnt,
+  //   });
+  //   realm.create('Goal', {
+  //     title:
+  //       'd아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아d아ㅍ',
+  //     isComplete: true,
+  //     icon: 'rocket',
+  //     color: 8,
+  //     todos: [],
+  //     description: '',
+  //     startDate: G.startDate,
+  //     todoCnt: 5,
+  //   });
+  //   realm.create('Goal', {
+  //     title: '김',
+  //     isComplete: true,
+  //     icon: 'book',
+  //     color: 11,
+  //     todos: [],
+  //     description: '김',
+  //     startDate: G.startDate,
+  //     todoCnt: 20,
+  //   });
+  //   realm.create('Goal', {
+  //     title: '김asdfasdfasdf',
+  //     isComplete: true,
+  //     icon: 'book',
+  //     color: 11,
+  //     todos: [],
+  //     description: '김asdfasdfasdf',
+  //     startDate: G.startDate,
+  //     todoCnt: 20,
+  //   });
+  // });
 
-  const td = {
-    title: '치열',
-    date: todayDate,
-    weekCycle: [1, 2, 3],
-    priority: 3,
-    isComplete: false,
-  };
-
-  realm.write(() => {
-    const date = realm.create('FullyDate', {
-      dateKey: yesterdayDate,
-      fullness: 0.2,
-      dayIdx: 0,
-      todos: [],
-    });
-    const todo = realm.create('Todo', {
-      title: td.title,
-      date: yesterdayDate,
-      weekCycle: [],
-      priority: 3,
-      isComplete: false,
-      originDate: Number(yesterdayDate),
-      isClone: false,
-    });
-    Goal.todos.push(todo);
-    date.todos.push(todo);
-  });
+  // realm.write(() => {
+  //   const date = realm.create('FullyDate', {
+  //     dateKey: yesterdayDate,
+  //     fullness: 0.2,
+  //     dayIdx: 0,
+  //     todos: [],
+  //   });
+  //   const todo = realm.create('Todo', {
+  //     title: td.title,
+  //     date: yesterdayDate,
+  //     weekCycle: [],
+  //     priority: 3,
+  //     isComplete: false,
+  //     originDate: Number(yesterdayDate),
+  //     isClone: false,
+  //   });
+  //   Goal.todos.push(todo);
+  //   date.todos.push(todo);
+  // });
 
   realm.write(() => {
     for (let i = 0; i < dateArr.length; i++) {

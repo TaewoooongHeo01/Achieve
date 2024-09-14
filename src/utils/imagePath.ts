@@ -1,6 +1,13 @@
-export const imagePath = {
-  addGoal: require('../assets/images/addGoal.png'),
-  todolist: require('../assets/images/todolist.png'),
-  swipe: require('../assets/images/swipe.png'),
-  heatmap: require('../assets/images/heatmap.png'),
+export const darkmodeImagePath = {
+  addGoal: require('../assets/images/ios_dark_goalAdd.png'),
+  todolist: require('../assets/images/ios_dark_todos.png'),
+  swipe: require('../assets/images/ios_dark_swipe.png'),
+  heatmap: require('../assets/images/ios_dark_heatmap.png'),
+};
+
+export const lightmodeImagePath = {
+  addGoal: require('../assets/images/ios_light_goalAdd.png'),
+  todolist: require('../assets/images/ios_light_todos.png'),
+  swipe: require('../assets/images/ios_light_swipe.png'),
+  heatmap: require('../assets/images/ios_light_heatmap.png'),
 };

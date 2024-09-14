@@ -1,5 +1,5 @@
 import { useRealm } from '@realm/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { FullyDate } from '../../../realm/models';
@@ -15,16 +15,18 @@ import { shadow } from '../../assets/style/shadow';
 const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
   const realm = useRealm();
   const { theme, currentTheme } = useColors();
-  const fd = realm.objectForPrimaryKey<FullyDate>(
-    'FullyDate',
-    dateKey,
-  )?.fullness;
+  const fullyDate = realm.objectForPrimaryKey<FullyDate>('FullyDate', dateKey);
+  const fd = fullyDate?.fullness;
   const [barWidth, setBarWidth] = useState<number>(0);
 
   const progressBar = useSharedValue(0);
-  const widthFd = Number(fd?.toFixed(2));
 
-  progressBar.value = withTiming((barWidth / 100) * (widthFd * 100));
+  console.log('fd: ' + fd);
+
+  useEffect(() => {
+    const widthFd = Number(fd?.toFixed(2));
+    progressBar.value = withTiming((barWidth / 100) * (widthFd * 100));
+  }, [fullyDate]);
 
   const progressAnimation = useAnimatedStyle(() => ({
     width: progressBar.value,
@@ -52,7 +54,8 @@ const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
             { color: theme.textColor, marginLeft: ms(13, 0.3) },
           ]}>
           {dateKey.substring(0, 4)}.{dateKey.substring(4, 6)}.
-          {dateKey.substring(6, 8)} - {Number(fd?.toFixed(2)) * 100}%
+          {dateKey.substring(6, 8)}
+          {fd ? ` - ${Number(fd?.toFixed(2)) * 100}%` : ''}
         </Text>
       </View>
       <View

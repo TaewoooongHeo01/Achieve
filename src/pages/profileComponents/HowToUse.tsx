@@ -28,7 +28,7 @@ const HowToUse = () => {
   const { top } = useSafeAreaInsets();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(0);
   const darkmodeHightlight = '#415E46';
-  const lightmodeHightlight = theme.heatmapColor[4];
+  const lightmodeHightlight = '#C3D5C6';
   return (
     <SafeAreaView
       edges={
@@ -80,7 +80,7 @@ const HowToUse = () => {
           <View
             style={{
               flex: ms(0.3, 0.3),
-              marginTop: ms(30, 0.3),
+              marginTop: ms(100, 0.3),
               paddingHorizontal: ms(18, 0.3),
             }}>
             <Text
