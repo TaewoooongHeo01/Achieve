@@ -75,7 +75,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
               notAdded = false;
             }
           });
-          console.log(date);
           if (notAdded) {
             // console.log('추가되지 않음. date 다시 삭제');
             setTodos([]);
@@ -269,7 +268,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
                   affectedFullyDates.add(fullyDate);
                 }
               }
-              console.log('삭제: ' + todo.date);
               realm.delete(todo);
             }
           });

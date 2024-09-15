@@ -1,17 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useColors } from '../../context/ThemeContext';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { ms } from 'react-native-size-matters';
-import { days, months, TaskDate } from '../../context/DateContext';
+import { days, TaskDate } from '../../context/DateContext';
 import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 import { FlatList } from 'react-native-gesture-handler';
-import { useQuery, useRealm } from '@realm/react';
-import { FullyDate, Todo } from '../../../realm/models';
+import { useQuery } from '@realm/react';
+import { Todo } from '../../../realm/models';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AnimatedBar from '../AchieveComponents/AnimatedBar';
+import Cell from '../AchieveComponents/Cell';
 
-type heapmapDataType = {
+const MemoizatinoCell = memo(Cell);
+
+export type heapmapDataType = {
   dateKey: string;
   day: number;
 };
@@ -28,7 +31,7 @@ type heapmapDataType = {
 //나는 후자라고 생각함. 따라서 저 함수 자체를 useCallback 해서 함수의 선언을 메모이제이션 하는 건 몰라도 의존성배열에 넣는 건 다시 고려해봐야 함.
 
 export default function Achieve() {
-  const { theme, currentTheme } = useColors();
+  const { theme } = useColors();
   const now = new Date();
   const nowYear = now.getFullYear();
   const nowMonth = now.getMonth() + 1;
@@ -40,7 +43,6 @@ export default function Achieve() {
     date: nowDate,
     day: nowDay,
   };
-  const realm = useRealm();
   const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
 
   const [year, setYear] = useState<number>(today.year);
@@ -110,119 +112,32 @@ export default function Achieve() {
     yearArr.push(weekArr);
   }
 
-  const changeDate = (dateKey: string) => {
-    // const fd = realm.objectForPrimaryKey<FullyDate>('FullyDate', dateKey);
-    setDateKey(dateKey);
-    // if (fd) {
-    //   setTodos(fd.todos);
-    // }
-  };
-
   //cell 정보 만드는 함수 최적화
   const makeCell = useCallback((item: heapmapDataType[]) => {
     let monthStart = false;
     let month = 0;
-    const map = new Map<string, number>();
     for (let i = 0; i < item.length; i++) {
       if (item[i].dateKey.substring(6, 8) == '01') {
         monthStart = true;
         month = Number(item[i].dateKey.substring(4, 6)) - 1;
       }
-      const fullyDate = realm.objectForPrimaryKey<FullyDate>(
-        'FullyDate',
-        item[i].dateKey,
-      );
-      if (fullyDate) {
-        map.set(item[i].dateKey, Number((fullyDate.fullness / 0.2).toFixed(0)));
-      }
     }
     return {
-      map: map,
       monthStart: monthStart,
       month: month,
     };
   }, []);
 
   const renderItem = ({ item }: { item: heapmapDataType[] }) => {
-    const { map, monthStart, month } = makeCell(item);
+    const { monthStart, month } = makeCell(item);
     return (
-      <View>
-        <View style={{ height: ms(40, 0.3) }}>
-          {monthStart ? (
-            <View>
-              <Text
-                style={[
-                  fontStyle.fontSizeSub,
-                  { fontSize: ms(18, 0.3), color: theme.textColor },
-                ]}>
-                {months[month]}
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        {item.map(value => {
-          return (
-            <View
-              key={value.dateKey.toString()}
-              style={{
-                height: ms(32, 0.3),
-                aspectRatio: 1,
-                margin: ms(3, 0.3),
-              }}>
-              {days.includes(value.dateKey) ? (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={[
-                      fontStyle.fontSizeSub,
-                      { fontSize: ms(18, 0.3), color: theme.textColor },
-                    ]}>
-                    {value.dateKey}
-                  </Text>
-                </View>
-              ) : value.dateKey.substring(6, 8) ===
-                '00' ? null : value.dateKey <= todayFormat &&
-                map.get(value.dateKey) ? (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={() => changeDate(value.dateKey)}
-                  style={{
-                    flex: 1,
-                    borderWidth: ms(0.3, 0.3),
-                    borderRadius: ms(5, 0.3),
-                    borderColor:
-                      currentTheme === 'light' ? '#B8B8B8' : '#121212',
-                    backgroundColor:
-                      todayFormat === value.dateKey
-                        ? theme.backgroundColor
-                        : theme.heatmapColor[
-                            Math.max((map.get(value.dateKey) ?? 0) - 1, 0)
-                          ] || 'green',
-                  }}
-                />
-              ) : (
-                <View
-                  style={{
-                    flex: 1,
-                    borderWidth: ms(0.3, 0.3),
-                    borderRadius: ms(5, 0.3),
-                    borderColor:
-                      currentTheme === 'light' ? '#B8B8B8' : '#121212',
-                    backgroundColor:
-                      todayFormat === value.dateKey
-                        ? theme.textColor
-                        : currentTheme === 'light'
-                          ? '#F6F6F6'
-                          : '#282828',
-                  }}></View>
-              )}
-            </View>
-          );
-        })}
-      </View>
+      <MemoizatinoCell
+        item={item}
+        monthStart={monthStart}
+        month={month}
+        setDateKey={setDateKey}
+        todayFormat={todayFormat}
+      />
     );
   };
 

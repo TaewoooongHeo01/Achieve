@@ -1,4 +1,4 @@
-import { useRealm } from '@realm/react';
+import { useObject } from '@realm/react';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
@@ -13,15 +13,14 @@ import { useColors } from '../../context/ThemeContext';
 import { shadow } from '../../assets/style/shadow';
 
 const AnimatedBar = ({ dateKey }: { dateKey: string }) => {
-  const realm = useRealm();
+  // const realm = useRealm();
   const { theme, currentTheme } = useColors();
-  const fullyDate = realm.objectForPrimaryKey<FullyDate>('FullyDate', dateKey);
+  // const fullyDate = realm.objectForPrimaryKey<FullyDate>('FullyDate', dateKey);
+  const fullyDate = useObject(FullyDate, dateKey);
   const fd = fullyDate?.fullness;
   const [barWidth, setBarWidth] = useState<number>(0);
 
   const progressBar = useSharedValue(0);
-
-  console.log('fd: ' + fd);
 
   useEffect(() => {
     const widthFd = Number(fd?.toFixed(2));

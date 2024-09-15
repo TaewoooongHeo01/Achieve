@@ -68,7 +68,7 @@ const CheckFullnessAlert = ({
                 opacity: checkedValue === calValue ? 0.3 : 1,
               }}
               onPress={() => {
-                setCheckedValue(calValue);
+                setCheckedValue(() => calValue);
               }}>
               <Text
                 style={[
@@ -110,6 +110,7 @@ const CheckFullnessAlert = ({
               );
               if (fullyDate) {
                 fullyDate.fullness = checkedValue;
+                console.log(checkedValue);
               }
             });
             closeAlert();
