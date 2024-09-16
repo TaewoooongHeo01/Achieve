@@ -1,12 +1,24 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useColors } from '../../context/ThemeContext';
 import { useQuery } from '@realm/react';
 import { Phrase, User } from '../../../realm/models';
 import { shadow } from '../../assets/style/shadow';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../App';
 
 const Intro = (): React.JSX.Element => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const { theme, currentTheme } = useColors();
 
   const ph = useQuery(Phrase);
@@ -20,22 +32,29 @@ const Intro = (): React.JSX.Element => {
 
   return (
     <View style={styles.layout}>
-      <View
-        style={[
-          styles.pharseLayout,
-          currentTheme === 'light' ? shadow.boxShadow : {},
-          {
-            backgroundColor: theme.backgroundColor,
-          },
-        ]}>
-        <Text
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => {
+          navigation.navigate('SettingPhrase');
+        }}
+        style={{ flex: 1 }}>
+        <View
           style={[
-            { color: theme.textColor, lineHeight: ms(23, 0.3) },
-            styles.font,
+            styles.pharseLayout,
+            currentTheme === 'light' ? shadow.boxShadow : {},
+            {
+              backgroundColor: theme.backgroundColor,
+            },
           ]}>
-          {phrase === '' ? `${username} 님 오늘도 파이팅하세요` : `${phrase}`}
-        </Text>
-      </View>
+          <Text
+            style={[
+              { color: theme.textColor, lineHeight: ms(23, 0.3) },
+              styles.font,
+            ]}>
+            {phrase === '' ? `${username} 님 오늘도 파이팅하세요` : `${phrase}`}
+          </Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

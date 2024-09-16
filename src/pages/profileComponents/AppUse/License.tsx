@@ -296,6 +296,42 @@ const License = (): React.ReactElement => {
                 Apache License
               </Text>
             </View>
+            <View style={{ marginTop: ms(15, 0.3) }}>
+              <Text
+                style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+                pretendard
+              </Text>
+              <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+                1.3.9
+              </Text>
+              <OpenURLButton
+                url={'https://github.com/realm/realm-js/tree/main'}
+                currentTheme={currentTheme}
+              />
+              <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+                Copyright (c) 2021, Kil Hyung-jin
+                (https://github.com/orioncactus/pretendard), with Reserved Font
+                Name 'Pretendard'.
+              </Text>
+              <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+                Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved
+                Font Name 'Source'. Source is a trademark of Adobe in the United
+                States and/or other countries.
+              </Text>
+              <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+                Copyright (c) 2016 The Inter Project Authors
+                (https://github.com/rsms/inter), with Reserved Font Name
+                'Inter'.
+              </Text>
+              <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+                Copyright 2021 The M+ FONTS Project Authors
+                (https://github.com/coz-m/MPLUS_FONTS), with Reserved Font Name
+                'M PLUS 1'.
+              </Text>
+              <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+                SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+              </Text>
+            </View>
             <View style={{ height: ms(50, 0.3) }}></View>
           </ScrollView>
         </View>

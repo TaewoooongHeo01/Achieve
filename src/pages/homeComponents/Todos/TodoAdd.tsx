@@ -185,7 +185,7 @@ const TodoAdd = ({
               color: theme.textColor,
             },
           ]}>
-          {todosGoal === undefined ? '목표선택' : todosGoal.title}
+          {todosGoal === undefined ? '목표 선택하기' : todosGoal.title}
         </Text>
         <Text
           onPress={() => {
@@ -200,7 +200,10 @@ const TodoAdd = ({
             },
           ]}>
           <Text
-            style={{ backgroundColor: theme.green, color: theme.textColor }}>
+            style={{
+              backgroundColor: currentTheme === 'light' ? '#C3D5C6' : '#415E46',
+              color: theme.textColor,
+            }}>
             또는 목표 만들러가기
           </Text>
         </Text>

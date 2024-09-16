@@ -81,11 +81,9 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
           if (goal) {
             const todos = goal.todos;
             realm.write(() => {
+              realm.delete(todos);
               goal.isComplete = true;
               goal.endDate = todayFormat;
-              for (let i = 0; i < todos.length; i++) {
-                realm.delete(todos[i]);
-              }
             });
           }
           closeAlert();
@@ -103,8 +101,8 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
           backgroundColor: theme.green,
           borderRadius: ms(5, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
-          목표삭제
+        <Text style={[fontStyle.BtnFont, { color: theme.textColor }]}>
+          목표완료
         </Text>
       </TouchableOpacity>
     </View>

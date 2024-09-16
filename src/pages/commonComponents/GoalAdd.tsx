@@ -36,8 +36,8 @@ const GoalAdd = () => {
       Alert.alert('제목을 입력해주세요');
       return false;
     }
-    if (title.trim().length > 20) {
-      Alert.alert('제목길이는 20자 이하로 설정해주세요');
+    if (title.trim().length > 30) {
+      Alert.alert('제목길이는 30자 이하로 설정해주세요');
       return false;
     }
     return true;

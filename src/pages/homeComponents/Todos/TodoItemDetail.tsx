@@ -210,6 +210,7 @@ const TodoItemDetail = ({
               name='trash'
               size={ms(15, 0.3)}
               color={theme.textColor}
+              style={{ paddingRight: ms(7, 0.3) }}
             />
           </TouchableOpacity>
         ) : (

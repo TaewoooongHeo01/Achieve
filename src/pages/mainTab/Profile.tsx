@@ -21,18 +21,9 @@ const Profile = (): React.JSX.Element => {
 
   const user = useQuery(User)[0];
 
-  // const [themeState, setThemeState] = useState<string>(currentTheme);
-
-  // useEffect(() => {
-  //   applyColor(themeState === 'light' ? Colors.light : Colors.dark, themeState);
-  // }, [themeState]);
-
-  /* <Button
-    title='color change'
-    onPress={() => {
-      setThemeState(currentTheme === 'light' ? 'dark' : 'light');
-    }}
-  /> */
+  const darkmodeBackgroudColor = theme.backgroundColor;
+  const lightmodeBackgroundColor = theme.backgroundColor;
+  const textColor = theme.textColor;
 
   return (
     <View
@@ -79,20 +70,21 @@ const Profile = (): React.JSX.Element => {
               {
                 backgroundColor:
                   currentTheme === 'light'
-                    ? '#A7D397'
-                    : 'rgba(34, 243, 118, 1)',
+                    ? lightmodeBackgroundColor
+                    : darkmodeBackgroudColor,
+                // currentTheme === 'light' ? '#A7D397' : '#8CFB7C',
               },
               styles.goalContainer,
             ]}>
             <Text
               style={[
-                { color: '#282828', marginBottom: ms(5, 0.3) },
+                { color: textColor, marginBottom: ms(5, 0.3) },
                 fontStyle.fontSizeMain,
               ]}>
               목표 설정하기
             </Text>
-            <Text style={[{ color: '#282828' }, fontStyle.fontSizeSub]}>
-              해야 할 일들의 대략적인 목표를 설정해보세요
+            <Text style={[{ color: textColor }, fontStyle.fontSizeSub]}>
+              목표를 만드는 것부터 시작해 보세요
             </Text>
           </View>
         </TouchableOpacity>
@@ -119,15 +111,18 @@ const Profile = (): React.JSX.Element => {
                 style={[
                   {
                     backgroundColor:
-                      currentTheme === 'light' ? '#EEF0E5' : '#ddff33',
+                      currentTheme === 'light'
+                        ? lightmodeBackgroundColor
+                        : darkmodeBackgroudColor,
+                    // currentTheme === 'light' ? '#EEF0E5' : '#EFFFA0',
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
+                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
                   Achieve
                 </Text>
-                <Text style={[{ color: '#282828' }, fontStyle.fontSizeSub]}>
+                <Text style={[{ color: textColor }, fontStyle.fontSizeSub]}>
                   제대로 사용하기
                 </Text>
               </View>
@@ -147,12 +142,14 @@ const Profile = (): React.JSX.Element => {
                 style={[
                   {
                     backgroundColor:
-                      currentTheme === 'light' ? '#CECECE' : '#CECECE',
+                      currentTheme === 'light'
+                        ? lightmodeBackgroundColor
+                        : darkmodeBackgroudColor,
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
+                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
                   달성한 목표들
                 </Text>
               </View>
@@ -179,12 +176,14 @@ const Profile = (): React.JSX.Element => {
                 style={[
                   {
                     backgroundColor:
-                      currentTheme === 'light' ? '#F2F2F2' : '#F2F2F2',
+                      currentTheme === 'light'
+                        ? lightmodeBackgroundColor
+                        : darkmodeBackgroudColor,
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
+                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
                   나중에 할 일
                 </Text>
               </View>
@@ -204,12 +203,14 @@ const Profile = (): React.JSX.Element => {
                 style={[
                   {
                     backgroundColor:
-                      currentTheme === 'light' ? '#6A6A6A' : '#6A6A6A',
+                      currentTheme === 'light'
+                        ? lightmodeBackgroundColor
+                        : darkmodeBackgroudColor,
                   },
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: 'white' }]}>
+                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
                   설정
                 </Text>
               </View>

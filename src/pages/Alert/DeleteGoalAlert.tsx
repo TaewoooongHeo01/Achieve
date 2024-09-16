@@ -91,7 +91,7 @@ const DeleteGoalAlert = ({
           backgroundColor: theme.red,
           borderRadius: ms(5, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+        <Text style={[fontStyle.BtnFont, { color: theme.textColor }]}>
           목표삭제
         </Text>
       </TouchableOpacity>

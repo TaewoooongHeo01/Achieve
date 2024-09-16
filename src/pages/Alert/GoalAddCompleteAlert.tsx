@@ -96,7 +96,7 @@ const GoalAddCompleteAlert = ({
           backgroundColor: theme.textColor,
           borderRadius: ms(5, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.backgroundColor }]}>
+        <Text style={[fontStyle.BtnFont, { color: theme.backgroundColor }]}>
           완료
         </Text>
       </TouchableOpacity>

@@ -57,8 +57,8 @@ const DeleteTodoAlert = ({
           padding: ms(8, 0.3),
           borderRadius: ms(5, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
-          목표 삭제
+        <Text style={[fontStyle.BtnFont, { color: theme.textColor }]}>
+          할 일 삭제
         </Text>
       </TouchableOpacity>
     </View>

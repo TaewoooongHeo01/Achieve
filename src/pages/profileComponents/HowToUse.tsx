@@ -136,8 +136,8 @@ const HowToUse = () => {
             <Text style={[font.font, { color: theme.textColor }]}>
               사람들은 대개 열정을 가지고 무언가를 시작하지만, 시간이 지날수록
               흐려지는 경우가 많죠. 무엇이 문제였을까요? 의욕이 꺾여서? 의지와
-              인내력이 부족해서? 이유는 많지만 이를 어떻게 해결할 수 있을 지는
-              잘 몰라요.
+              인내력이 부족해서? 이유는 많지만 이를 어떻게 해결할 수 있을지는 잘
+              몰라요.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               사실, 먼 미래를 위해 지금부터 준비하는 것은 쉽지 않아요. 많은
@@ -184,7 +184,7 @@ const HowToUse = () => {
                       : lightmodeHightlight,
                   fontFamily: 'Pretendard-Medium',
                 }}>
-                강조하고 싶은 건 오늘 할 일들 만큼은 온전히 몰입해 끝내보자라는
+                강조하고 싶은 건 오늘 할 일들만큼은 온전히 몰입해 끝내보자는
                 마음이에요.
               </Text>{' '}
               몰입한 오늘을 뒤돌아볼 때 여러분의 하루는 충만해져 있을 것이기
@@ -209,7 +209,7 @@ const HowToUse = () => {
               끝나는 데에만 조급하다면 몰입할 수 없기 때문이죠.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
-              Achieve 를 통해 진짜 나에게 필요한 것들이 무엇인지 생각해보고,
+              Achieve 를 통해 진짜 나에게 필요한 것들이 무엇인지 생각해 보고,
               몰입하여 하루를 채워보세요.
             </Text>
           </View>

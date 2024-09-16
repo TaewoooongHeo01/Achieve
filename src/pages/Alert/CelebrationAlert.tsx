@@ -61,7 +61,7 @@ const CelebrationAlert = () => {
           backgroundColor: theme.green,
           borderRadius: ms(5, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+        <Text style={[fontStyle.BtnFont, { color: theme.textColor }]}>
           완료
         </Text>
       </TouchableOpacity>

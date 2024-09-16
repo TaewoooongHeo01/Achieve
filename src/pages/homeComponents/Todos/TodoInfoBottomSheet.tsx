@@ -188,7 +188,7 @@ const TodoInfo = ({
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <View style={{ flex: 0.7 }}>
+            <View>
               <Text
                 style={[
                   {
