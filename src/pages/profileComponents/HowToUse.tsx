@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Image,
   Platform,
   ScrollView,
   StatusBar,
@@ -80,7 +81,7 @@ const HowToUse = () => {
           <View
             style={{
               flex: ms(0.3, 0.3),
-              marginTop: ms(100, 0.3),
+              marginTop: ms(50, 0.3),
               paddingHorizontal: ms(18, 0.3),
             }}>
             <Text
@@ -109,13 +110,14 @@ const HowToUse = () => {
                 alignItems: 'center',
                 marginVertical: ms(15, 0.3),
               }}>
-              <View
+              <Image
+                source={require('../../assets/images/island.png')}
+                resizeMode={'contain'}
                 style={{
-                  width: ms(150, 0.3),
-                  height: ms(150, 0.3),
+                  width: ms(170, 0.3),
+                  height: ms(170, 0.3),
                   borderRadius: ms(5, 0.3),
-                  backgroundColor: 'red',
-                }}></View>
+                }}></Image>
             </View>
             <Text style={[font.font, { color: theme.textColor }]}>
               Achieve 는{' '}

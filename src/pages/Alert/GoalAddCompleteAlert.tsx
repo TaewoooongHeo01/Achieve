@@ -77,8 +77,8 @@ const GoalAddCompleteAlert = ({
           fontStyle.fontSizeSub,
           {
             color: theme.textColor,
-            marginBottom: ms(20, 0.3),
-            marginTop: ms(5, 0.3),
+            marginBottom: ms(25, 0.3),
+            marginVertical: ms(10, 0.3),
           },
         ]}>
         목표를 위해 해야 할 일들을 추가해보세요

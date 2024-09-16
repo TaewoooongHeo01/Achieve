@@ -43,8 +43,8 @@ const CelebrationAlert = () => {
           fontStyle.fontSizeSub,
           {
             color: theme.textColor,
-            marginBottom: ms(20, 0.3),
-            marginTop: ms(5, 0.3),
+            marginBottom: ms(25, 0.3),
+            marginVertical: ms(10, 0.3),
           },
         ]}>
         달성한 목표들은 [ 내 프로필 ] → [ 달성한 목표들 ] 에서 확인할 수 있어요

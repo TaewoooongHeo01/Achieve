@@ -30,6 +30,9 @@ import Start from './src/pages/onboarding/Start';
 import UserOnboarding from './src/pages/onboarding/User';
 import Use from './src/pages/onboarding/Use';
 import { initialize } from './src/context/test';
+import UserInformation from './src/pages/profileComponents/AppUse/UserInformation';
+import TermsOfUse from './src/pages/profileComponents/AppUse/TermsOfUse';
+import License from './src/pages/profileComponents/AppUse/License';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -49,6 +52,9 @@ export type RootStackParamList = {
   Start: undefined;
   UserOnboarding: undefined;
   Use: undefined;
+  License: undefined;
+  UserInformation: undefined;
+  TermsOfUse: undefined;
 };
 
 export type GoalDetailScreenProps = NativeStackScreenProps<
@@ -125,7 +131,7 @@ function App(): React.JSX.Element {
                     />
                     {/* Goal Edit Stack Nav */}
                     <Stack.Screen name='GoalEdit' component={GoalEdit} />
-                    {/* Settomg Stack Nav */}
+                    {/* Setting Stack Nav */}
                     <Stack.Screen name='SettingUser' component={SettingUser} />
                     <Stack.Screen
                       name='SettingPhrase'
@@ -141,6 +147,12 @@ function App(): React.JSX.Element {
                       component={UserOnboarding}
                     />
                     <Stack.Screen name='Use' component={Use} />
+                    <Stack.Screen
+                      name='UserInformation'
+                      component={UserInformation}
+                    />
+                    <Stack.Screen name='TermsOfUse' component={TermsOfUse} />
+                    <Stack.Screen name='License' component={License} />
                   </Stack.Navigator>
                 </BottomSheetModalProvider>
               </ThemeContextProvider>

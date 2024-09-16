@@ -199,6 +199,7 @@ const MonthCalendar = ({
               style={{
                 fontSize: ms(15, 0.3),
                 color: theme.backgroundColor,
+                fontFamily: 'Pretendard-Medium',
               }}>
               {item.date}
             </Text>
@@ -206,14 +207,14 @@ const MonthCalendar = ({
             <Text
               style={[
                 {
-                  color: item.isActive
-                    ? itemAdd
-                      ? itemFormat >= todayFormat
-                        ? theme.textColor
-                        : '#6B6B6B'
-                      : theme.textColor
-                    : '#6B6B6B',
+                  color: isToday ? theme.backgroundColor : theme.textColor,
+                  opacity: item.isActive
+                    ? itemFormat >= todayFormat
+                      ? 1
+                      : 0.2
+                    : 0.2,
                   fontSize: ms(15, 0.3),
+                  fontFamily: 'Pretendard-Medium',
                 },
               ]}>
               {item.date}

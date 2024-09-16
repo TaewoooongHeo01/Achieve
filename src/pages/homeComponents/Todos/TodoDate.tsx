@@ -175,7 +175,7 @@ const TodoDate = (): React.ReactElement => {
           <PlusIcon
             name='plus'
             color={theme.textColor}
-            style={{ opacity: 0.2 }}
+            style={{ opacity: 0 }}
             size={ms(25, 0.3)}
           />
         )}

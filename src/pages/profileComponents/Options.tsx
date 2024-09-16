@@ -21,6 +21,7 @@ import { User } from '../../../realm/models';
 import { fontStyle } from '../../assets/style/fontStyle';
 import { shadow } from '../../assets/style/shadow';
 import { topMargin } from '../../assets/style/StackNavTopPadding';
+import { version } from '../../../package.json';
 
 type Setting = {
   title: string;
@@ -33,6 +34,7 @@ const Options = () => {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { top } = useSafeAreaInsets();
   const user = useQuery(User)[0];
+  const boxHeight = ms(50, 0.3);
 
   const acount: Setting = {
     title: user.username,
@@ -97,6 +99,7 @@ const Options = () => {
             {
               backgroundColor: theme.backgroundColor,
               marginBottom: ms(20, 0.3),
+              height: boxHeight,
             },
             styles.container,
             currentTheme === 'light' ? shadow.boxShadow : {},
@@ -129,6 +132,7 @@ const Options = () => {
           style={[
             {
               backgroundColor: theme.backgroundColor,
+              height: boxHeight,
             },
             styles.container,
             currentTheme === 'light' ? shadow.boxShadow : {},
@@ -158,6 +162,7 @@ const Options = () => {
           style={[
             {
               backgroundColor: theme.backgroundColor,
+              height: boxHeight,
             },
             styles.container,
             currentTheme === 'light' ? shadow.boxShadow : {},
@@ -179,6 +184,114 @@ const Options = () => {
           </View>
           <Icon name='right' color={theme.textColor} size={ms(17, 0.3)} />
         </TouchableOpacity>
+        <View style={{ marginTop: ms(20, 0.3) }}>
+          <Text style={[fontStyle.fontSizeMain, { color: theme.textColor }]}>
+            이용안내
+          </Text>
+          <View
+            style={[
+              {
+                backgroundColor: theme.backgroundColor,
+                height: boxHeight,
+              },
+              styles.container,
+              currentTheme === 'light' ? shadow.boxShadow : {},
+            ]}>
+            <View>
+              <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+                앱 버전
+              </Text>
+              <Text
+                style={[
+                  fontStyle.fontSizeSub,
+                  {
+                    color: theme.textColor,
+                    opacity: 0.5,
+                  },
+                ]}>
+                {version}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('UserInformation');
+            }}
+            style={[
+              {
+                backgroundColor: theme.backgroundColor,
+                height: boxHeight,
+              },
+              styles.container,
+              currentTheme === 'light' ? shadow.boxShadow : {},
+            ]}>
+            <View>
+              <Text
+                style={[
+                  fontStyle.fontSizeSub,
+                  {
+                    color: theme.textColor,
+                  },
+                ]}>
+                개인정보 처리방침
+              </Text>
+            </View>
+            <Icon name='right' color={theme.textColor} size={ms(17, 0.3)} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('TermsOfUse');
+            }}
+            style={[
+              {
+                backgroundColor: theme.backgroundColor,
+                height: boxHeight,
+              },
+              styles.container,
+              currentTheme === 'light' ? shadow.boxShadow : {},
+            ]}>
+            <View>
+              <Text
+                style={[
+                  fontStyle.fontSizeSub,
+                  {
+                    color: theme.textColor,
+                  },
+                ]}>
+                이용약관
+              </Text>
+            </View>
+            <Icon name='right' color={theme.textColor} size={ms(17, 0.3)} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('License');
+            }}
+            style={[
+              {
+                backgroundColor: theme.backgroundColor,
+                height: boxHeight,
+              },
+              styles.container,
+              currentTheme === 'light' ? shadow.boxShadow : {},
+            ]}>
+            <View>
+              <Text
+                style={[
+                  fontStyle.fontSizeSub,
+                  {
+                    color: theme.textColor,
+                  },
+                ]}>
+                라이선스
+              </Text>
+            </View>
+            <Icon name='right' color={theme.textColor} size={ms(17, 0.3)} />
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );

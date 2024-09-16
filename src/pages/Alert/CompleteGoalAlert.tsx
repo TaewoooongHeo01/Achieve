@@ -70,8 +70,8 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
           fontStyle.fontSizeSub,
           {
             color: theme.textColor,
-            marginBottom: ms(20, 0.3),
-            marginTop: ms(5, 0.3),
+            marginBottom: ms(25, 0.3),
+            marginVertical: ms(10, 0.3),
           },
         ]}>
         목표를 완료하면 투두 생성 시 더이상 이 목표를 사용할 수 없어요
@@ -79,9 +79,13 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
       <TouchableOpacity
         onPress={() => {
           if (goal) {
+            const todos = goal.todos;
             realm.write(() => {
               goal.isComplete = true;
               goal.endDate = todayFormat;
+              for (let i = 0; i < todos.length; i++) {
+                realm.delete(todos[i]);
+              }
             });
           }
           closeAlert();

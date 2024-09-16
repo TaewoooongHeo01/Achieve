@@ -52,7 +52,6 @@ const Cell = ({
       'FullyDate',
       String(dates.dateKey),
     );
-    console.log(fullyDate);
     if (fullyDate) {
       map.set(
         String(dates.dateKey),

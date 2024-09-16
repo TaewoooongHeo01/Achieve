@@ -10,7 +10,7 @@ import { days } from '../../../context/DateContext';
 import SubIcon from 'react-native-vector-icons/AntDesign';
 import { showAlert } from 'react-native-customisable-alert';
 import DeleteTodoAlert from '../../Alert/DeleteTodoAlert';
-import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import DeleteIcon from 'react-native-vector-icons/FontAwesome5';
 
 const TodoItemDetail = ({
   item,
@@ -207,8 +207,8 @@ const TodoItemDetail = ({
               }
             }}>
             <DeleteIcon
-              name='delete'
-              size={ms(20, 0.3)}
+              name='trash'
+              size={ms(15, 0.3)}
               color={theme.textColor}
             />
           </TouchableOpacity>

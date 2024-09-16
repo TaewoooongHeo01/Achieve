@@ -68,8 +68,8 @@ const DeleteGoalAlert = ({
           fontStyle.fontSizeSub,
           {
             color: theme.textColor,
-            marginBottom: ms(20, 0.3),
-            marginTop: ms(5, 0.3),
+            marginBottom: ms(25, 0.3),
+            marginVertical: ms(10, 0.3),
           },
         ]}>
         목표에 포함된 할 일들도 삭제됩니다.
