@@ -191,22 +191,8 @@ const HowToUse = () => {
               때문이죠.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
-              우리가 현재에 충실해야 하는 이유는 간단해요.{' '}
-              <Text
-                style={{
-                  backgroundColor:
-                    currentTheme === 'dark'
-                      ? darkmodeHightlight
-                      : lightmodeHightlight,
-                  fontFamily: 'Pretendard-Medium',
-                }}>
-                지나간 시간대와 경험은 돌아오지 않기 때문이죠.
-              </Text>{' '}
-              이건 Achieve 에서도 마찬가지랍니다.
-            </Text>
-            <Text style={[font.font, { color: theme.textColor }]}>
               다만 Achieve 에선 할 일을 미룰 수 있어요. 만약 할 일이 너무 많은데
-              끝나는 데에만 조급하다면 몰입할 수 없기 때문이죠.
+              끝나는 데에만 조급하다면 몰입할 수 없기 때문이에요.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               Achieve 를 통해 진짜 나에게 필요한 것들이 무엇인지 생각해 보고,

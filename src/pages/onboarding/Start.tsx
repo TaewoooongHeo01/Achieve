@@ -26,16 +26,16 @@ const Start = () => {
       edges={
         Platform.OS === 'ios' ? ['left', 'right'] : ['top', 'left', 'right']
       }
-      style={{ flex: 1, backgroundColor: '#121212' }}>
+      style={{ flex: 1, backgroundColor: '#FDFDFD' }}>
       {Platform.OS === 'ios' ? (
         <View
           style={{
             height: top,
           }}>
-          <StatusBar barStyle={'light-content'} />
+          <StatusBar barStyle={'dark-content'} />
         </View>
       ) : (
-        <StatusBar barStyle={'light-content'} backgroundColor={'#121212'} />
+        <StatusBar barStyle={'dark-content'} backgroundColor={'#FDFDFD'} />
       )}
       <View
         style={{
@@ -44,10 +44,10 @@ const Start = () => {
           paddingHorizontal: ms(18, 0.3),
           paddingBottom: ms(50, 0.3),
         }}>
-        <Text style={[fontStyle.fontSizeMain, { color: 'white' }]}>
-          안녕하세요👋
+        <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
+          안녕하세요
         </Text>
-        <Text style={[fontStyle.fontSizeMain, { color: 'white' }]}>
+        <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
           Achieve 에 오신걸 환영해요
         </Text>
       </View>
@@ -64,14 +64,14 @@ const Start = () => {
             navigation.navigate('UserOnboarding');
           }}
           style={{
-            backgroundColor: 'white',
+            backgroundColor: '#282828',
             width: '100%',
             height: ms(43, 0.3),
             borderRadius: ms(5, 0.3),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={[{ color: '#282828' }, fontStyle.BtnFont]}>다음</Text>
+          <Text style={[{ color: 'white' }, fontStyle.BtnFont]}>다음</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

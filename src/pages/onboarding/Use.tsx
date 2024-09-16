@@ -36,23 +36,22 @@ const Use = () => {
       edges={
         Platform.OS === 'ios' ? ['left', 'right'] : ['top', 'left', 'right']
       }
-      style={{ flex: 1, backgroundColor: '#121212' }}>
+      style={{ flex: 1, backgroundColor: '#FDFDFD' }}>
       {Platform.OS === 'ios' ? (
         <View
           style={{
             height: top,
           }}>
-          <StatusBar barStyle={'light-content'} />
+          <StatusBar barStyle={'dark-content'} />
         </View>
       ) : (
-        <StatusBar barStyle={'light-content'} backgroundColor={'#121212'} />
+        <StatusBar barStyle={'dark-content'} backgroundColor={'#FDFDFD'} />
       )}
       <View
         style={{
-          flex: ms(0.7, 0.3),
+          flex: ms(0.8, 0.3),
           justifyContent: 'center',
           alignItems: 'center',
-          paddingBottom: ms(50, 0.3),
         }}>
         <Introduction
           selectedIdx={selectedIdx}
@@ -73,21 +72,21 @@ const Use = () => {
               navigation.navigate('Main');
             }}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: '#282828',
               width: '100%',
               height: ms(43, 0.3),
               borderRadius: ms(5, 0.3),
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={[{ color: '#282828' }, fontStyle.BtnFont]}>
+            <Text style={[{ color: 'white' }, fontStyle.BtnFont]}>
               시작하기
             </Text>
           </TouchableOpacity>
         ) : (
           <View
             style={{
-              backgroundColor: 'white',
+              backgroundColor: '#282828',
               width: '100%',
               height: ms(43, 0.3),
               borderRadius: ms(5, 0.3),
@@ -95,7 +94,7 @@ const Use = () => {
               alignItems: 'center',
               opacity: 0.3,
             }}>
-            <Text style={[{ color: '#282828' }, fontStyle.BtnFont]}>
+            <Text style={[{ color: 'white' }, fontStyle.BtnFont]}>
               시작하기
             </Text>
           </View>

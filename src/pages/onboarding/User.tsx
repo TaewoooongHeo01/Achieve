@@ -44,16 +44,16 @@ const UserOnboarding = () => {
       edges={
         Platform.OS === 'ios' ? ['left', 'right'] : ['top', 'left', 'right']
       }
-      style={{ flex: 1, backgroundColor: '#121212' }}>
+      style={{ flex: 1, backgroundColor: '#FDFDFD' }}>
       {Platform.OS === 'ios' ? (
         <View
           style={{
             height: top,
           }}>
-          <StatusBar barStyle={'light-content'} />
+          <StatusBar barStyle={'dark-content'} />
         </View>
       ) : (
-        <StatusBar barStyle={'light-content'} backgroundColor={'#121212'} />
+        <StatusBar barStyle={'dark-content'} backgroundColor={'#FDFDFD'} />
       )}
       <TouchableOpacity
         activeOpacity={1}
@@ -69,7 +69,7 @@ const UserOnboarding = () => {
         <Text
           style={[
             fontStyle.fontSizeMain,
-            { color: 'white', marginBottom: ms(5, 0.3) },
+            { color: '#282828', marginBottom: ms(5, 0.3) },
           ]}>
           이름을 알려주세요
         </Text>
@@ -77,11 +77,13 @@ const UserOnboarding = () => {
           style={{
             width: '100%',
             height: ms(40, 0.3),
+            backgroundColor: '#F4F4F4',
+            borderColor: Platform.OS === 'ios' ? '#ccc' : 'black',
             borderRadius: ms(5, 0.3),
             marginBottom: ms(5, 0.3),
-            color: 'white',
-            backgroundColor: '#282828',
+            color: '#282828',
             padding: ms(7, 0.3),
+            fontFamily: 'Pretendard-Medium',
           }}
           value={username}
           onChangeText={setUsername}
@@ -109,14 +111,14 @@ const UserOnboarding = () => {
             }
           }}
           style={{
-            backgroundColor: 'white',
+            backgroundColor: '#282828',
             width: '100%',
             height: ms(43, 0.3),
             borderRadius: ms(5, 0.3),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={[{ color: '#282828' }, fontStyle.BtnFont]}>다음</Text>
+          <Text style={[{ color: 'white' }, fontStyle.BtnFont]}>다음</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

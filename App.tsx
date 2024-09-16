@@ -83,7 +83,7 @@ function App(): React.JSX.Element {
     undefined,
   );
 
-  const user = useQuery(User)[0];
+  const user = null;
 
   useEffect(() => {
     if (user) {

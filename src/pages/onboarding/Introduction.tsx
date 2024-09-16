@@ -105,7 +105,7 @@ const Introduction = ({
   };
 
   return (
-    <View>
+    <View style={{}}>
       <FlatList
         data={currentTheme === 'dark' ? darkmode : lightmode}
         renderItem={renderItem}
@@ -117,6 +117,7 @@ const Introduction = ({
         contentContainerStyle={{
           justifyContent: 'center',
           alignItems: 'center',
+          marginVertical: ms(10, 0.3),
         }}
         onViewableItemsChanged={({ viewableItems }) => {
           setSelectedIdx(viewableItems[0].index);
