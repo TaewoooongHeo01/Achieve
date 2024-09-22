@@ -23,6 +23,7 @@ import { useQuery, useRealm } from '@realm/react';
 import { Phrase } from '../../../../realm/models';
 import { shadow } from '../../../assets/style/shadow';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import DeleteIcon from 'react-native-vector-icons/FontAwesome5';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -128,7 +129,7 @@ const SettingPhrase = (): React.ReactElement => {
             justifyContent: 'center',
             marginLeft: ms(6, 0.3),
           }}>
-          <Icon name='delete' color={theme.textColor} size={ms(13, 0.3)} />
+          <DeleteIcon name='trash' color={theme.textColor} size={ms(15, 0.3)} />
         </TouchableOpacity>
       </View>
     );

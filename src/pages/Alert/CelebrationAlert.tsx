@@ -26,7 +26,7 @@ const CelebrationAlert = () => {
             color: theme.textColor,
           },
         ]}>
-        축하합니다!
+        축하합니다!🥳
       </Text>
       <Text
         style={[

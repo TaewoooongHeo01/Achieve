@@ -19,10 +19,6 @@ const Main = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();
   const { theme, currentTheme } = useColors();
 
-  //test code
-  //"오늘" 이전에 있었던 "복제", "오리지널", "사이클이 없는" 투두들이 완료되었을 때 정상적으로 weekCycle 에 표시되는지, 그리고 삭제 시 삭제되지 않는지 확인
-  //초기 앱 화면에서 오늘 날짜 taskDate 생성해야 됨.
-
   return (
     <SafeAreaView
       edges={
@@ -48,7 +44,7 @@ const Main = (): React.JSX.Element => {
         />
       )}
       <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
-        <View style={{ flex: 1 }}>
+        <View style={[{ flex: 1, marginTop: ms(5, 0.3) }]}>
           <Tab.Navigator
             initialRouteName='Home'
             screenOptions={{

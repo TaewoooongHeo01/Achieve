@@ -45,7 +45,7 @@ const Start = () => {
           paddingBottom: ms(50, 0.3),
         }}>
         <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
-          안녕하세요
+          안녕하세요👋
         </Text>
         <Text style={[fontStyle.fontSizeMain, { color: '#282828' }]}>
           Achieve 에 오신걸 환영해요

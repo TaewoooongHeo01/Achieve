@@ -12,7 +12,7 @@ import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
-  const { theme } = useColors();
+  const { theme, currentTheme } = useColors();
   const realm = useRealm();
   const { today } = useDateContext();
   const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
@@ -35,7 +35,7 @@ const CompleteGoalAlert = ({ goal }: { goal: Goal | null }) => {
           justifyContent: 'center',
           alignItems: 'center',
           // padding: ms(11, 0.3),
-          backgroundColor: theme.green,
+          backgroundColor: currentTheme === 'light' ? '#ECECEC' : '#393939',
         }}>
         <View
           // onLayout={e => {

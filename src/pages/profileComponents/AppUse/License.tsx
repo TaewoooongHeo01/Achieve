@@ -204,7 +204,7 @@ const License = (): React.ReactElement => {
     },
     {
       title: 'node',
-      version: '18.20.4',
+      version: '20.13.1',
       url: 'https://github.com/nodejs/node/releases/tag/v22.8.0',
       copyright: 'Copyright Node.js contributors. All rights reserved.',
     },

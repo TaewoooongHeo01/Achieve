@@ -110,7 +110,6 @@ const CheckFullnessAlert = ({
               );
               if (fullyDate) {
                 fullyDate.fullness = checkedValue;
-                console.log(checkedValue);
               }
             });
             closeAlert();

@@ -59,7 +59,7 @@ const GoalAddCompleteAlert = ({
             marginTop: ms(15, 0.3),
           },
         ]}>
-        축하합니다
+        축하합니다🥳
       </Text>
       <Text
         style={[

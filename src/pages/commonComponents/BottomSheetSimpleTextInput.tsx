@@ -32,8 +32,8 @@ const BottomSheetSimpleTextInput = ({ mode }: { mode: string }) => {
         Alert.alert('문구를 입력해주세요');
         return false;
       }
-      if (title.length >= 100) {
-        Alert.alert('문구의 길이는 100 자 이하로 설정해주세요');
+      if (title.length >= 200) {
+        Alert.alert('문구의 길이는 200 자 이하로 설정해주세요');
         return false;
       }
     }

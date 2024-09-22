@@ -209,9 +209,11 @@ const MonthCalendar = ({
                 {
                   color: isToday ? theme.backgroundColor : theme.textColor,
                   opacity: item.isActive
-                    ? itemFormat >= todayFormat
-                      ? 1
-                      : 0.2
+                    ? itemAdd
+                      ? itemFormat >= todayFormat
+                        ? 1
+                        : 0.2
+                      : 1
                     : 0.2,
                   fontSize: ms(15, 0.3),
                   fontFamily: 'Pretendard-Medium',

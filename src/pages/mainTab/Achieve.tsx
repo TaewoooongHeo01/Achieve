@@ -19,17 +19,6 @@ export type heapmapDataType = {
   day: number;
 };
 
-//최적화전략
-//2. hitmapData 만들 때 하나하나 useMemo 사용 + React.memo 로 메모이제이션 이용
-//3. makeyearhitmap 을 useCallback 으로 감싸기.
-//자동 스크롤
-
-//성능최적화에서 고려해야 될 것
-//만약 useEffect, useMemo 같이 특정 값에 의존하는 경우에만 변경하는 경우 todos 를 넣을 수 밖에 없음
-//문제는 이 경우 저 많은 계산이 todo 변경마다 된다는 것임.
-//과연 사용자가 achieve page 에 들어오는 경우가 더 많을까 아니면 todo 를 변경시키는 경우가 더 많을까?
-//나는 후자라고 생각함. 따라서 저 함수 자체를 useCallback 해서 함수의 선언을 메모이제이션 하는 건 몰라도 의존성배열에 넣는 건 다시 고려해봐야 함.
-
 export default function Achieve() {
   const { theme } = useColors();
   const now = new Date();

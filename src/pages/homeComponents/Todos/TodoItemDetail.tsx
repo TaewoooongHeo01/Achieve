@@ -56,7 +56,7 @@ const TodoItemDetail = ({
         <View
           style={{
             flex: 1,
-            margin: ms(11, 0.3),
+            margin: ms(13, 0.3),
           }}>
           {goal !== undefined ? (
             <LinearGradient
@@ -82,7 +82,7 @@ const TodoItemDetail = ({
                   style={{
                     textAlign: 'center',
                   }}
-                  size={ms(20, 0.3)}></Icon>
+                  size={ms(24, 0.3)}></Icon>
               </View>
             </LinearGradient>
           ) : (

@@ -4,7 +4,7 @@ import { ms } from 'react-native-size-matters';
 import { useDateContext } from '../../context/DateContext';
 import { days } from '../../context/DateContext';
 import { useColors } from '../../context/ThemeContext';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { makeWeekCalendar, selectedCheck } from '../../utils/makeWeekCalendar';
 import { makeDateFormatKey } from '../../utils/makeDateFormatKey';
 
@@ -48,11 +48,12 @@ const WeekCalender = (): React.ReactElement => {
             </Text>
             {todayFormat === valueKey ? (
               <Icon
-                name={'check'}
-                size={ms(13, 0.3)}
+                name={'circle'}
+                size={ms(7, 0.3)}
                 style={[
                   {
                     color: theme.textColor,
+                    marginTop: ms(5, 0.3),
                   },
                   isToday
                     ? {
@@ -60,9 +61,7 @@ const WeekCalender = (): React.ReactElement => {
                       }
                     : {},
                 ]}></Icon>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </Pressable>
         );
       })}

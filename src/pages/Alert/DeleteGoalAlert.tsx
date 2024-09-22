@@ -16,7 +16,7 @@ const DeleteGoalAlert = ({
   goal: Goal | null;
   todos: Results<Todo> | List<Todo> | undefined;
 }) => {
-  const { theme } = useColors();
+  const { theme, currentTheme } = useColors();
   const realm = useRealm();
 
   return (
@@ -37,7 +37,7 @@ const DeleteGoalAlert = ({
           justifyContent: 'center',
           alignItems: 'center',
           // padding: ms(11, 0.3),
-          backgroundColor: theme.red,
+          backgroundColor: currentTheme === 'light' ? '#ECECEC' : '#393939',
         }}>
         <View
           // onLayout={e => {

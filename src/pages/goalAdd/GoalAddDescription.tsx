@@ -26,10 +26,7 @@ const GoalAddDescription = ({ route, navigation }: GoalAddDescriptionProps) => {
   const title = route.params.title;
   const [description, setDescription] = useState<string>('');
 
-  // const tips = ['팁~~~~~~~~~~~', '탭~~~~~~~~~~~', '톡~~~~~~~~~~~~'];
-
   const inputValid = (): boolean => {
-    console.log(description.trim().length);
     if (description.trim() === '') {
       Alert.alert('설명을 입력해주세요');
       return false;

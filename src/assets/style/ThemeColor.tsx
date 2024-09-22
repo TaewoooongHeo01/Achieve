@@ -22,11 +22,11 @@ const gradientColorset: string[][] = [
   ['#ffc6ff', '#ffc6ff'],
 
   //그라데이션
-  ['#ff6f91', '#ff9671', '#f9f871'],
+  ['#F96A6D', '#FDC9AC'],
   ['#ddff33', '#6ce46a'],
   ['#84fab0', '#8fd3f4'], //초-파
   ['#d299c2', '#fef9d7'], //핑-노
-  ['#5e60ce', '#64dfdf'], //노-파
+  ['#858BF0', '#F96A6D'], //노-파
   ['#e7c6ff', '#b8c0ff'], //Kind Steel
   ['#accbee', '#e7f0fd'], //Febuary Ink
   ['#f3e7e9', '#e3eeff'], //Cloudy Apple

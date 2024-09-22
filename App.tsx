@@ -17,8 +17,6 @@ import SettingUser from './src/pages/profileComponents/SettingPages/SettingUser'
 import SettingPhrase from './src/pages/profileComponents/SettingPages/SettingPhrase';
 import SettingScreen from './src/pages/profileComponents/SettingPages/SettingScreen';
 import GoalEdit from './src/pages/commonComponents/GoalEdit';
-import { useQuery } from '@realm/react';
-import { User } from './realm/models';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -32,6 +30,8 @@ import Use from './src/pages/onboarding/Use';
 import UserInformation from './src/pages/profileComponents/AppUse/UserInformation';
 import TermsOfUse from './src/pages/profileComponents/AppUse/TermsOfUse';
 import License from './src/pages/profileComponents/AppUse/License';
+import { useQuery } from '@realm/react';
+import { User } from './realm/models';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -83,7 +83,7 @@ function App(): React.JSX.Element {
     undefined,
   );
 
-  const user = null;
+  const user = useQuery(User)[0];
 
   useEffect(() => {
     if (user) {

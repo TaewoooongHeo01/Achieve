@@ -45,8 +45,17 @@ const GoalEdit = ({ route, navigation }: GoalEditProps) => {
     if (title === '') {
       Alert.alert('제목을 입력해주세요');
       return false;
-    } else if (title && title?.length > 30) {
+    }
+    if (title && title?.length > 30) {
       Alert.alert('제목의 길이는 30 자 이하로 설정해주세요');
+      return false;
+    }
+    if (description === '') {
+      Alert.alert('설명을 입력해주세요');
+      return false;
+    }
+    if (description && description.length > 400) {
+      Alert.alert('설명의 길이는 400 자 이하로 해주세요');
       return false;
     }
     return true;
@@ -153,7 +162,7 @@ const GoalEdit = ({ route, navigation }: GoalEditProps) => {
                 <TextInput
                   style={{
                     width: '100%',
-                    height: ms(150, 0.3),
+                    height: ms(225, 0.3),
                     borderRadius: ms(5, 0.3),
                     marginBottom: ms(5, 0.3),
                     color: theme.textColor,

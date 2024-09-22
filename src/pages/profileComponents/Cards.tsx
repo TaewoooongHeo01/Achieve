@@ -133,6 +133,22 @@ const Cards = () => {
         </TouchableOpacity>
         <View
           style={{
+            paddingHorizontal: ms(18, 0.3),
+            marginBottom: ms(6, 0.3),
+          }}>
+          <Text
+            style={[
+              fontStyle.fontSizeMain,
+              { color: theme.textColor, marginBottom: ms(2, 0.3) },
+            ]}>
+            달성한 목표들
+          </Text>
+          <Text style={[fontStyle.fontSizeSub, { color: theme.textColor }]}>
+            지금까지 달성한 목표들을 볼 수 있어요
+          </Text>
+        </View>
+        <View
+          style={{
             justifyContent: 'center',
             alignItems: 'center',
           }}>

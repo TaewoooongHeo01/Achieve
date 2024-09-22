@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { useDateContext } from '../../../context/DateContext';
 import { makeDateFormatKey } from '../../../utils/makeDateFormatKey';
@@ -31,19 +31,16 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
     Realm.Results<Todo & Realm.Object> | Todo[] | List<Todo>
   >([]);
 
-  const fetchTodos = useCallback(async () => {
+  useEffect(() => {
     try {
       if (fullyDate) {
-        setTodos(fullyDate.todos.sorted('isComplete', false));
+        setTodos(() => fullyDate.todos.sorted('isComplete', false));
       } else {
-        // console.log('date 없음. 생성필요. cycleTodos: ');
         const cycleTodos = realm
           .objects<Todo>('Todo')
           .filtered('ANY weekCycle == $0 AND isClone == false', taskDate.day);
-
         if (cycleTodos.length === 0 || dateFormatKey === '') {
-          setTodos([]);
-          // console.log('사이클이 없으면 생성하지 않음');
+          setTodos(() => []);
           return;
         }
 
@@ -57,7 +54,6 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
           let notAdded = true;
           cycleTodos.forEach(td => {
             if (taskDateFormat > Number(td.originDate)) {
-              // console.log('새로 생성중...');
               const Goal = td.linkingObjects<Goal>('Goal', 'todos')[0];
               const todo = realm.create<Todo>('Todo', {
                 title: td.title,
@@ -69,32 +65,24 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
                 originDate: td.originDate,
                 isClone: true,
               });
-
               date.todos.push(todo);
               Goal.todos.push(todo);
               notAdded = false;
             }
           });
           if (notAdded) {
-            // console.log('추가되지 않음. date 다시 삭제');
-            setTodos([]);
+            setTodos(() => []);
             realm.delete(date);
           } else {
-            // console.log('todos 업데이트');
-            setTodos(date.todos);
+            setTodos(() => date.todos);
           }
         });
       }
     } catch (error) {
-      console.error('Error fetching todos:', error);
-      //에러 알림?
-      setTodos([]);
+      throw new Error('todo 생성 error');
+      setTodos(() => []);
     }
-  }, [dateFormatKey, fullyDate, realm, taskDate.day]);
-
-  useEffect(() => {
-    fetchTodos();
-  }, [fetchTodos]);
+  }, [dateFormatKey, fullyDate]);
 
   const [changed, setChanged] = useState(false);
 
@@ -281,7 +269,7 @@ const Todolist = ({ theme }: { theme: ColorSet }) => {
             }
           });
         } catch (error) {
-          console.error('Error deleting todos:', error);
+          throw new Error('delete todo error');
           // 여기에 사용자에게 오류를 알리는 로직 추가
         }
       });
