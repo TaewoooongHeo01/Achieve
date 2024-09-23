@@ -634,7 +634,7 @@
 					"$(inherited)",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/RealmJS\"",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -733,7 +733,7 @@
 					"$(inherited)",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/RealmJS\"",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.0.2;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

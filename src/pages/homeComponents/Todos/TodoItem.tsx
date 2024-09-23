@@ -93,8 +93,11 @@ const TodoItem = ({
 
   const todoCompleteAnimation = (isRemove: boolean) => {
     'worklet';
+    console.log('시작: ' + backFontOpacityRight.value);
     iconBackgroundColor.value = withTiming('transparent');
+    backFontOpacityLeft.value = withTiming(0);
     backFontOpacityRight.value = withTiming(0, {}, () => {
+      console.log('완료: ' + backFontOpacityRight.value);
       translateX.value = withTiming(-screenWidth, {}, () => {
         marginXY.value = withTiming(0);
         scaleX.value = withTiming(0, {}, () => {
@@ -137,6 +140,7 @@ const TodoItem = ({
         const state = translateX.value;
         if (state > 0) {
           iconBackgroundColor.value = withTiming('transparent');
+          backFontOpacityRight.value = withTiming(0);
           backFontOpacityLeft.value = withTiming(0, {}, () => {
             translateX.value = withTiming(screenWidth, {}, () => {
               marginXY.value = withTiming(0);

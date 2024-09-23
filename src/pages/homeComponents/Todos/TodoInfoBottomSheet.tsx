@@ -253,25 +253,25 @@ const TodoInfo = ({
                       value.contain ? { backgroundColor: theme.textColor } : {},
                       value.leftOn
                         ? {
-                            marginLeft: ms(-0.1, 0.3),
-                            marginRight: ms(-0.1, 0.3),
+                            marginLeft: ms(-0.3, 0.3),
+                            marginRight: ms(-0.3, 0.3),
                             borderRadius:
                               Platform.OS === 'ios' ? 0 : ms(0.1, 0.3),
                           }
                         : {
-                            marginRight: ms(-0.1, 0.3),
+                            marginRight: ms(-0.3, 0.3),
                             borderTopLeftRadius: ms(7, 0.3),
                             borderBottomLeftRadius: ms(7, 0.3),
                           },
                       value.rightOn
                         ? {
-                            marginLeft: ms(-0.1, 0.3),
-                            marginRight: ms(-0.1, 0.3),
+                            marginLeft: ms(-0.3, 0.3),
+                            marginRight: ms(-0.3, 0.3),
                             borderRadius:
                               Platform.OS === 'ios' ? 0 : ms(0.1, 0.3),
                           }
                         : {
-                            marginLeft: ms(-0.1, 0.3),
+                            marginLeft: ms(-0.3, 0.3),
                             borderTopRightRadius: ms(7, 0.3),
                             borderBottomRightRadius: ms(7, 0.3),
                           },

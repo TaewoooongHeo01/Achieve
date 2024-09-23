@@ -136,7 +136,7 @@ const GoalDetail = ({
             }}>
             <Text
               style={[{ color: theme.backgroundColor }, fontStyle.fontSizeSub]}>
-              목표 설정
+              설정
             </Text>
           </TouchableOpacity>
         </View>

@@ -203,7 +203,7 @@ export default function Achieve() {
                   borderBottomRightRadius: index === 4 ? ms(5, 0.3) : 0,
                   borderTopLeftRadius: index === 0 ? ms(5, 0.3) : 0,
                   borderBottomLeftRadius: index === 0 ? ms(5, 0.3) : 0,
-                  marginHorizontal: ms(-0.1, 0.3),
+                  marginHorizontal: ms(-0.2, 0.3),
                   height: ms(22, 0.3),
                 }}>
                 <Text

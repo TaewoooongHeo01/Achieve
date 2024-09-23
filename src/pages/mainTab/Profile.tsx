@@ -83,7 +83,11 @@ const Profile = (): React.JSX.Element => {
               ]}>
               목표 설정하기
             </Text>
-            <Text style={[{ color: textColor }, fontStyle.fontSizeSub]}>
+            <Text
+              style={[
+                { color: textColor, opacity: 0.7 },
+                fontStyle.fontSizeSub,
+              ]}>
               목표를 만드는 것부터 시작해 보세요
             </Text>
           </View>
@@ -119,10 +123,18 @@ const Profile = (): React.JSX.Element => {
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
+                <Text
+                  style={[
+                    fontStyle.fontSizeMain,
+                    { color: textColor, marginBottom: ms(2, 0.3) },
+                  ]}>
                   Achieve
                 </Text>
-                <Text style={[{ color: textColor }, fontStyle.fontSizeSub]}>
+                <Text
+                  style={[
+                    { color: textColor, opacity: 0.7 },
+                    fontStyle.fontSizeSub,
+                  ]}>
                   제대로 사용하기
                 </Text>
               </View>
@@ -149,8 +161,26 @@ const Profile = (): React.JSX.Element => {
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
+                <Text
+                  style={[
+                    fontStyle.fontSizeMain,
+                    { color: textColor, marginBottom: ms(2, 0.3) },
+                  ]}>
                   달성한 목표들
+                </Text>
+                <Text
+                  style={[
+                    { color: textColor, opacity: 0.7 },
+                    fontStyle.fontSizeSub,
+                  ]}>
+                  지금까지의 기록들을
+                </Text>
+                <Text
+                  style={[
+                    { color: textColor, opacity: 0.7 },
+                    fontStyle.fontSizeSub,
+                  ]}>
+                  한눈에 볼 수 있어요
                 </Text>
               </View>
             </TouchableOpacity>
@@ -183,8 +213,26 @@ const Profile = (): React.JSX.Element => {
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
+                <Text
+                  style={[
+                    fontStyle.fontSizeMain,
+                    { color: textColor, marginBottom: ms(2, 0.3) },
+                  ]}>
                   나중에 할 일
+                </Text>
+                <Text
+                  style={[
+                    { color: textColor, opacity: 0.7 },
+                    fontStyle.fontSizeSub,
+                  ]}>
+                  빠르게 할 일을
+                </Text>
+                <Text
+                  style={[
+                    { color: textColor, opacity: 0.7 },
+                    fontStyle.fontSizeSub,
+                  ]}>
+                  추가하세요
                 </Text>
               </View>
             </TouchableOpacity>
@@ -210,9 +258,18 @@ const Profile = (): React.JSX.Element => {
                   styles.profileTabContainer,
                   currentTheme === 'light' ? shadow.boxShadow : {},
                 ]}>
-                <Text style={[fontStyle.fontSizeMain, { color: textColor }]}>
+                <Text
+                  style={[
+                    fontStyle.fontSizeMain,
+                    { color: textColor, marginBottom: ms(0.2, 0.3) },
+                  ]}>
                   설정
                 </Text>
+                <Text
+                  style={[
+                    { color: textColor, opacity: 0.7 },
+                    fontStyle.fontSizeSub,
+                  ]}></Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -230,7 +287,7 @@ const styles = StyleSheet.create({
     paddingTop: ms(5, 1),
   },
   goalContainer: {
-    aspectRatio: 3,
+    aspectRatio: 3.5,
     borderRadius: ms(5, 0.3),
     padding: ms(15, 0.3),
   },

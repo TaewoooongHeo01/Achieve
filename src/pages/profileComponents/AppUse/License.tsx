@@ -203,7 +203,7 @@ const License = (): React.ReactElement => {
       copyright: 'Copyright (c) 2015-present Ionic (http://ionic.io/)',
     },
     {
-      title: 'node',
+      title: 'nodeJS',
       version: '20.13.1',
       url: 'https://github.com/nodejs/node/releases/tag/v22.8.0',
       copyright: 'Copyright Node.js contributors. All rights reserved.',
@@ -244,7 +244,7 @@ const License = (): React.ReactElement => {
           <Icon name='arrowleft' color={theme.textColor} size={ms(23, 0.3)} />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             {LicenseArr.map((value, index) => {
               return (
                 <View key={index.toString()} style={{ marginTop: ms(15, 0.3) }}>

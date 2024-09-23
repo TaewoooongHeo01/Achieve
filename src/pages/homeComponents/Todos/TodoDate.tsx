@@ -12,6 +12,7 @@ import {
   Pressable,
   Platform,
   Keyboard,
+  useWindowDimensions,
 } from 'react-native';
 import TodoDetail from './Todolist';
 import { ms } from 'react-native-size-matters';
@@ -37,7 +38,8 @@ const TodoDate = (): React.ReactElement => {
   const { theme } = useColors();
   const { taskDate, today, setTaskDate } = useDateContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['50%'], []);
+  const windowHeight = useWindowDimensions().height;
+  const snapPoints = useMemo(() => [windowHeight > 668 ? '50%' : '60%'], []);
   const todoString = '해야 할 일 ';
   const goal = useQuery(Goal).filtered('isComplete == false');
 
@@ -59,7 +61,7 @@ const TodoDate = (): React.ReactElement => {
   );
 
   const [todoBottomSheetSnapPoint, setTodoBottomSheetSnapPoint] =
-    useState<string>('65%');
+    useState<string>('55%');
   const todoBottomSheetModalRef = useRef<BottomSheetModal>(null);
   const todoSnapPoints = useMemo(
     () => [todoBottomSheetSnapPoint],
@@ -77,7 +79,7 @@ const TodoDate = (): React.ReactElement => {
       const keyboardDidHideListener = Keyboard.addListener(
         'keyboardDidHide',
         () => {
-          setTodoBottomSheetSnapPoint('65%');
+          setTodoBottomSheetSnapPoint('55%');
         },
       );
 
@@ -132,7 +134,10 @@ const TodoDate = (): React.ReactElement => {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Pressable onPress={handlePresentModal}>
+          <Pressable
+            onPress={() => {
+              handlePresentModal();
+            }}>
             <Text
               style={[
                 fontStyle.fontSizeMain,
@@ -166,7 +171,8 @@ const TodoDate = (): React.ReactElement => {
         {taskDateFormat >= todayFormat && goal.length > 0 ? (
           <TouchableOpacity
             onPress={() => {
-              setTodoBottomSheetSnapPoint('60%');
+              const snp = windowHeight > 668 ? '55%' : '75%';
+              setTodoBottomSheetSnapPoint(snp);
               todoHandlePresentModal();
             }}>
             <PlusIcon name='plus' color={theme.textColor} size={ms(25, 0.3)} />

@@ -40,13 +40,13 @@ const MonthCalendar = ({
 }): React.ReactElement => {
   const { theme } = useColors();
   const { taskDate, today, setTaskDate } = useDateContext();
-
+  const windowHeight = useWindowDimensions().height;
   const { dismiss } = useBottomSheetModal();
   const [curYear, setCurYear] = useState(taskDate.year);
   const [curMonth, setCurMonth] = useState(taskDate.month);
   const [monthDays, setMonthDays] = useState<TaskDate[]>([]);
   const bottomSheetWidth = useWindowDimensions().width - ms(15, 0.3);
-  const bottomSheetHeight = useWindowDimensions().height / 2;
+  const bottomSheetHeight = ms(390, 0.3);
   const todayFormat = makeDateFormatKey(today.year, today.month, today.date);
 
   const layoutX = useSharedValue<number>(0);
@@ -248,6 +248,7 @@ const MonthCalendar = ({
           width: bottomSheetWidth - ms(15, 0.3),
           height: bottomSheetHeight,
           paddingVertical: itemAdd ? 0 : ms(8, 0.3),
+          // backgroundColor: 'blue',
         }}>
         <View
           style={{
@@ -287,69 +288,74 @@ const MonthCalendar = ({
             <Icon name='right' color={theme.textColor}></Icon>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, paddingHorizontal: ms(20, 0.3) }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            {days.map(value => {
-              return (
-                <View key={value.toString()} style={[styles.cell, { flex: 1 }]}>
-                  <Text
-                    style={[
-                      styles.daysfont,
-                      {
-                        color: theme.textColor,
-                        fontFamily: 'Pretendard-Medium',
-                      },
-                    ]}>
-                    {value}
-                  </Text>
-                </View>
-              );
-            })}
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: ms(20, 0.3),
+          }}>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              {days.map(value => {
+                return (
+                  <View
+                    key={value.toString()}
+                    style={[styles.cell, { flex: 1 }]}>
+                    <Text
+                      style={[
+                        styles.daysfont,
+                        {
+                          color: theme.textColor,
+                          fontFamily: 'Pretendard-Medium',
+                        },
+                      ]}>
+                      {value}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                // marginHorizontal: ms(-8, 0.3),
+              }}>
+              <BottomSheetFlatList
+                data={monthDays}
+                numColumns={7}
+                renderItem={renderItem}
+              />
+            </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              // marginHorizontal: ms(-8, 0.3),
-            }}>
-            <BottomSheetFlatList
-              style={{ flex: 1 }}
-              data={monthDays}
-              numColumns={7}
-              renderItem={renderItem}
-            />
-          </View>
+          {itemAdd && setTodoBottomSheetSnapPoint ? (
+            <TouchableOpacity
+              onPress={() => {
+                layoutX.value = -bottomSheetWidth;
+                setTodoBottomSheetSnapPoint(windowHeight > 668 ? '62%' : '80%');
+              }}
+              style={{
+                backgroundColor: theme.textColor,
+                padding: ms(11, 0.3),
+                borderRadius: ms(5, 0.3),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={[
+                  {
+                    color: theme.backgroundColor,
+                  },
+                  fontStyle.BtnFont,
+                ]}>
+                다음
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
-        {itemAdd && setTodoBottomSheetSnapPoint ? (
-          <TouchableOpacity
-            onPress={() => {
-              layoutX.value = -bottomSheetWidth;
-              setTodoBottomSheetSnapPoint('65%');
-            }}
-            style={{
-              backgroundColor: theme.textColor,
-              padding: ms(11, 0.3),
-              marginHorizontal: ms(30, 0.3),
-              borderRadius: ms(5, 0.3),
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: ms(15, 0.3),
-            }}>
-            <Text
-              style={[
-                {
-                  color: theme.backgroundColor,
-                },
-                fontStyle.BtnFont,
-              ]}>
-              다음
-            </Text>
-          </TouchableOpacity>
-        ) : null}
       </View>
       <View
         style={{

@@ -22,8 +22,7 @@ const Intro = (): React.JSX.Element => {
   const { theme, currentTheme } = useColors();
 
   const ph = useQuery(Phrase);
-  // const username = useQuery(User)[0].username;
-  const username = 'TAEWOONG HEO';
+  const username = useQuery(User)[0].username;
   let phrase = '';
 
   for (let i = 0; i < ph.length; i++) {

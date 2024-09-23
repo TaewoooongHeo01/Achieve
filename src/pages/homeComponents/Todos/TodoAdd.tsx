@@ -121,7 +121,7 @@ const TodoAdd = ({
             padding: ms(10, 0.3),
             borderRadius: ms(7, 0.3),
             opacity:
-              item._id.toString() === todosGoal?._id.toString() ? 0.4 : 1,
+              item._id.toString() === todosGoal?._id.toString() ? 0.6 : 1,
           }}
           colors={theme.gradientColor[item.color]}>
           <GoalIcon name={item.icon} size={ms(18, 0.3)} />
@@ -211,6 +211,14 @@ const TodoAdd = ({
           style={{
             marginHorizontal: ms(10, 0.3),
             marginBottom: titleContentGap,
+            borderWidth: currentTheme === 'light' ? 0.2 : 0,
+            backgroundColor:
+              currentTheme === 'dark' ? theme.appBackgroundColor : '#F8F8F8',
+            borderColor: Platform.OS === 'ios' ? '#ccc' : '#737373',
+            marginLeft: ms(-0.1, 0.3),
+            marginRight: ms(-0.1, 0.3),
+            padding: ms(10, 0.3),
+            borderRadius: Platform.OS === 'android' ? ms(5, 0.3) : ms(7, 0.5),
           }}
           data={goals}
           horizontal={true}

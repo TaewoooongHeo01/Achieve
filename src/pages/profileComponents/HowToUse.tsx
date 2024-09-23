@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Image,
+  // Image,
   Platform,
   ScrollView,
   StatusBar,
@@ -53,7 +53,9 @@ const HowToUse = () => {
           backgroundColor={theme.appBackgroundColor}
         />
       )}
-      <ScrollView style={[topMargin.margin, { flex: 1 }]}>
+      <ScrollView
+        style={[topMargin.margin, { flex: 1 }]}
+        showsVerticalScrollIndicator={false}>
         <TouchableOpacity
           activeOpacity={1}
           style={{ marginBottom: ms(7, 0.3), paddingHorizontal: ms(18, 0.3) }}
@@ -108,16 +110,16 @@ const HowToUse = () => {
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginVertical: ms(15, 0.3),
+                marginVertical: ms(10, 0.3),
               }}>
-              <Image
+              {/* <Image
                 source={require('../../assets/images/island.png')}
                 resizeMode={'contain'}
                 style={{
                   width: ms(170, 0.3),
                   height: ms(170, 0.3),
                   borderRadius: ms(5, 0.3),
-                }}></Image>
+                }}></Image> */}
             </View>
             <Text style={[font.font, { color: theme.textColor }]}>
               Achieve 는{' '}
@@ -141,8 +143,8 @@ const HowToUse = () => {
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               사실, 먼 미래를 위해 지금부터 준비하는 것은 쉽지 않아요. 많은
-              유혹에 의지도 약해질 수 있죠. 그리고 그럴 때마다 실패했다고
-              자책하는 경우도 있고요.
+              유혹에 의지도 약해질 수 있죠. 그럴 때마다 실패했다고 자책하는
+              경우도 있고요.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               <Text
@@ -157,7 +159,7 @@ const HowToUse = () => {
               </Text>{' '}
               무언가에 몰입했을 때를 떠올려보세요. 힘든 것과 별개로 꽤 후련하지
               않았나요? Achieve 가 여러분에게 묻고 싶은 것은 “오늘 하루에 얼마나
-              몰입했는가? “에요.
+              몰입했는가?“ 에요.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               <Text
@@ -191,12 +193,13 @@ const HowToUse = () => {
               때문이죠.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
-              다만 Achieve 에선 할 일을 미룰 수 있어요. 만약 할 일이 너무 많은데
+              다만 Achieve 에선 할 일을 미룰 수 있어요. 할 일이 너무 많은데
               끝나는 데에만 조급하다면 몰입할 수 없기 때문이에요.
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               Achieve 를 통해 진짜 나에게 필요한 것들이 무엇인지 생각해 보고,
-              몰입하여 하루를 채워보세요.
+              몰입하여 하루를 채워보세요. 그렇게 꽉 찬 하루들이 모이면 원하는
+              목표를 달성할 수 있을 거예요.
             </Text>
           </View>
           <View style={{ width: '100%', height: ms(40, 0.3) }}></View>

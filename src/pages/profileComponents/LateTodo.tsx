@@ -48,11 +48,15 @@ const LateTodo = () => {
 
   // const [todos, setTodos] = useState<Realm.Results<Todo & Realm.Object> | Todo[] | List<Todo>>([]);
   const todos = useQuery(Todo).filtered('date == "none"');
+  const todoslength = todos.length;
 
-  const renderItem = ({ item }: { item: Todo }) => {
-    console.log('renderItem: ' + item.title);
+  const renderItem = ({ item, index }: { item: Todo; index: number }) => {
     return (
-      <View style={{ marginVertical: ms(5, 0.3) }}>
+      <View
+        style={{
+          marginVertical: ms(5, 0.3),
+          marginBottom: index === todoslength - 1 ? ms(40, 0.3) : 0,
+        }}>
         <LateTodoBSContainer item={item} itemDelete={itemDelete} />
       </View>
     );
@@ -201,6 +205,7 @@ const LateTodo = () => {
           data={todos}
           renderItem={renderItem}
           keyExtractor={value => value._id.toString()}
+          showsVerticalScrollIndicator={false}
         />
       </View>
       <BottomSheetModal

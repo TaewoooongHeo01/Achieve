@@ -41,6 +41,8 @@ const SettingPhrase = (): React.ReactElement => {
   const phrases = useQuery(Phrase);
   const realm = useRealm();
 
+  const phraseLength = phrases.length;
+
   const data: Phrase[] = [];
   for (let i = 0; i < phrases.length; i++) {
     data.push(phrases[i]);
@@ -93,7 +95,7 @@ const SettingPhrase = (): React.ReactElement => {
     [],
   );
 
-  const renderItem = ({ item }: { item: Phrase }) => {
+  const renderItem = ({ item, index }: { item: Phrase; index: number }) => {
     return (
       <View
         style={[
@@ -103,6 +105,7 @@ const SettingPhrase = (): React.ReactElement => {
             backgroundColor: theme.backgroundColor,
             flexDirection: 'row',
             alignItems: 'center',
+            marginBottom: index === phraseLength - 1 ? ms(40, 0.3) : 0,
           },
         ]}>
         <Text
@@ -204,6 +207,7 @@ const SettingPhrase = (): React.ReactElement => {
           style={{ flex: ms(0.9) }}
           data={data}
           renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
         />
       </View>
       <BottomSheetModal
