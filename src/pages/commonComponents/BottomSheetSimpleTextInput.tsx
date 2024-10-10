@@ -47,7 +47,7 @@ const BottomSheetSimpleTextInput = ({ mode }: { mode: string }) => {
           fontStyle.fontSizeSub,
           { marginVertical: ms(8, 0.3), color: theme.textColor },
         ]}>
-        제목
+        {mode === 'phrase' ? '문구' : '제목'}
       </Text>
       <BottomSheetTextInput
         value={title}

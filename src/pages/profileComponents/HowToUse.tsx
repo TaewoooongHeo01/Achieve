@@ -194,7 +194,21 @@ const HowToUse = () => {
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               다만 Achieve 에선 할 일을 미룰 수 있어요. 할 일이 너무 많은데
-              끝나는 데에만 조급하다면 몰입할 수 없기 때문이에요.
+              끝나는 데에만 조급하다면 몰입할 수 없기 때문이에요.{' '}
+              <Text
+                style={[
+                  font.font,
+                  {
+                    color: theme.textColor,
+                    backgroundColor:
+                      currentTheme === 'dark'
+                        ? darkmodeHightlight
+                        : lightmodeHightlight,
+                    fontFamily: 'Pretendard-Medium',
+                  },
+                ]}>
+                참고로 완료, 미루기 기능은 '오늘' 에만 가능해요
+              </Text>
             </Text>
             <Text style={[font.font, { color: theme.textColor }]}>
               Achieve 를 통해 진짜 나에게 필요한 것들이 무엇인지 생각해 보고,

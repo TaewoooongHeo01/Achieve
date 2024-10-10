@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { KeyboardAvoidingView, Platform, StatusBar, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useColors } from '../context/ThemeContext';
@@ -13,11 +13,20 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { useRealm, useQuery } from '@realm/react';
+import { Todo } from '../../realm/models.tsx';
 
 const Main = (): React.JSX.Element => {
   const { top } = useSafeAreaInsets();
   const Tab = createBottomTabNavigator();
   const { theme, currentTheme } = useColors();
+  // const realm = useRealm();
+  // const todos = useQuery(Todo);
+  // useEffect(() => {
+  //   realm.write(() => {
+  //     realm.delete(todos);
+  //   });
+  // }, []);
 
   return (
     <SafeAreaView

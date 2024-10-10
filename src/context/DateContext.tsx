@@ -53,10 +53,10 @@ export const DateContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const date = now.getDate();
   const day = now.getDay();
   const today: TaskDate = {
-    year: year,
-    month: month,
-    date: date,
-    day: day,
+    year: 2024,
+    month: 9,
+    date: 17,
+    day: 2,
   };
   const [taskDate, setTaskDate] = useState<TaskDate>(today);
 

@@ -298,9 +298,10 @@
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Achieve" */;
 			compatibilityVersion = "Xcode 12.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ko,
 				en,
 				Base,
 			);
@@ -634,7 +635,7 @@
 					"$(inherited)",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/RealmJS\"",
 				);
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 0.0.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -733,7 +734,7 @@
 					"$(inherited)",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/RealmJS\"",
 				);
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 0.0.4;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

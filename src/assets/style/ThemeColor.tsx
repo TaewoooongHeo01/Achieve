@@ -1,6 +1,5 @@
 const gradientColorset: string[][] = [
   ['white', 'white'],
-  //빨, 주, 노, 초, 파, 남, 보, 핑, 아이보리
   ['rgba(250, 97, 115, 1)', 'rgba(250, 97, 115, 1)'],
   ['rgb(252, 111, 70)', 'rgb(252, 111, 70)'],
   ['rgb(245, 206, 71)', 'rgb(245, 206, 71)'],
@@ -10,8 +9,6 @@ const gradientColorset: string[][] = [
   ['rgba(207, 66, 184, 1)', 'rgba(207, 66, 184, 1)'],
   ['rgb(239, 229, 222)', 'rgb(239, 229, 222)'],
   ['rgb(237, 133, 173)', 'rgb(237, 133, 173)'],
-
-  //파스텔 톤
   ['#ffadad', '#ffadad'],
   ['#ffd6a5', '#ffd6a5'],
   ['#fdffb6', '#fdffb6'],
@@ -20,8 +17,6 @@ const gradientColorset: string[][] = [
   ['#a0c4ff', '#a0c4ff'],
   ['#bdb2ff', '#bdb2ff'],
   ['#ffc6ff', '#ffc6ff'],
-
-  //그라데이션
   ['#F96A6D', '#FDC9AC'],
   ['#ddff33', '#6ce46a'],
   ['#84fab0', '#8fd3f4'], //초-파
